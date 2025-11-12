@@ -1,21 +1,14 @@
-#include <SFML/Graphics.hpp>
+#include "../Source/GameController.h"
 
+
+
+/** Punto de entrada de la aplicacion */
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({400, 400}), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    /* Creamos el controlador del juego */
+    GameController gameController;
+    /* Iniciar bucle del juego */
+    gameController.runGameLoop();
 
-    while(window.isOpen())
-    {
-        while(std::optional event = window.pollEvent())
-        {
-            if(event->is<sf::Event::Closed>())
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+    return 0;
 }

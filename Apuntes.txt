@@ -1,0 +1,10 @@
+Conceptos no vistos:
+Clase
+Objeto
+Header en c++
+#ifndef
+#endif
+#define
+Herencia con :
+Operador ~
+SFML

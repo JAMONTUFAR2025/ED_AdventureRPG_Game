@@ -8,7 +8,8 @@ Las clases tendrán encabezado y archivo cpp.
 g++ -o Launcher/Launcher.exe Launcher/Launcher.cpp Source/GameController.cpp
 
 # Para compilar con SFML:
-Libraries/mingw64/bin/g++.exe -g -std=c++17 Launcher/Launcher.cpp Source/GameController.cpp -I Libraries/SFML-3.0.2/include -I Source -L Libraries/SFML-3.0.2/lib -o Launcher/Launcher.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -lgdi32 -lopengl32
+Libraries/mingw64/bin/g++.exe -g -std=c++17 Launcher/Launcher.cpp Source/GameController.cpp Source/GameStates/MainMenuState.cpp -I Libraries/SFML-3.0.2/include -I Source -L Libraries/SFML-3.0.2/lib -o Launcher/Launcher.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network -lgdi32 -lopengl32
+
 
 # Para ejecutar el Launcher.exe:
 .\Launcher/Launcher.exe
