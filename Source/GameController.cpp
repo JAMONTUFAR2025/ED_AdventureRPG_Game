@@ -1,6 +1,7 @@
 #include "GameController.h"
 #include <iostream>
 
-void GameController::holaMundo() {
+void GameController::holaMundo()
+{
     std::cout << "hola mundo" << std::endl;
 }
