@@ -1,5 +1,7 @@
 #include "StateMachine.h"
 
+// SE USA UN ARCHIVO .TPP PARA LAS IMPLEMENTACIONES DE PLANTILLAS
+
 /**
  * Constructor de la maquina de estados
  */
