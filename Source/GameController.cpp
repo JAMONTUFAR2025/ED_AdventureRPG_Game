@@ -22,7 +22,6 @@ void GameController::runGameLoop()
     {
         // Procesa los eventos, ejecuta la logica del estado actual y renderiza
         processEvents();
-        stateMachine.execute();
         render();
     }
 }
@@ -31,29 +30,15 @@ void GameController::runGameLoop()
 void GameController::processEvents()
 {
     // Variable para almacenar los eventos
-    optional<Event> event;
-
-    /* Maneja los eventos de la ventana */
-    while(event = window.pollEvent())
+    while (const auto event = window.pollEvent())
     {
         // Si se recibe un evento de cierre, cierra la ventana
-        if(event->is<Event::Closed>())
-            window.close();
-
-        // Si se recibe un evento de teclado
-        if(event->is<Event::KeyPressed>())
+        if(event->is<sf::Event::Closed>())
         {
-            // Si se presiona la tecla 'E', agregamos un MainMenuState a la pila
-            if(event->getIf<Event::KeyPressed>()->code == Keyboard::Key::E)
-            {
-                stateMachine.push(new MainMenuState());
-            }
-            // Si se presiona la tecla 'Q', quitamos un estado de la pila
-            else if(event->getIf<Event::KeyPressed>()->code == Keyboard::Key::Q)
-            {
-                stateMachine.pop();
-            }
+            window.close();
         }
+        
+        stateMachine.execute(*event);
     }
 }
 

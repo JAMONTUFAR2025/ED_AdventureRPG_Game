@@ -3,6 +3,8 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "chrono": "cpp",
-        "text_encoding": "cpp"
+        "text_encoding": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp"
     }
 }

@@ -29,7 +29,7 @@ public:
     /**
      * Se ejecuta en cada frame mientras se este en el estado
      */
-    virtual void execute(T* owner) = 0;
+    virtual void execute(T* owner, sf::Event event) = 0;
 
     /**
      * Se ejecuta en cada frame para dibujar los elementos del estado

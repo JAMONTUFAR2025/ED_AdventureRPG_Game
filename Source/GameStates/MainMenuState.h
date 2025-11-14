@@ -13,14 +13,17 @@ class GameController;
 class MainMenuState : public IState<GameController>
 {
 private:
-    Font* font;
-    Text* text;
-    Text* stackText;
+    sf::Font titleFont;
+    sf::Text* titleText;
+
+    sf::Font optionsFont;
+    std::vector<sf::Text*> optionTexts;
+    int selectedOption;
 
 public:
     MainMenuState();
     void enter(GameController* owner) override;
-    void execute(GameController* owner) override;
+    void execute(GameController* owner, sf::Event event) override;
     void draw(sf::RenderWindow& window) override;
     void exit() override;
     const char* getName() const override;

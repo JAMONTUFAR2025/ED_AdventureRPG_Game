@@ -4,77 +4,108 @@
 #include <vector>
 #include <string>
 
-/* Constructor, inicializa los punteros a nullptr */
-MainMenuState::MainMenuState() : font(nullptr), text(nullptr), stackText(nullptr)
+MainMenuState::MainMenuState() : titleText(nullptr), selectedOption(0)
 {
 }
 
-/* Se ejecuta al entrar en el estado */
 void MainMenuState::enter(GameController* owner)
 {
-    cout << "Entering MainMenuState" << endl;
+    std::cout << "Entering MainMenuState" << std::endl;
 
-    // Creamos la fuente dinamicamente
-    font = new Font();
-
-    // Cargamos la fuente para el texto de depuracion
-    if(font->openFromFile("C:/Windows/Fonts/arial.ttf"))
+    if (!titleFont.openFromFile("Assets/fonts/font.otf"))
     {
-        // Si la fuente se carga correctamente, creamos los textos
-        text = new Text(*font, "Estado: MainMenu (DEBUG)", 12);
-        text->setFillColor(Color::White);
-        text->setPosition({10.f, 10.f});
-
-        stackText = new Text(*font, "", 12);
-        stackText->setFillColor(Color::White);
-        stackText->setPosition({10.f, 30.f});
+        std::cerr << "Error loading font Assets/fonts/font.otf" << std::endl;
+        // Fallback to a default font
+        if (!titleFont.openFromFile("C:/Windows/Fonts/arial.ttf"))
+        {
+            std::cerr << "Error loading fallback font C:/Windows/Fonts/arial.ttf" << std::endl;
+            return;
+        }
     }
-    else
+    optionsFont = titleFont;
+
+    titleText = new sf::Text(titleFont, "Adventure RPG", 64);
+    titleText->setFillColor(sf::Color::White);
+    sf::FloatRect titleRect = titleText->getLocalBounds();
+    titleText->setOrigin({titleRect.position.x + titleRect.size.x / 2.0f, titleRect.position.y + titleRect.size.y / 2.0f});
+    titleText->setPosition(sf::Vector2f(owner->window.getSize().x / 2.0f, owner->window.getSize().y / 4.0f));
+
+    std::vector<std::string> options = {"Jugar", "Salir"};
+    for (int i = 0; i < options.size(); ++i)
     {
-        cerr<<"Error: No se pudo cargar la fuente 'arial.ttf'. Asegurate de que el archivo existe en C:/Windows/Fonts/"<<endl;
+        sf::Text* option = new sf::Text(optionsFont, options[i], 32);
+        option->setFillColor(sf::Color::White);
+        sf::FloatRect optionRect = option->getLocalBounds();
+        option->setOrigin({optionRect.position.x + optionRect.size.x / 2.0f, optionRect.position.y + optionRect.size.y / 2.0f});
+        option->setPosition(sf::Vector2f(owner->window.getSize().x / 2.0f, owner->window.getSize().y / 2.0f + i * 50));
+        optionTexts.push_back(option);
     }
 }
 
-void MainMenuState::execute(GameController* owner)
+void MainMenuState::execute(GameController* owner, sf::Event event)
 {
-    // Actualizamos el texto de la pila de estados
-    if(stackText)
+    if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
     {
-        string stackString = "STATE STACK:\n";
-        vector<IState<GameController>*> stack = owner->stateMachine.getStack();
-        for(IState<GameController>*& state : stack)
+        if (keyPressed->code == sf::Keyboard::Key::Up)
         {
-            stackString += " - " + string(state->getName()) + "\n";
+            if (selectedOption > 0)
+            {
+                selectedOption--;
+            }
         }
-        stackText->setString(stackString);
+        else if (keyPressed->code == sf::Keyboard::Key::Down)
+        {
+            if (selectedOption < optionTexts.size() - 1)
+            {
+                selectedOption++;
+            }
+        }
+        else if (keyPressed->code == sf::Keyboard::Key::Z)
+        {
+            if (selectedOption == 0)
+            {
+                std::cout << "Selected: Jugar" << std::endl;
+            }
+            else if (selectedOption == 1)
+            {
+                std::cout << "Selected: Salir" << std::endl;
+                owner->window.close();
+            }
+        }
     }
 }
 
 void MainMenuState::draw(sf::RenderWindow& window)
 {
-    // Dibujamos los textos de depuracion si no son nulos
-    if(text)
+    if(titleText)
+        window.draw(*titleText);
+
+    for (int i = 0; i < optionTexts.size(); ++i)
     {
-        window.draw(*text);
-    }
-    if(stackText)
-    {
-        window.draw(*stackText);
+        if (i == selectedOption)
+        {
+            optionTexts[i]->setFillColor(sf::Color::Yellow);
+        }
+        else
+        {
+            optionTexts[i]->setFillColor(sf::Color::White);
+        }
+        window.draw(*optionTexts[i]);
     }
 }
 
 void MainMenuState::exit()
 {
-    cout<<"Exiting MainMenuState"<<endl;
-
-    // Liberamos la memoria de la fuente y los textos
-    delete text;
-    delete stackText;
-    delete font;
+    std::cout << "Exiting MainMenuState" << std::endl;
+    delete titleText;
+    for(auto& option : optionTexts)
+    {
+        delete option;
+    }
+    optionTexts.clear();
 }
 
 const char* MainMenuState::getName() const
 {
     return "MainMenuState";
 }
-
