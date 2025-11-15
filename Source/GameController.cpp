@@ -22,6 +22,7 @@ void GameController::runGameLoop()
     {
         // Procesa los eventos, ejecuta la logica del estado actual y renderiza
         processEvents();
+        stateMachine.update();
         render();
     }
 }
@@ -38,7 +39,7 @@ void GameController::processEvents()
             window.close();
         }
         
-        stateMachine.execute(*event);
+        stateMachine.handleEvent(*event);
     }
 }
 

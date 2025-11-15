@@ -2,41 +2,88 @@
 #include "../GameController.h"
 #include <iostream>
 #include <vector>
+#include <string>
 
-/**
- * Constructor del Menu Principal
- * Inicializa la opcion seleccionada en 0
- */
-MainMenuState::MainMenuState() : selectedOption(0)
+MainMenuState::MainMenuState() : selectedOption(0), testDialog(nullptr), dialogJustEnded(false)
 {
 }
 
-/* Al entrar al menu, dibujamos e inicializamos la UI */
 void MainMenuState::enter(GameController* owner)
 {
-    cout<<"Entering MainMenuState"<<endl;
+    std::cout << "Entering MainMenuState" << std::endl;
     mainMenuUI.setup(owner);
+    std::vector<std::string> dialogLines = {"Hola, aventurero!", "Bienvenido a Adventure RPG.", "Espero que disfrutes tu estancia."};
+    testDialog = new Dialog(dialogLines);
+    dialogJustEnded = false; // Ensure flag is reset on entering state
 }
 
-/* Ejecuta la logica del menu principal, se manejan las entradas */
-void MainMenuState::execute(GameController* owner, Event event)
+void MainMenuState::update(GameController* owner)
 {
-    mainMenuUI.handleInput(event, owner, selectedOption);
+    bool wasDialogActive = dialogManager.isActive(); // Store dialog state before update
+
+    if (dialogManager.isActive())
+    {
+        dialogManager.update();
+    }
+
+    // Check if dialog just became inactive after this update
+    if (wasDialogActive && !dialogManager.isActive())
+    {
+        dialogJustEnded = true; // Set flag to consume next Z key press
+    }
 }
 
-/* Dibuja el menu principal */
-void MainMenuState::draw(RenderWindow& window)
+void MainMenuState::handleEvent(GameController* owner, sf::Event event)
+{
+    // If a dialog just ended, consume the 'Z' key press that might have ended it
+    // and prevent it from being processed by the menu for this frame.
+    if (dialogJustEnded && event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Z)
+    {
+        dialogJustEnded = false; // Reset the flag
+        return; // Consume the event
+    }
+
+    if (dialogManager.isActive())
+    {
+        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
+        {
+            if (keyPressed->code == sf::Keyboard::Key::Z)
+            {
+                dialogManager.nextLine();
+            }
+        }
+    }
+    else // Dialog is not active, handle menu input
+    {
+        mainMenuUI.handleInput(event, owner, selectedOption);
+        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
+        {
+            if (keyPressed->code == sf::Keyboard::Key::Z)
+            {
+                if (selectedOption == 0) // Jugar
+                {
+                    dialogManager.startDialog(testDialog);
+                }
+            }
+        }
+    }
+}
+
+void MainMenuState::draw(sf::RenderWindow& window)
 {
     mainMenuUI.draw(window, selectedOption);
+    if (dialogManager.isActive())
+    {
+        dialogManager.draw(window);
+    }
 }
 
-/* Al salir del menu, realizamos las acciones necesarias */
 void MainMenuState::exit()
 {
-    cout<<"Exiting MainMenuState"<<endl;
+    std::cout << "Exiting MainMenuState" << std::endl;
+    delete testDialog;
 }
 
-/* Obtiene el nombre del estado, para depuracion */
 const char* MainMenuState::getName() const
 {
     return "MainMenuState";

@@ -36,7 +36,8 @@ class StateMachine
         /**
          * Ejecuta el metodo execute del estado actual
          */
-        void execute(sf::Event event);
+        void handleEvent(sf::Event event);
+        void update();
 
         /**
          * Dibuja el estado actual

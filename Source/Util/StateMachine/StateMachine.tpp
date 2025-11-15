@@ -27,12 +27,22 @@ StateMachine<T>::~StateMachine()
  * Ejecuta el metodo execute del estado actual
  */
 template <typename T>
-void StateMachine<T>::execute(sf::Event event)
+void StateMachine<T>::handleEvent(sf::Event event)
 {
     // Si la pila no esta vacia, ejecutamos el estado superior
     if(!stateStack.empty())
     {
-        stateStack.top()->execute(owner, event);
+        stateStack.top()->handleEvent(owner, event);
+    }
+}
+
+template <typename T>
+void StateMachine<T>::update()
+{
+    // Si la pila no esta vacia, actualizamos el estado superior
+    if(!stateStack.empty())
+    {
+        stateStack.top()->update(owner);
     }
 }
 

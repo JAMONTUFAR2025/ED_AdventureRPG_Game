@@ -17,6 +17,9 @@ class GameController;
  * Estado del Menu Principal
  * Permite navegar por las opciones del menu principal
  */
+#include "../Dialog/DialogManager.h"
+#include "../Dialog/Dialog.h"
+
 class MainMenuState : public IState<GameController>
 {
 private:
@@ -25,13 +28,18 @@ private:
     /* Opcion seleccionada */
     int selectedOption;
 
+    DialogManager dialogManager;
+    Dialog* testDialog;
+    bool dialogJustEnded; // New flag
+
 public:
     /* Constructor del Menu Principal */
     MainMenuState();
     /* Al entrar al menu, dibujamos e inicializamos la UI */
     void enter(GameController* owner) override;
     /* Ejecuta la logica del menu principal, se manejan las entradas */
-    void execute(GameController* owner, Event event) override;
+    void handleEvent(GameController* owner, Event event) override;
+    void update(GameController* owner) override;
     /* Dibuja el menu principal */
     void draw(RenderWindow& window) override;
     /* Al salir del menu, realizamos las acciones necesarias */
