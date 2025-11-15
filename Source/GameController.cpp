@@ -1,4 +1,5 @@
 #include "GameController.h"
+#include "Gameplay/GlobalSettings.h"
 #include "GameStates/MainMenuState.h"
 #include <iostream>
 
@@ -8,8 +9,10 @@
  * y utiliza una maquina de estados para gestionar los diferentes
  * estados del juego (menu principal, juego, pausa, etc).
  */
-GameController::GameController() : window(sf::VideoMode({800, 600}), "Adventure RPG"), stateMachine(this)
+GameController::GameController() : window(VideoMode({GlobalSettings::SCREEN_WIDTH, GlobalSettings::SCREEN_HEIGHT}), "Adventure RPG", Style::Close | Style::Titlebar), stateMachine(this)
 {
+    // Oculta el cursor del mouse
+    window.setMouseCursorVisible(false);
     /* Inicializa el estado del menu principal */
     stateMachine.push(new MainMenuState());
 }
@@ -31,10 +34,10 @@ void GameController::runGameLoop()
 void GameController::processEvents()
 {
     // Variable para almacenar los eventos
-    while (const auto event = window.pollEvent())
+    while (const optional<Event> event = window.pollEvent())
     {
         // Si se recibe un evento de cierre, cierra la ventana
-        if(event->is<sf::Event::Closed>())
+        if(event->is<Event::Closed>())
         {
             window.close();
         }

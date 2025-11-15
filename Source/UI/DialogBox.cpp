@@ -41,7 +41,7 @@ void DialogBox::setup()
     // Establece el grosor del borde en 6 pixeles
     box.setOutlineThickness(6);
     // Establece la posicion del rectangulo
-    box.setPosition({50, 400});
+    box.setPosition({50, 380});
 
     // Configura el texto dentro de la caja de dialogo
     text = new Text(font, "", 32);
