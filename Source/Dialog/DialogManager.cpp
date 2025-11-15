@@ -10,6 +10,27 @@ DialogManager::DialogManager() : currentDialog(nullptr), currentLine(0), current
     dialogBox.setup();
 }
 
+/**
+ * Destructor del DialogManager
+ * Libera la memoria de los dialogos en la cola y del dialogo actual
+ */
+DialogManager::~DialogManager()
+{
+    // Borrar el dialogo actual si existe
+    if (currentDialog)
+    {
+        delete currentDialog;
+        currentDialog = nullptr;
+    }
+
+    // Borrar todos los dialogos en la cola
+    while (!dialogQueue.empty())
+    {
+        delete dialogQueue.front();
+        dialogQueue.pop();
+    }
+}
+
 /* Inicia un dialogo */
 void DialogManager::startDialog(Dialog* dialog)
 {
@@ -84,6 +105,13 @@ void DialogManager::update()
             currentCharacter++;
             // Actualiza el texto en la caja de dialogo
             dialogBox.setText(currentLineText.substr(0, currentCharacter));
+            // Marca que la escritura no ha terminado
+            typingFinished = false;
+        }
+        else
+        {
+            // Marca que la escritura ha terminado
+            typingFinished = true;
         }
         // Reinicia el reloj
         clock.restart();
@@ -144,6 +172,9 @@ void DialogManager::nextLine()
         // Si no hay mas lineas en el dialogo actual
         else
         {
+            // Borra el dialogo actual ya que ya no tiene lineas
+            delete currentDialog;
+            currentDialog = nullptr;
             // Procesa el siguiente dialogo en la cola
             processNextDialog();
         }
@@ -151,7 +182,11 @@ void DialogManager::nextLine()
     // Si no hay lineas en el dialogo actual
     else
     {
+        // Borra el dialogo actual ya que ya no tiene lineas
+        delete currentDialog;
+        currentDialog = nullptr;
         // Procesa el siguiente dialogo en la cola, esto no deberia ejecutarse porque significaria un dialogo NULL
         processNextDialog();
     }
 }
+

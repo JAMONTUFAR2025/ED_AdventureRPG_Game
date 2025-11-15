@@ -10,7 +10,7 @@
  * Inicializa el puntero del dialogo de prueba en null
  * Inicializa la bandera de dialogo terminado en false
  */
-MainMenuState::MainMenuState() : selectedOption(0), testDialog(nullptr), dialogJustEnded(false)
+MainMenuState::MainMenuState() : selectedOption(0), dialogJustEnded(false)
 {
 }
 
@@ -20,16 +20,7 @@ void MainMenuState::enter(GameController* owner)
     cout<<"Entering MainMenuState"<<endl;
     // Inicializa la UI del menu principal
     mainMenuUI.setup(owner);
-    // Dialogos de prueba en un vector
-    vector<string> tempDialogLines = {"Hola, aventurero!", "Bienvenido a Adventure RPG.", "Espero que disfrutes tu estancia."};
-    // Convertimos el vector a una cola
-    queue<string> dialogLines;
-    for(string& line : tempDialogLines) {
-        dialogLines.push(line);
-    }
 
-    // Creamos el dialogo de prueba
-    testDialog = new Dialog(dialogLines);
     // El banderin pasa a false para indicar que no ha terminado ningun dialogo aun
     dialogJustEnded = false;
 }
@@ -77,8 +68,8 @@ void MainMenuState::handleEvent(GameController* owner, Event event)
         // Verificamos si se pulso una tecla
         if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
         {
-            // Al pulsar la Z, avanzamos a la siguiente linea del dialogo
-            if(keyPressed->code == Keyboard::Key::Z)
+            // Al pulsar la Z y el texto haya terminado, avanzamos a la siguiente linea del dialogo
+            if(keyPressed->code == Keyboard::Key::Z && dialogManager.typingFinished)
             {
                 dialogManager.nextLine();
             }
@@ -98,7 +89,13 @@ void MainMenuState::handleEvent(GameController* owner, Event event)
             // Jugar
             if(selectedOption == 0)
             {
-                dialogManager.startDialog(testDialog);
+                // Creamos dialogos de prueba
+                vector<string> tempDialogLines = {"Hola, aventurero!", "Bienvenido a Adventure RPG.", "Espero que disfrutes tu estancia."};
+                queue<string> newDialogLines;
+                for(const string& line : tempDialogLines) {
+                    newDialogLines.push(line);
+                }
+                dialogManager.startDialog(new Dialog(newDialogLines));
             }
         }
     }
@@ -120,8 +117,7 @@ void MainMenuState::draw(RenderWindow& window)
 void MainMenuState::exit()
 {
     cout<<"Exiting MainMenuState"<<endl;
-    // Liberamos la memoria del dialogo de prueba
-    delete testDialog;
+    // MainMenuState no posee el dialogo, DialogManager gestiona su ciclo de vida
 }
 
 /* Getter para el nombre de este estado */

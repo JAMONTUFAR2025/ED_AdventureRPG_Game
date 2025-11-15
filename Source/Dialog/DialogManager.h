@@ -34,8 +34,12 @@ private:
     /* Procesa el siguiente dialogo en la cola */
     void processNextDialog();
 public:
+    /* Indica si la escritura del texto ha terminado */
+    bool typingFinished = false;
     /* Constructor */
     DialogManager();
+    /* Destructor */
+    ~DialogManager();
     /* Inicia un dialogo */
     void startDialog(Dialog* dialog);
     /* Actualiza el estado del dialogo */

@@ -27,8 +27,6 @@ private:
 
     /* Manejador de los dialogos */
     DialogManager dialogManager;
-    /* Dialogo de prueba */
-    Dialog* testDialog;
     /* Indica si un dialogo acaba de terminar */
     bool dialogJustEnded;
 
