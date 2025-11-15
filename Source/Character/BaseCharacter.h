@@ -14,6 +14,7 @@ class BaseCharacter
         int expYield;
     public:
         BaseCharacter();
+        BaseCharacter(string name, int maxHealth, int attack, int defense, int expYield);
 
         const string& getName() const;
         int getMaxHealth() const;

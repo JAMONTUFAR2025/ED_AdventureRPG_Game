@@ -1,0 +1,84 @@
+#include "ActionSelectionState.h"
+#include <iostream>
+#include "RunTurnState.h" // Transition to RunTurnState after action selection
+
+
+namespace Battle
+{
+    ActionSelectionState::ActionSelectionState() : selectedOption(0), battleSystemOwner(nullptr)
+    {
+    }
+
+    ActionSelectionState::~ActionSelectionState()
+    {
+    }
+
+    void ActionSelectionState::enter(BattleSystem* owner)
+    {
+        this->battleSystemOwner = owner;
+        std::cout << "Entering ActionSelectionState" << std::endl;
+        this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer(), this->battleSystemOwner->getEnemy()); // Setup BattleUI with current characters
+        this->battleSystemOwner->getBattleUI().updateDialogBoxDescription(selectedOption);
+    }
+
+    void ActionSelectionState::handleEvent(BattleSystem* owner, sf::Event event)
+    {
+        if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
+        {
+            if (keyPressed->code == sf::Keyboard::Key::Up)
+            {
+                selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
+                owner->getBattleUI().updateDialogBoxDescription(selectedOption);
+            }
+            else if (keyPressed->code == sf::Keyboard::Key::Down)
+            {
+                selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
+                owner->getBattleUI().updateDialogBoxDescription(selectedOption);
+            }
+            else if (keyPressed->code == sf::Keyboard::Key::Z)
+            {
+                switch (selectedOption)
+                {
+                    case 0: // Luchar
+                        std::cout << "Player selected: Luchar" << std::endl;
+                        owner->setChosenAction(ActionType::Fight);
+                        owner->getStateMachine().changeState(new RunTurnState());
+                        break;
+                    case 1: // Especial
+                        std::cout << "Player selected: Especial" << std::endl;
+                        owner->setChosenAction(ActionType::Special);
+                        owner->getStateMachine().changeState(new RunTurnState());
+                        break;
+                    case 2: // En Guardia
+                        std::cout << "Player selected: En Guardia" << std::endl;
+                        owner->setChosenAction(ActionType::Guard);
+                        owner->getStateMachine().changeState(new RunTurnState());
+                        break;
+                    case 3: // Escapar
+                        std::cout << "Player selected: Escapar" << std::endl;
+                        owner->setChosenAction(ActionType::Escape);
+                        owner->getStateMachine().changeState(new RunTurnState());
+                        break;
+                }
+            }
+        }
+    }
+
+    void ActionSelectionState::update(BattleSystem* owner)
+    {
+        // No complex update logic needed for this state
+    }
+
+    void ActionSelectionState::draw(sf::RenderWindow& window)
+    {
+        // Owner is available via stateMachine.getOwner() if needed.
+        // For drawing UI that depends on selectedOption, we pass it to BattleUI
+        this->battleSystemOwner->getBattleUI().draw(window, selectedOption, this->battleSystemOwner->getPlayer(), this->battleSystemOwner->getEnemy());
+    }
+
+    void ActionSelectionState::exit()
+    {
+        std::cout << "Exiting ActionSelectionState" << std::endl;
+    }
+} // namespace Battle
+
