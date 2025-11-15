@@ -3,6 +3,7 @@
 #include <iostream>
 #include <queue>
 #include <string>
+#include "GameMenuState.h"
 
 /**
  * Constructor del Menu Principal
@@ -89,13 +90,7 @@ void MainMenuState::handleEvent(GameController* owner, Event event)
             // Jugar
             if(selectedOption == 0)
             {
-                // Creamos dialogos de prueba
-                vector<string> tempDialogLines = {"Hola, aventurero!", "Bienvenido a Adventure RPG.", "Espero que disfrutes tu estancia."};
-                queue<string> newDialogLines;
-                for(const string& line : tempDialogLines) {
-                    newDialogLines.push(line);
-                }
-                dialogManager.startDialog(new Dialog(newDialogLines));
+                owner->stateMachine.changeState(new GameMenuState());
             }
         }
     }

@@ -8,6 +8,9 @@ class GlobalSettings
         /* Resolucion de grosor y altura */
         static const int SCREEN_WIDTH = 800;
         static const int SCREEN_HEIGHT = 600;
+
+        /* Puntos del jugador */
+        static int playerPoints;
 };
 
 #endif // GLOBAL_SETTINGS_H

@@ -8,3 +8,18 @@ Header en c++
 Herencia con :
 Operador ~
 SFML
+
+Combate:
+- Luchar
+- Especial
+- En guardia
+- Huir
+
+Menu del juego
+- Explorar
+    - Mundo 1
+    - Mundo 2 (Requiere nivel 3)
+    - Mundo 3 (Requiere nivel 5)
+- Comprar pocion de curacion (10 puntos)
+- Comprar trofeo (1000 puntos)
+- Salir
