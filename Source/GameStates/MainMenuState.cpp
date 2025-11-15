@@ -37,10 +37,16 @@ void MainMenuState::handleEvent(GameController* owner, sf::Event event)
 {
     // If a dialog just ended, consume the 'Z' key press that might have ended it
     // and prevent it from being processed by the menu for this frame.
-    if (dialogJustEnded && event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Z)
+    if (dialogJustEnded)
     {
-        dialogJustEnded = false; // Reset the flag
-        return; // Consume the event
+        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
+        {
+            if (keyPressed->code == sf::Keyboard::Key::Z)
+            {
+                dialogJustEnded = false; // Reset the flag
+                return; // Consume the event
+            }
+        }
     }
 
     if (dialogManager.isActive())

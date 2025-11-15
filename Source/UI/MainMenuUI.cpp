@@ -1,5 +1,5 @@
 #include "MainMenuUI.h"
-#include "../../GameController.h" // Assuming GameController is needed for window size
+#include "../GameController.h" // Assuming GameController is needed for window size
 #include <iostream>
 
 /**
@@ -86,20 +86,19 @@ void MainMenuUI::handleInput(Event event, GameController* owner, int& currentSel
     if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
         // Navegacion por las opciones del menu
-        if (keyPressed->code == Keyboard::Key::Up)
+        if (keyPressed->code == Keyboard::Key::Up
+            || keyPressed->code == Keyboard::Key::Down)
         {
-            if (currentSelectedOption > 0)
-            {
-                currentSelectedOption--;
-            }
+            currentSelectedOption = currentSelectedOption == 0 ? 1 : 0;
         }
-        else if (keyPressed->code == Keyboard::Key::Down)
-        {
-            if (currentSelectedOption < optionTexts.size() - 1)
-            {
-                currentSelectedOption++;
-            }
-        }
+        // }
+        // else if (keyPressed->code == Keyboard::Key::Down)
+        // {
+        //     if (currentSelectedOption < optionTexts.size() - 1)
+        //     {
+        //         currentSelectedOption++;
+        //     }
+        // }
         // Seleccion de la opcion
         else if (keyPressed->code == Keyboard::Key::Z)
         {
