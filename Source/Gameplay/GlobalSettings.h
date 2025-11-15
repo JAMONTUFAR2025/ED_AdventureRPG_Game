@@ -11,6 +11,8 @@ class GlobalSettings
 
         /* Puntos del jugador */
         static int playerPoints;
+        /* Puntos de definitiva del juegador */
+        static int playerDefinitivePoints;
 };
 
 #endif // GLOBAL_SETTINGS_H

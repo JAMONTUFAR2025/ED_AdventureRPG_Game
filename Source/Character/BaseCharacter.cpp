@@ -9,17 +9,22 @@ const string& BaseCharacter::getName() const
     return name;
 }
 
-const int BaseCharacter::getMaxHealth() const
+int BaseCharacter::getMaxHealth() const
 {
     return maxHealth;
 }
 
-const int BaseCharacter::getAttack() const
+int BaseCharacter::getAttack() const
 {
     return attack;
 }
 
-const int BaseCharacter::getDefense() const
+int BaseCharacter::getDefense() const
 {
     return defense;
+}
+
+int BaseCharacter::getExpYield() const
+{
+    return expYield;
 }

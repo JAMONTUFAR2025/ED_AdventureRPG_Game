@@ -1,21 +1,64 @@
 #include "Character.h"
+#include <iostream> // Para cout para propositos de depuracion
 
-Character::Character() : base(), level(1)
+Character::Character(const BaseCharacter& baseChar, int initialLevel)
+    : base(baseChar),
+      level(initialLevel),
+      currentHealth(baseChar.getMaxHealth()), // Inicializa la vida actual a la maxima
+      currentExp(0) // Empieza con 0 de experiencia
 {
+    calculateStats();
 }
 
-const BaseCharacter& Character::getBaseCharacter() const
+void Character::calculateStats()
 {
-    return base;
+    maxHealth = (base.getMaxHealth() * 2 * level) / 100 + level + 10;
+    attack = (base.getAttack() * 2 * level) / 100 + 5;
+    defense = (base.getDefense() * 2 * level) / 100 + 5;
 }
 
-int Character::getLevel() const
+void Character::levelUp()
 {
-    return level;
+    level++;
+    currentHealth = base.getMaxHealth();
+    calculateStats();
 }
 
-int Character::getCurrentExp() const
+void Character::gainExperience(int amount)
 {
-    // Placeholder implementation, assuming exp is level * 100
-    return level * 100;
+    currentExp += amount;
+    int expToLevelUp = level * 100;
+    if (currentExp >= expToLevelUp)
+    {
+        currentExp -= expToLevelUp;
+        levelUp();
+    }
 }
+
+void Character::takeDamage(int damage)
+{
+    currentHealth -= damage;
+    if (currentHealth < 0)
+    {
+        currentHealth = 0;
+    }
+}
+
+void Character::heal(int amount)
+{
+    currentHealth += amount;
+    if (currentHealth > maxHealth)
+    {
+        currentHealth = maxHealth;
+    }
+}
+
+const BaseCharacter& Character::getBaseCharacter() const { return base; }
+
+int Character::getLevel() const { return level; }
+int Character::getMaxHealth() const { return maxHealth; }
+int Character::getAttack() const { return attack; }
+int Character::getDefense() const { return defense; }
+
+int Character::getCurrentHealth() const { return currentHealth; }
+int Character::getCurrentExp() const { return currentExp; }

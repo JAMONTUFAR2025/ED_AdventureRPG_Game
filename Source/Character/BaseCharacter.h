@@ -16,9 +16,10 @@ class BaseCharacter
         BaseCharacter();
 
         const string& getName() const;
-        const int getMaxHealth() const;
-        const int getAttack() const;
-        const int getDefense() const;
+        int getMaxHealth() const;
+        int getAttack() const;
+        int getDefense() const;
+        int getExpYield() const;
 };
 
 #endif // BASECHARACTER_H
