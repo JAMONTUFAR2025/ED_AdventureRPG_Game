@@ -86,20 +86,10 @@ void MainMenuUI::handleInput(Event event, GameController* owner, int& currentSel
     if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
         // Navegacion por las opciones del menu
-        if (keyPressed->code == Keyboard::Key::Up
-            || keyPressed->code == Keyboard::Key::Down)
+        if (keyPressed->code == Keyboard::Key::Up || keyPressed->code == Keyboard::Key::Down)
         {
             currentSelectedOption = currentSelectedOption == 0 ? 1 : 0;
         }
-        // }
-        // else if (keyPressed->code == Keyboard::Key::Down)
-        // {
-        //     if (currentSelectedOption < optionTexts.size() - 1)
-        //     {
-        //         currentSelectedOption++;
-        //     }
-        // }
-        // Seleccion de la opcion
         else if (keyPressed->code == Keyboard::Key::Z)
         {
             if (currentSelectedOption == 0)

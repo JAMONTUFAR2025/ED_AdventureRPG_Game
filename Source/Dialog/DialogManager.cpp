@@ -94,7 +94,7 @@ void DialogManager::update()
     }
 
     // Avanza el texto del dialogo segun el tiempo transcurrido
-    if(clock.getElapsedTime().asSeconds() > 0.05f)
+    if(clock.getElapsedTime().asSeconds() > 0.03f)
     {
         // Obtiene la linea actual del dialogo
         const string& currentLineText = currentDialog->getLines().front();
