@@ -1,95 +1,130 @@
 #include "MainMenuState.h"
 #include "../GameController.h"
 #include <iostream>
-#include <vector>
+#include <queue>
 #include <string>
 
+/**
+ * Constructor del Menu Principal
+ * Inicializa la opcion seleccionada en 0
+ * Inicializa el puntero del dialogo de prueba en null
+ * Inicializa la bandera de dialogo terminado en false
+ */
 MainMenuState::MainMenuState() : selectedOption(0), testDialog(nullptr), dialogJustEnded(false)
 {
 }
 
+/* Al entrar al menu, dibujamos e inicializamos la UI */
 void MainMenuState::enter(GameController* owner)
 {
-    std::cout << "Entering MainMenuState" << std::endl;
+    cout<<"Entering MainMenuState"<<endl;
+    // Inicializa la UI del menu principal
     mainMenuUI.setup(owner);
-    std::vector<std::string> dialogLines = {"Hola, aventurero!", "Bienvenido a Adventure RPG.", "Espero que disfrutes tu estancia."};
+    // Dialogos de prueba en un vector
+    vector<string> tempDialogLines = {"Hola, aventurero!", "Bienvenido a Adventure RPG.", "Espero que disfrutes tu estancia."};
+    // Convertimos el vector a una cola
+    queue<string> dialogLines;
+    for(string& line : tempDialogLines) {
+        dialogLines.push(line);
+    }
+
+    // Creamos el dialogo de prueba
     testDialog = new Dialog(dialogLines);
-    dialogJustEnded = false; // Ensure flag is reset on entering state
+    // El banderin pasa a false para indicar que no ha terminado ningun dialogo aun
+    dialogJustEnded = false;
 }
 
+/* Actualiza el estado del menu principal */
 void MainMenuState::update(GameController* owner)
 {
-    bool wasDialogActive = dialogManager.isActive(); // Store dialog state before update
+    // Almacenamos si el dialogo estaba activo antes de la actualizacion
+    bool wasDialogActive = dialogManager.isActive();
 
-    if (dialogManager.isActive())
+    // Actualizamos el dialogo si esta activo
+    if(dialogManager.isActive())
     {
         dialogManager.update();
     }
 
-    // Check if dialog just became inactive after this update
-    if (wasDialogActive && !dialogManager.isActive())
+    // Verificamos si el dialogo acaba de volverse inactivo despues de esta actualizacion
+    if(wasDialogActive && !dialogManager.isActive())
     {
-        dialogJustEnded = true; // Set flag to consume next Z key press
+        // Establece la bandera para consumir la siguiente pulsacion de la tecla Z
+        dialogJustEnded = true;
     }
 }
 
-void MainMenuState::handleEvent(GameController* owner, sf::Event event)
+void MainMenuState::handleEvent(GameController* owner, Event event)
 {
-    // If a dialog just ended, consume the 'Z' key press that might have ended it
-    // and prevent it from being processed by the menu for this frame.
-    if (dialogJustEnded)
+    // Este if evita que el dialogo se reabra inmediatamente despues de cerrarse
+    if(dialogJustEnded)
     {
-        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
+        // Verificamos si se pulso una tecla
+        if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
         {
-            if (keyPressed->code == sf::Keyboard::Key::Z)
+            // Al pulsar la Z, reseteamos la bandera y consumimos el evento
+            if(keyPressed->code == Keyboard::Key::Z)
             {
-                dialogJustEnded = false; // Reset the flag
-                return; // Consume the event
+                dialogJustEnded = false;
+                return;
             }
         }
     }
 
-    if (dialogManager.isActive())
+    // Si el dialogo esta activo, manejamos la entrada del dialogo
+    if(dialogManager.isActive())
     {
-        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
+        // Verificamos si se pulso una tecla
+        if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
         {
-            if (keyPressed->code == sf::Keyboard::Key::Z)
+            // Al pulsar la Z, avanzamos a la siguiente linea del dialogo
+            if(keyPressed->code == Keyboard::Key::Z)
             {
                 dialogManager.nextLine();
             }
         }
+
+        return;
     }
-    else // Dialog is not active, handle menu input
+    
+    // Si no hay dialogo activo, manejamos la entrada del menu principal
+    mainMenuUI.handleInput(event, owner, selectedOption);
+    // Al pulsar una tecla
+    if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
-        mainMenuUI.handleInput(event, owner, selectedOption);
-        if (const auto keyPressed = event.getIf<sf::Event::KeyPressed>())
+        // Si se pulsa la Z
+        if(keyPressed->code == Keyboard::Key::Z)
         {
-            if (keyPressed->code == sf::Keyboard::Key::Z)
+            // Jugar
+            if(selectedOption == 0)
             {
-                if (selectedOption == 0) // Jugar
-                {
-                    dialogManager.startDialog(testDialog);
-                }
+                dialogManager.startDialog(testDialog);
             }
         }
     }
 }
 
-void MainMenuState::draw(sf::RenderWindow& window)
+/* Dibuja la ventana del menu principal */
+void MainMenuState::draw(RenderWindow& window)
 {
+    // Dibuja la UI del menu principal
     mainMenuUI.draw(window, selectedOption);
-    if (dialogManager.isActive())
+    // Si hay un dialogo activo, dibuja la caja de dialogo
+    if(dialogManager.isActive())
     {
         dialogManager.draw(window);
     }
 }
 
+/* Al salir del menu, realizamos las acciones necesarias */
 void MainMenuState::exit()
 {
-    std::cout << "Exiting MainMenuState" << std::endl;
+    cout<<"Exiting MainMenuState"<<endl;
+    // Liberamos la memoria del dialogo de prueba
     delete testDialog;
 }
 
+/* Getter para el nombre de este estado */
 const char* MainMenuState::getName() const
 {
     return "MainMenuState";

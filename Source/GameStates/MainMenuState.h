@@ -3,23 +3,20 @@
 
 #include "../Util/StateMachine/IState.h"
 #include <SFML/Graphics.hpp>
+#include "../UI/MainMenuUI.h"
+#include "../Dialog/DialogManager.h"
+#include "../Dialog/Dialog.h"
 
-/* Namespaces para acortar */
 using namespace sf;
 using namespace std;
 
 // Declaracion forward
 class GameController;
 
-#include "../UI/MainMenuUI.h"
-
 /**
  * Estado del Menu Principal
  * Permite navegar por las opciones del menu principal
  */
-#include "../Dialog/DialogManager.h"
-#include "../Dialog/Dialog.h"
-
 class MainMenuState : public IState<GameController>
 {
 private:
@@ -28,9 +25,12 @@ private:
     /* Opcion seleccionada */
     int selectedOption;
 
+    /* Manejador de los dialogos */
     DialogManager dialogManager;
+    /* Dialogo de prueba */
     Dialog* testDialog;
-    bool dialogJustEnded; // New flag
+    /* Indica si un dialogo acaba de terminar */
+    bool dialogJustEnded;
 
 public:
     /* Constructor del Menu Principal */

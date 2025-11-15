@@ -1,78 +1,157 @@
 #include "DialogManager.h"
 
+/**
+ * Constructor del DialogManager
+ * Inicializa el puntero en null, la linea actual y caracter actual en 0, por defecto el dialogo no esta activo
+ * Configura la caja de dialogo
+ */
 DialogManager::DialogManager() : currentDialog(nullptr), currentLine(0), currentCharacter(0), isDialogActive(false)
 {
     dialogBox.setup();
 }
 
+/* Inicia un dialogo */
 void DialogManager::startDialog(Dialog* dialog)
 {
-    currentDialog = dialog;
-    currentLine = 0;
-    currentCharacter = 0;
-    isDialogActive = true;
-    clock.restart();
-    // Immediately set the dialog box text to the first character of the first line to prevent showing old content.
-    if (currentDialog && !currentDialog->getLines().empty())
+    // Agrega el dialogo a la cola
+    dialogQueue.push(dialog);
+    // Si no hay dialogo activo, procesa el siguiente dialogo
+    if(!isDialogActive)
     {
-        dialogBox.setText(currentDialog->getLines()[currentLine].substr(0, currentCharacter));
-    }
-    else
-    {
-        dialogBox.setText(""); // Or handle empty dialogs as appropriate
+        processNextDialog();
     }
 }
 
+/* Procesa el siguiente dialogo de la cola */
+void DialogManager::processNextDialog()
+{
+    // Si hay dialogos en la cola, inicia el siguiente
+    if(!dialogQueue.empty())
+    {
+        // Obtiene el siguiente dialogo de la cola en una variable temporal
+        currentDialog = dialogQueue.front();
+        // y se elimina el dialogo de la cola original
+        dialogQueue.pop();
+
+        // Reinicia los contadores
+        currentCharacter = 0;
+        // Marca el dialogo como activo
+        isDialogActive = true;
+        // Reinicia el reloj
+        clock.restart();
+
+        // Muestra la primera linea del dialogo si hay uno
+        if(currentDialog && !currentDialog->getLines().empty())
+        {
+            dialogBox.setText(currentDialog->getLines().front().substr(0, currentCharacter));
+        }
+        // Si no, limpia la caja de dialogo
+        else
+        {
+            dialogBox.setText("");
+        }
+    }
+    // Si no hay mas dialogos en la cola
+    else
+    {
+        // Marca el dialogo como inactivo, el puntero en null
+        currentDialog = nullptr;
+        // El dialogo ya no esta activo
+        isDialogActive = false;
+        // Limpia la caja de dialogo
+        dialogBox.setText("");
+    }
+}
+
+/* Actualiza el estado del dialogo */
 void DialogManager::update()
 {
-    if (!isDialogActive || !currentDialog)
+    // Si no hay dialogo, no hacemos nada
+    if(!isDialogActive || !currentDialog || currentDialog->getLines().empty())
     {
         return;
     }
 
-    if (clock.getElapsedTime().asSeconds() > 0.05f) // Adjust speed here
+    // Avanza el texto del dialogo segun el tiempo transcurrido
+    if(clock.getElapsedTime().asSeconds() > 0.05f)
     {
-        const std::vector<std::string>& lines = currentDialog->getLines();
-        if (currentLine < lines.size())
+        // Obtiene la linea actual del dialogo
+        const string& currentLineText = currentDialog->getLines().front();
+        // Si no hemos terminado de escribir la linea actual
+        if(currentCharacter < currentLineText.length())
         {
-            if (currentCharacter < lines[currentLine].length())
-            {
-                currentCharacter++;
-                dialogBox.setText(lines[currentLine].substr(0, currentCharacter));
-            }
+            // Avanza un caracter en la linea actual
+            currentCharacter++;
+            // Actualiza el texto en la caja de dialogo
+            dialogBox.setText(currentLineText.substr(0, currentCharacter));
         }
+        // Reinicia el reloj
         clock.restart();
     }
 }
 
-void DialogManager::draw(sf::RenderWindow& window)
+/* Dibuja la caja de dialogo en la ventana */
+void DialogManager::draw(RenderWindow& window)
 {
-    if (isDialogActive)
+    // Si hay un dialogo activo, dibuja la caja de dialogo
+    if(isDialogActive)
     {
         dialogBox.draw(window);
     }
 }
 
+/* Indica si un dialogo esta activo */
 bool DialogManager::isActive()
 {
     return isDialogActive;
 }
 
+/* Avanza a la siguiente linea del dialogo */
 void DialogManager::nextLine()
 {
-    if (!isDialogActive || !currentDialog)
+    // Si no hay dialogo, no hacemos nada
+    if(!isDialogActive || !currentDialog)
     {
         return;
     }
 
-    const std::vector<std::string>& lines = currentDialog->getLines();
-    if (currentLine < lines.size() - 1)
+    // Si la linea actual no esta completamente escrita, termina de escribirla y ahi llega
+    if(!currentDialog->getLines().empty() && currentCharacter < currentDialog->getLines().front().length())
     {
-        currentLine++;
-        currentCharacter = 0;
+        // Termina de escribir la linea actual
+        currentCharacter = currentDialog->getLines().front().length();
+        // Actualiza el texto en la caja de dialogo
+        dialogBox.setText(currentDialog->getLines().front());
+        return;
     }
+
+    // Si la linea actual esta completamente escrita, avanza a la siguiente linea o dialogo
+    if(!currentDialog->getLines().empty())
+    {
+        // Elimina la linea actual del dialogo
+        currentDialog->popLine();
+
+        // Si hay mas lineas en el dialogo actual
+        if(!currentDialog->getLines().empty())
+        {
+            // Reinicia para la siguiente linea en el dialogo actual
+            currentCharacter = 0;
+            // Actualiza el texto en la caja de dialogo
+            dialogBox.setText(currentDialog->getLines().front().substr(0, currentCharacter));
+            // Reinicia el reloj para la nueva linea
+            clock.restart();
+        }
+        // Si no hay mas lineas en el dialogo actual
+        else
+        {
+            // Procesa el siguiente dialogo en la cola
+            processNextDialog();
+        }
+    }
+    // Si no hay lineas en el dialogo actual
     else
     {
-        isDialogActive = false;
+        // Procesa el siguiente dialogo en la cola, esto no deberia ejecutarse porque significaria un dialogo NULL
+        processNextDialog();
     }
 }

@@ -2,7 +2,7 @@
 #define DIALOG_H
 
 #include<string>
-#include<vector>
+#include<queue>
 
 using namespace std;
 
@@ -12,14 +12,16 @@ using namespace std;
 class Dialog
 {
     private:
-        /* Lineas de dialogo */
-        vector<string> lines;
+        /* Cola de dialogo */
+        queue<string> lines;
 
     public:
-        /* Constructor que recibe las lineas de dialogo */
-        Dialog(const vector<string>& dialogLines);
-        /* Getter de las lineas de dialogo, CONST significa que no se modificara */
-        const vector<string>& getLines() const;
+        /* Constructor que recibe la cola de dialogo */
+        Dialog(const queue<string>& dialogLines);
+        /* Getter de la cola de dialogo, CONST significa que no se modificara */
+        const queue<string>& getLines() const;
+        /* Elimina la linea actual del dialogo */
+        void popLine();
 };
 
 #endif // DIALOG_H
