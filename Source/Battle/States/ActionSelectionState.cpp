@@ -1,7 +1,7 @@
 #include "ActionSelectionState.h"
 #include <iostream>
 #include "RunTurnState.h" // Transition to RunTurnState after action selection
-
+#include "../UI/ActionSelectionUI.h" // For ActionSelectionUI
 
 namespace Battle
 {
@@ -32,7 +32,6 @@ namespace Battle
             else if (keyPressed->code == sf::Keyboard::Key::Down)
             {
                 selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
-
             }
             else if (keyPressed->code == sf::Keyboard::Key::Z)
             {
@@ -65,13 +64,12 @@ namespace Battle
 
     void ActionSelectionState::update(BattleSystem* owner)
     {
-        // No complex update logic needed for this state
+        ActionSelectionUI actionUI;
+        actionUI.updateDialogBoxDescription(selectedOption);
     }
 
     void ActionSelectionState::draw(sf::RenderWindow& window)
     {
-        // Owner is available via stateMachine.getOwner() if needed.
-        // For drawing UI that depends on selectedOption, we pass it to BattleUI
         this->battleSystemOwner->getBattleUI().draw(window, selectedOption);
     }
 

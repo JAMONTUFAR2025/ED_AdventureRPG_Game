@@ -93,18 +93,26 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption)
     // Dibuja las opciones
     for (int i = 0; i < optionTexts.size(); i++)
     {
+        // Guardamos la cadena original
+        String originalString = optionTexts[i]->getString();
+
         // Resalta la opcion seleccionada en amarillo
         if (i == selectedOption)
         {
+            optionTexts[i]->setString("> " + originalString);
             optionTexts[i]->setFillColor(Color::Yellow);
         }
         // Opcion no seleccionada en blanco
         else
         {
+            optionTexts[i]->setString("  " + originalString);
             optionTexts[i]->setFillColor(Color::White);
         }
         // Dibuja la opcion
         window.draw(*optionTexts[i]);
+        
+        // Restauramos la cadena original para evitar modificaciones permanentes
+        optionTexts[i]->setString(originalString);
     }
 
     // Dibuja la caja de dialogo

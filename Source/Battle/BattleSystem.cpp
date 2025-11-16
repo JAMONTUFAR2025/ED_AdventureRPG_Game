@@ -5,27 +5,11 @@
 
 namespace Battle
 {
-    /**
-     * @brief Constructor for BattleSystem.
-     * @param owner A pointer to the main GameController.
-     * @param playerCharacter The player's Character object.
-     * @param enemyCharacter The enemy's Character object.
-     */
     BattleSystem::BattleSystem(GameController* owner, const Character& playerCharacter, const Character& enemyCharacter)
         : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None)
     {
     }
 
-    /**
-     * @brief Destructor for BattleSystem.
-     */
-    BattleSystem::~BattleSystem()
-    {
-    }
-
-    /**
-     * @brief Initializes the battle system and sets the initial state.
-     */
     void BattleSystem::startBattle()
     {
         std::cout << "Battle started! Player: " << player.getBaseCharacter().getName()
@@ -38,10 +22,6 @@ namespace Battle
         stateMachine.changeState(new ActionSelectionState());
     }
 
-    /**
-     * @brief Handles SFML events for the battle system.
-     * @param event The SFML event to process.
-     */
     void BattleSystem::handleEvent(sf::Event event)
     {
         if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
@@ -58,9 +38,6 @@ namespace Battle
         stateMachine.handleEvent(event);
     }
 
-    /**
-     * @brief Updates the current battle state.
-     */
     void BattleSystem::update()
     {
         dialogManager.update();
@@ -68,10 +45,6 @@ namespace Battle
         battleUI.updateHealthBars(player, enemy); // Keep health bars updated
     }
 
-    /**
-     * @brief Draws the current battle state to the window.
-     * @param window The SFML RenderWindow to draw to.
-     */
     void BattleSystem::draw(sf::RenderWindow& window)
     {
         stateMachine.draw(window);

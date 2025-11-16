@@ -8,9 +8,6 @@
 
 namespace Battle
 {
-    /**
-     * @brief UI for action selection in battle.
-     */
     class ActionSelectionUI
     {
     private:

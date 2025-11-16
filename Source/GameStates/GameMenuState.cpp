@@ -24,7 +24,7 @@ void GameMenuState::enter(GameController* owner)
 /* Actualiza el estado del menu del juego */
 void GameMenuState::update(GameController* owner)
 {
-    // No hay logica de actualizacion compleja en este menu, solo se actualiza la UI
+    gameMenuUI.updateDialogBoxDescription(selectedOption);
 }
 
 /* Manejo de eventos del menu del juego */

@@ -9,25 +9,19 @@
 
 namespace Battle
 {
-    /**
-     * @brief UI for action selection and general battle display.
-     */
     class BattleUI
     {
     private:
         sf::Font font;
 
-        // Action selection elements
         std::vector<sf::Text*> optionTexts;
         std::vector<std::string> optionDescriptions;
 
-        // Player UI elements
         sf::Text* player_nameText;
         sf::RectangleShape player_healthBarBack;
         sf::RectangleShape player_healthBarFront;
         sf::Text* player_healthText;
 
-        // Enemy UI elements
         sf::Text* enemy_nameText;
         sf::RectangleShape enemy_healthBarBack;
         sf::RectangleShape enemy_healthBarFront;
@@ -43,7 +37,6 @@ namespace Battle
         
         void updateHealthBars(const Character& playerChar, const Character& enemyChar);
 
-        // Getters for Text elements
         const sf::Text& getPlayerNameText() const { return *player_nameText; }
         const sf::Text& getEnemyNameText() const { return *enemy_nameText; }
     };
