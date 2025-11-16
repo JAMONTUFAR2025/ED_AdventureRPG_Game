@@ -29,9 +29,13 @@ namespace Battle
         switch (result)
         {
             case BattleResult::Victory:
-                message = "Victory!";
-                std::cout << "Victory!" << std::endl;
+            {
+                int expGained = owner->getEnemy().getBaseCharacter().getExpYield();
+                owner->getPlayer().gainExperience(expGained);
+                message = "Victory!\n\nPlayer gained " + std::to_string(expGained) + " EXP!";
+                std::cout << "Victory! Player gained " << expGained << " EXP!" << std::endl;
                 break;
+            }
             case BattleResult::Defeat:
                 message = "Defeat!";
                 std::cout << "Defeat!" << std::endl;

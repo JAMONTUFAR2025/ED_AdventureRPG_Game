@@ -95,20 +95,23 @@ namespace Battle
         updateHealthBars(playerChar, enemyChar);
     }
 
-    void BattleUI::draw(sf::RenderWindow& window, int selectedOption, const Character& playerChar, const Character& enemyChar)
+    void BattleUI::draw(sf::RenderWindow& window, int selectedOption)
     {
-        // Draw action selection options
-        for (size_t i = 0; i < optionTexts.size(); ++i)
+        if (!dialogBox.isBusy())
         {
-            if (static_cast<int>(i) == selectedOption)
+            // Draw action selection options
+            for (size_t i = 0; i < optionTexts.size(); ++i)
             {
-                optionTexts[i]->setFillColor(sf::Color::Yellow);
+                if (static_cast<int>(i) == selectedOption)
+                {
+                    optionTexts[i]->setFillColor(sf::Color::Yellow);
+                }
+                else
+                {
+                    optionTexts[i]->setFillColor(sf::Color::White);
+                }
+                window.draw(*optionTexts[i]);
             }
-            else
-            {
-                optionTexts[i]->setFillColor(sf::Color::White);
-            }
-            window.draw(*optionTexts[i]);
         }
         dialogBox.draw(window);
 
@@ -123,6 +126,21 @@ namespace Battle
         window.draw(enemy_healthBarBack);
         window.draw(enemy_healthBarFront);
         if (enemy_healthText) window.draw(*enemy_healthText);
+    }
+
+    void BattleUI::update(sf::Time dt)
+    {
+        dialogBox.update(dt);
+    }
+
+    void BattleUI::handleInput()
+    {
+        dialogBox.handleInput();
+    }
+
+    bool BattleUI::isDialogBusy() const
+    {
+        return dialogBox.isBusy();
     }
 
     void BattleUI::updateDialogBoxDescription(int selectedOption)
@@ -146,8 +164,8 @@ namespace Battle
         if (enemy_healthText) enemy_healthText->setString(std::to_string(enemyChar.getCurrentHealth()) + "/" + std::to_string(enemyChar.getMaxHealth()));
     }
 
-    void BattleUI::displayBattleMessage(const std::string& message)
+    void BattleUI::addMessage(const std::string& message)
     {
-        dialogBox.setText(message);
+        dialogBox.addMessage(message);
     }
 } // namespace Battle

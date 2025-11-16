@@ -40,10 +40,14 @@ namespace Battle
         ~BattleUI();
 
         void setup(const Character& playerChar, const Character& enemyChar);
-        void draw(sf::RenderWindow& window, int selectedOption, const Character& playerChar, const Character& enemyChar);
+        void draw(sf::RenderWindow& window, int selectedOption);
+        void update(sf::Time dt);
+        void handleInput();
+        bool isDialogBusy() const;
+
         void updateDialogBoxDescription(int selectedOption);
         void updateHealthBars(const Character& playerChar, const Character& enemyChar);
-        void displayBattleMessage(const std::string& message);
+        void addMessage(const std::string& message);
 
         // Getters for Text elements
         const sf::Text& getPlayerNameText() const { return *player_nameText; }

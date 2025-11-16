@@ -87,6 +87,9 @@ namespace Battle
 
         // Getter for BattleUI
         BattleUI& getBattleUI() { return battleUI; }
+
+    private:
+        sf::Clock m_clock;
     };
 } // namespace Battle
 

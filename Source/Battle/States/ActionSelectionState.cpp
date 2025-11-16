@@ -73,7 +73,7 @@ namespace Battle
     {
         // Owner is available via stateMachine.getOwner() if needed.
         // For drawing UI that depends on selectedOption, we pass it to BattleUI
-        this->battleSystemOwner->getBattleUI().draw(window, selectedOption, this->battleSystemOwner->getPlayer(), this->battleSystemOwner->getEnemy());
+        this->battleSystemOwner->getBattleUI().draw(window, selectedOption);
     }
 
     void ActionSelectionState::exit()

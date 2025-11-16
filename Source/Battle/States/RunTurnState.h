@@ -11,6 +11,19 @@ namespace Battle
      */
     class RunTurnState : public IState<BattleSystem>
     {
+    private:
+        enum class TurnStep
+        {
+            START,
+            PLAYER_ACTION,
+            ENEMY_CHECK,
+            ENEMY_ACTION,
+            PLAYER_CHECK,
+            FINISH_TURN
+        };
+        TurnStep currentStep;
+        BattleSystem* battleSystemOwner = nullptr;
+        
     public:
         RunTurnState();
         ~RunTurnState();

@@ -44,6 +44,17 @@ namespace Battle
      */
     void BattleSystem::handleEvent(sf::Event event)
     {
+        if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
+        {
+            if (keyPressed->code == sf::Keyboard::Key::Z)
+            {
+                if (battleUI.isDialogBusy())
+                {
+                    battleUI.handleInput();
+                    return; // Don't pass to state machine if UI handled it
+                }
+            }
+        }
         stateMachine.handleEvent(event);
     }
 
@@ -52,6 +63,9 @@ namespace Battle
      */
     void BattleSystem::update()
     {
+        sf::Time dt = m_clock.restart();
+        battleUI.update(dt);
+
         stateMachine.update();
         battleUI.updateHealthBars(player, enemy); // Keep health bars updated
     }
