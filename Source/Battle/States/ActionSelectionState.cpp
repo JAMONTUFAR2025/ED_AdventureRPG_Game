@@ -64,8 +64,8 @@ namespace Battle
 
     void ActionSelectionState::update(BattleSystem* owner)
     {
-        ActionSelectionUI actionUI;
-        actionUI.updateDialogBoxDescription(selectedOption);
+        // ActionSelectionUI actionUI;
+        // actionUI.updateDialogBoxDescription(selectedOption);
     }
 
     void ActionSelectionState::draw(sf::RenderWindow& window)

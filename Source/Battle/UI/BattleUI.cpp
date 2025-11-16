@@ -15,12 +15,7 @@ namespace Battle
 
     BattleUI::~BattleUI()
     {
-        for (sf::Text* text : optionTexts)
-        {
-            delete text;
-        }
-        optionTexts.clear();
-
+        // optionTexts are now cleaned up in setup()
         delete player_nameText;
         delete player_healthText;
         delete enemy_nameText;
@@ -29,6 +24,13 @@ namespace Battle
 
     void BattleUI::setup(const Character& playerChar, const Character& enemyChar)
     {
+        // Clean up existing optionTexts to prevent duplication and memory leaks
+        for (sf::Text* text : optionTexts)
+        {
+            delete text;
+        }
+        optionTexts.clear();
+
         if (!font.openFromFile("Assets/fonts/font.otf"))
         {
             std::cerr << "Error al cargar Assets/fonts/font.otf" << std::endl;
@@ -55,6 +57,7 @@ namespace Battle
         }
 
         // --- Player UI ---
+        if (player_nameText) delete player_nameText;
         player_nameText = new sf::Text(font, playerChar.getBaseCharacter().getName(), 20);
         player_nameText->setFillColor(sf::Color::White);
         player_nameText->setPosition(sf::Vector2f(50, 40)); // Top-left for player
@@ -67,12 +70,14 @@ namespace Battle
         player_healthBarFront.setFillColor(sf::Color::Green); // Green health
         player_healthBarFront.setPosition(sf::Vector2f(50, 70));
 
+        if (player_healthText) delete player_healthText;
         player_healthText = new sf::Text(font, "", 16);
         player_healthText->setFillColor(sf::Color::White);
         player_healthText->setPosition(sf::Vector2f(55, 70));
 
 
         // --- Enemy UI ---
+        if (enemy_nameText) delete enemy_nameText;
         enemy_nameText = new sf::Text(font, enemyChar.getBaseCharacter().getName(), 20);
         enemy_nameText->setFillColor(sf::Color::White);
         enemy_nameText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 40)); // Top-right for enemy
@@ -85,6 +90,7 @@ namespace Battle
         enemy_healthBarFront.setFillColor(sf::Color::Red); // Red health
         enemy_healthBarFront.setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 70));
 
+        if (enemy_healthText) delete enemy_healthText;
         enemy_healthText = new sf::Text(font, "", 16);
         enemy_healthText->setFillColor(sf::Color::White);
         enemy_healthText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 245, 70));
