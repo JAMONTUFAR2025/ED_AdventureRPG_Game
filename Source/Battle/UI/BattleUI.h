@@ -20,7 +20,6 @@ namespace Battle
         // Action selection elements
         std::vector<sf::Text*> optionTexts;
         std::vector<std::string> optionDescriptions;
-        DialogBox dialogBox;
 
         // Player UI elements
         sf::Text* player_nameText;
@@ -41,13 +40,8 @@ namespace Battle
 
         void setup(const Character& playerChar, const Character& enemyChar);
         void draw(sf::RenderWindow& window, int selectedOption);
-        void update(sf::Time dt);
-        void handleInput();
-        bool isDialogBusy() const;
-
-        void updateDialogBoxDescription(int selectedOption);
+        
         void updateHealthBars(const Character& playerChar, const Character& enemyChar);
-        void addMessage(const std::string& message);
 
         // Getters for Text elements
         const sf::Text& getPlayerNameText() const { return *player_nameText; }

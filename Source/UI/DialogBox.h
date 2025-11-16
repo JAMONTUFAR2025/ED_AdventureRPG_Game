@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <queue>
 
 using namespace std;
 using namespace sf;
@@ -21,17 +20,6 @@ private:
     /* Fuente utilizada para el texto */
     Font font;
 
-    queue<string> messageQueue;
-    string currentMessage;
-    string displayedText;
-    size_t currentCharIndex;
-    bool isMessageComplete;
-
-    Clock clock;
-    Time timePerChar = milliseconds(50);
-
-    void nextMessage();
-
 public:
     /* Constructor de la caja de dialogo */
     DialogBox();
@@ -43,11 +31,6 @@ public:
     void setText(const string& str);
     /* Dibuja la caja de dialogo en la ventana */
     void draw(RenderWindow& window);
-
-    void addMessage(const string& message);
-    void update(Time dt);
-    bool isBusy() const;
-    void handleInput();
 };
 
 #endif // DIALOGBOX_H

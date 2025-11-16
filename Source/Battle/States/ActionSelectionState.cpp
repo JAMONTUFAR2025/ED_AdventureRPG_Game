@@ -18,7 +18,6 @@ namespace Battle
         this->battleSystemOwner = owner;
         std::cout << "Entering ActionSelectionState" << std::endl;
         this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer(), this->battleSystemOwner->getEnemy()); // Setup BattleUI with current characters
-        this->battleSystemOwner->getBattleUI().updateDialogBoxDescription(selectedOption);
     }
 
     void ActionSelectionState::handleEvent(BattleSystem* owner, sf::Event event)
@@ -28,12 +27,12 @@ namespace Battle
             if (keyPressed->code == sf::Keyboard::Key::Up)
             {
                 selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
-                owner->getBattleUI().updateDialogBoxDescription(selectedOption);
+
             }
             else if (keyPressed->code == sf::Keyboard::Key::Down)
             {
                 selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
-                owner->getBattleUI().updateDialogBoxDescription(selectedOption);
+
             }
             else if (keyPressed->code == sf::Keyboard::Key::Z)
             {

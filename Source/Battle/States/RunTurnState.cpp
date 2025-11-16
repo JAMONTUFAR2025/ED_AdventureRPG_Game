@@ -4,6 +4,7 @@
 #include "BattleEndState.h"       // To be implemented for battle end
 #include <cstdlib>                // For rand()
 #include <string>
+#include <queue>
 
 namespace Battle
 {
@@ -30,7 +31,7 @@ namespace Battle
 
     void RunTurnState::update(BattleSystem* owner)
     {
-        if (owner->getBattleUI().isDialogBusy())
+        if (owner->getDialogManager().isActive())
         {
             return; // Wait for messages to finish displaying
         }
@@ -42,35 +43,38 @@ namespace Battle
             break;
 
         case TurnStep::PLAYER_ACTION:
+        {
             // --- Player Action Execution ---
+            std::queue<std::string> messages;
             switch (owner->getChosenAction())
             {
             case ActionType::Fight:
             {
                 int playerDamage = owner->getPlayer().getAttack();
                 owner->getEnemy().takeDamage(playerDamage);
-                owner->getBattleUI().addMessage(owner->getPlayer().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                 break;
             }
             case ActionType::Special:
-                owner->getBattleUI().addMessage(owner->getPlayer().getBaseCharacter().getName() + " uses a special move!");
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " uses a special move!");
                 // TODO: Implement actual special move logic
                 break;
             case ActionType::Guard:
-                owner->getBattleUI().addMessage(owner->getPlayer().getBaseCharacter().getName() + " is guarding!");
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " is guarding!");
                 // TODO: Implement guard status (e.g., damage reduction flag)
                 break;
             case ActionType::Escape:
             {
                 if (rand() % 2 == 0)
                 {
-                    owner->getBattleUI().addMessage("Escaped successfully!");
+                    messages.push("Escaped successfully!");
+                    owner->getDialogManager().startDialog(new Dialog(messages));
                     owner->getStateMachine().changeState(new BattleEndState(BattleResult::Escape));
                     return; // Battle is over
                 }
                 else
                 {
-                    owner->getBattleUI().addMessage("Failed to escape!");
+                    messages.push("Failed to escape!");
                 }
                 break;
             }
@@ -78,13 +82,20 @@ namespace Battle
                 // Should not happen, but handle defensively
                 break;
             }
+            if (!messages.empty())
+            {
+                owner->getDialogManager().startDialog(new Dialog(messages));
+            }
             currentStep = TurnStep::ENEMY_CHECK;
             break;
+        }
 
         case TurnStep::ENEMY_CHECK:
             if (owner->getEnemy().getCurrentHealth() <= 0)
             {
-                owner->getBattleUI().addMessage(owner->getEnemy().getBaseCharacter().getName() + " defeated!");
+                std::queue<std::string> messages;
+                messages.push(owner->getEnemy().getBaseCharacter().getName() + " defeated!");
+                owner->getDialogManager().startDialog(new Dialog(messages));
                 owner->getStateMachine().changeState(new BattleEndState(BattleResult::Victory));
                 return; // Battle is over
             }
@@ -94,9 +105,11 @@ namespace Battle
         case TurnStep::ENEMY_ACTION:
         {
             // --- Enemy Action Execution (Simple AI: always attack) ---
+            std::queue<std::string> messages;
             int enemyDamage = owner->getEnemy().getAttack();
             owner->getPlayer().takeDamage(enemyDamage);
-            owner->getBattleUI().addMessage(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
+            messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
+            owner->getDialogManager().startDialog(new Dialog(messages));
             currentStep = TurnStep::PLAYER_CHECK;
             break;
         }
@@ -104,7 +117,9 @@ namespace Battle
         case TurnStep::PLAYER_CHECK:
             if (owner->getPlayer().getCurrentHealth() <= 0)
             {
-                owner->getBattleUI().addMessage(owner->getPlayer().getBaseCharacter().getName() + " defeated!");
+                std::queue<std::string> messages;
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " defeated!");
+                owner->getDialogManager().startDialog(new Dialog(messages));
                 owner->getStateMachine().changeState(new BattleEndState(BattleResult::Defeat));
                 return; // Battle is over
             }
@@ -119,7 +134,7 @@ namespace Battle
 
     void RunTurnState::draw(sf::RenderWindow& window)
     {
-        if (battleSystemOwner)
+        if (battleSystemOwner && !battleSystemOwner->getDialogManager().isActive())
         {
             battleSystemOwner->getBattleUI().draw(window, -1); // -1 indicates no selection
         }

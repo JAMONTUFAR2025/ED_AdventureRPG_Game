@@ -5,6 +5,7 @@
 #include "../Character/Character.h"
 #include <SFML/Graphics.hpp>
 #include "UI/BattleUI.h" // Include BattleUI
+#include "../Dialog/DialogManager.h" // Include DialogManager
 
 // Forward declarations
 class GameController;
@@ -34,6 +35,7 @@ namespace Battle
         Character player;
         Character enemy;
         BattleUI battleUI; // UI for the battle
+        DialogManager dialogManager;
 
         ActionType chosenAction; // Stores the player's chosen action
 
@@ -88,8 +90,8 @@ namespace Battle
         // Getter for BattleUI
         BattleUI& getBattleUI() { return battleUI; }
 
-    private:
-        sf::Clock m_clock;
+        // Getter for DialogManager
+        DialogManager& getDialogManager() { return dialogManager; }
     };
 } // namespace Battle
 

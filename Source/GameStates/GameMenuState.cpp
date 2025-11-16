@@ -18,7 +18,7 @@ void GameMenuState::enter(GameController* owner)
 {
     cout << "Entering GameMenuState" << endl;
     gameMenuUI.setup(owner);
-    gameMenuUI.updateDialogBoxDescription(selectedOption); // Set initial description
+ // Set initial description
 }
 
 /* Actualiza el estado del menu del juego */
@@ -37,12 +37,12 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
         if (keyPressed->code == Keyboard::Key::Up)
         {
             selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
-            gameMenuUI.updateDialogBoxDescription(selectedOption);
+        
         }
         else if (keyPressed->code == Keyboard::Key::Down)
         {
             selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
-            gameMenuUI.updateDialogBoxDescription(selectedOption);
+        
         }
         else if (keyPressed->code == Keyboard::Key::Z)
         {

@@ -54,8 +54,6 @@ namespace Battle
             optionTexts.push_back(optionText);
         }
 
-        dialogBox.setup();
-
         // --- Player UI ---
         player_nameText = new sf::Text(font, playerChar.getBaseCharacter().getName(), 20);
         player_nameText->setFillColor(sf::Color::White);
@@ -97,23 +95,19 @@ namespace Battle
 
     void BattleUI::draw(sf::RenderWindow& window, int selectedOption)
     {
-        if (!dialogBox.isBusy())
+        // Draw action selection options
+        for (size_t i = 0; i < optionTexts.size(); ++i)
         {
-            // Draw action selection options
-            for (size_t i = 0; i < optionTexts.size(); ++i)
+            if (static_cast<int>(i) == selectedOption)
             {
-                if (static_cast<int>(i) == selectedOption)
-                {
-                    optionTexts[i]->setFillColor(sf::Color::Yellow);
-                }
-                else
-                {
-                    optionTexts[i]->setFillColor(sf::Color::White);
-                }
-                window.draw(*optionTexts[i]);
+                optionTexts[i]->setFillColor(sf::Color::Yellow);
             }
+            else
+            {
+                optionTexts[i]->setFillColor(sf::Color::White);
+            }
+            window.draw(*optionTexts[i]);
         }
-        dialogBox.draw(window);
 
         // Draw Player UI
         if (player_nameText) window.draw(*player_nameText);
@@ -126,29 +120,6 @@ namespace Battle
         window.draw(enemy_healthBarBack);
         window.draw(enemy_healthBarFront);
         if (enemy_healthText) window.draw(*enemy_healthText);
-    }
-
-    void BattleUI::update(sf::Time dt)
-    {
-        dialogBox.update(dt);
-    }
-
-    void BattleUI::handleInput()
-    {
-        dialogBox.handleInput();
-    }
-
-    bool BattleUI::isDialogBusy() const
-    {
-        return dialogBox.isBusy();
-    }
-
-    void BattleUI::updateDialogBoxDescription(int selectedOption)
-    {
-        if (selectedOption >= 0 && selectedOption < optionDescriptions.size())
-        {
-            dialogBox.setText(optionDescriptions[selectedOption]);
-        }
     }
 
     void BattleUI::updateHealthBars(const Character& playerChar, const Character& enemyChar)
@@ -164,8 +135,8 @@ namespace Battle
         if (enemy_healthText) enemy_healthText->setString(std::to_string(enemyChar.getCurrentHealth()) + "/" + std::to_string(enemyChar.getMaxHealth()));
     }
 
-    void BattleUI::addMessage(const std::string& message)
-    {
-        dialogBox.addMessage(message);
-    }
+    // void BattleUI::displayBattleMessage(const std::string& message)
+    // {
+    //     // This is now handled by DialogManager
+    // }
 } // namespace Battle

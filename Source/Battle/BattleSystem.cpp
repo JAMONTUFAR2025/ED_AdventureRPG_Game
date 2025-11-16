@@ -48,9 +48,9 @@ namespace Battle
         {
             if (keyPressed->code == sf::Keyboard::Key::Z)
             {
-                if (battleUI.isDialogBusy())
+                if (dialogManager.isActive())
                 {
-                    battleUI.handleInput();
+                    dialogManager.nextLine();
                     return; // Don't pass to state machine if UI handled it
                 }
             }
@@ -63,9 +63,7 @@ namespace Battle
      */
     void BattleSystem::update()
     {
-        sf::Time dt = m_clock.restart();
-        battleUI.update(dt);
-
+        dialogManager.update();
         stateMachine.update();
         battleUI.updateHealthBars(player, enemy); // Keep health bars updated
     }
@@ -77,6 +75,6 @@ namespace Battle
     void BattleSystem::draw(sf::RenderWindow& window)
     {
         stateMachine.draw(window);
-        // battleUI.draw is now called by states directly, or the states manage drawing their specific UI elements
+        dialogManager.draw(window);
     }
 } // namespace Battle
