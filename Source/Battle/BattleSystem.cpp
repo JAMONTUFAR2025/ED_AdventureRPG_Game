@@ -6,7 +6,7 @@
 namespace Battle
 {
     BattleSystem::BattleSystem(GameController* owner, const Character& playerCharacter, const Character& enemyCharacter)
-        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None)
+        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false)
     {
     }
 
@@ -49,5 +49,15 @@ namespace Battle
     {
         stateMachine.draw(window);
         dialogManager.draw(window);
+    }
+
+    bool BattleSystem::isBattleOver() const
+    {
+        return battleIsOver;
+    }
+
+    void BattleSystem::endBattle()
+    {
+        battleIsOver = true;
     }
 } // namespace Battle

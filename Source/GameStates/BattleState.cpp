@@ -1,5 +1,6 @@
 #include "BattleState.h"
 #include "../GameController.h"
+#include "../GameStates/GameMenuState.h" // For transitioning back to game menu
 #include <iostream>
 
 /**
@@ -39,8 +40,11 @@ void BattleState::update(GameController* owner)
     if (battleSystem)
     {
         battleSystem->update();
-        // Here, check if battleSystem has finished (e.g., through a BattleEndState signal)
-        // If battle is over, transition out of BattleState.
+        if (battleSystem->isBattleOver())
+        {
+            owner->stateMachine.changeState(new GameMenuState());
+            return; 
+        }
     }
 }
 

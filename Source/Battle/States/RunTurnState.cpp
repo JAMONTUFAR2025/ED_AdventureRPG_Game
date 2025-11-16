@@ -1,7 +1,8 @@
 #include "RunTurnState.h"
 #include <iostream>
 #include "ActionSelectionState.h" // Transition back to action selection
-#include "BattleEndState.h"       // To be implemented for battle end
+#include "../../GameStates/GameMenuState.h"
+#include "../../GameController.h"
 #include <cstdlib>                // For rand()
 #include <string>
 #include <queue>
@@ -9,11 +10,7 @@
 namespace Battle
 {
 
-    RunTurnState::RunTurnState() : currentStep(TurnStep::START)
-    {
-    }
-
-    RunTurnState::~RunTurnState()
+    RunTurnState::RunTurnState() : currentStep(TurnStep::START), finalMessageQueued(false)
     {
     }
 
@@ -69,7 +66,8 @@ namespace Battle
                 {
                     messages.push("Escaped successfully!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
-                    owner->getStateMachine().changeState(new BattleEndState(BattleResult::Escape));
+                    result = BattleResult::Escape;
+                    currentStep = TurnStep::BATTLE_END;
                     return; // Battle is over
                 }
                 else
@@ -96,7 +94,8 @@ namespace Battle
                 std::queue<std::string> messages;
                 messages.push(owner->getEnemy().getBaseCharacter().getName() + " defeated!");
                 owner->getDialogManager().startDialog(new Dialog(messages));
-                owner->getStateMachine().changeState(new BattleEndState(BattleResult::Victory));
+                result = BattleResult::Victory;
+                currentStep = TurnStep::BATTLE_END;
                 return; // Battle is over
             }
             currentStep = TurnStep::ENEMY_ACTION;
@@ -120,7 +119,8 @@ namespace Battle
                 std::queue<std::string> messages;
                 messages.push(owner->getPlayer().getBaseCharacter().getName() + " defeated!");
                 owner->getDialogManager().startDialog(new Dialog(messages));
-                owner->getStateMachine().changeState(new BattleEndState(BattleResult::Defeat));
+                result = BattleResult::Defeat;
+                currentStep = TurnStep::BATTLE_END;
                 return; // Battle is over
             }
             currentStep = TurnStep::FINISH_TURN;
@@ -128,6 +128,47 @@ namespace Battle
 
         case TurnStep::FINISH_TURN:
             owner->getStateMachine().changeState(new ActionSelectionState());
+            break;
+        
+        case TurnStep::BATTLE_END:
+            {
+                if (!finalMessageQueued)
+                {
+                    std::queue<std::string> messages;
+                    switch(result)
+                    {
+                        case BattleResult::Victory:
+                        {
+                            int expGained = owner->getEnemy().getBaseCharacter().getExpYield();
+                            owner->getPlayer().gainExperience(expGained);
+                            messages.push("Victory!\n\nPlayer gained " + std::to_string(expGained) + " EXP!");
+                            break;
+                        }
+                        case BattleResult::Defeat:
+                            messages.push("Defeat!");
+                            break;
+                        case BattleResult::Escape:
+                            // This message is already pushed when escaping, so we might not need a duplicate.
+                            // However, to keep the logic consolidated, we'll handle it here.
+                            // The escape message will be shown, then this one.
+                            // Let's just transition. The "Escaped!" message is sufficient.
+                            break;
+                    }
+                    if (!messages.empty())
+                    {
+                        owner->getDialogManager().startDialog(new Dialog(messages));
+                    }
+                    finalMessageQueued = true;
+                }
+                else
+                {
+                    if (!owner->getDialogManager().isActive())
+                    {
+                        // Now that the final message is done, signal that the battle is over
+                        owner->endBattle();
+                    }
+                }
+            }
             break;
         }
     }

@@ -51,6 +51,12 @@ namespace Battle
         void setChosenAction(ActionType action) { chosenAction = action; }
         
         StateMachine<BattleSystem>& getStateMachine() { return stateMachine; }
+
+        bool isBattleOver() const;
+        void endBattle();
+
+    private:
+        bool battleIsOver;
     };
 } // namespace Battle
 

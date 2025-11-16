@@ -6,6 +6,13 @@
 
 namespace Battle
 {
+    enum class BattleResult
+    {
+        Victory,
+        Defeat,
+        Escape
+    };
+    
     /**
      * @brief State for executing player and enemy actions in a single turn.
      */
@@ -19,14 +26,17 @@ namespace Battle
             ENEMY_CHECK,
             ENEMY_ACTION,
             PLAYER_CHECK,
-            FINISH_TURN
+            FINISH_TURN,
+            BATTLE_END
         };
+        
         TurnStep currentStep;
         BattleSystem* battleSystemOwner = nullptr;
-        
+        BattleResult result;
+        bool finalMessageQueued;
+            
     public:
         RunTurnState();
-        ~RunTurnState();
 
         void enter(BattleSystem* owner) override;
         void handleEvent(BattleSystem* owner, sf::Event event) override;
