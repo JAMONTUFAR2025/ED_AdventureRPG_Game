@@ -70,7 +70,6 @@ namespace Battle
 
     void ActionSelectionState::draw(sf::RenderWindow& window)
     {
-        this->battleSystemOwner->getBattleUI().draw(window, selectedOption);
         actionSelectionUI.draw(window, selectedOption);
     }
 

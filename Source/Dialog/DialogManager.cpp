@@ -7,7 +7,8 @@
  */
 DialogManager::DialogManager() : currentDialog(nullptr), currentLine(0), currentCharacter(0), isDialogActive(false)
 {
-    dialogBox.setup();
+    // Esto se crea durante los dialogos que aparecen letra por letra
+    dialogBox.setup(700.0f, 150.0f, 50, 380);
 }
 
 /**

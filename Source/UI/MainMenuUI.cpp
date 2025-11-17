@@ -7,8 +7,11 @@
  * Constructor de la UI del Menu Principal
  * Inicializa los punteros a null y la opcion seleccionada en 0
  */
-MainMenuUI::MainMenuUI() : titleText(nullptr), selectedOption(0)
+MainMenuUI::MainMenuUI()
 {
+    // Inicializar descripciones
+    optionDescriptions.push_back("Inicia una nueva aventura.");
+    optionDescriptions.push_back("Cierra el juego.");
 }
 
 /**
@@ -17,8 +20,6 @@ MainMenuUI::MainMenuUI() : titleText(nullptr), selectedOption(0)
  */
 MainMenuUI::~MainMenuUI()
 {
-    // Libera la memoria asignada del titulo
-    delete titleText;
     // Para cada opcion
     for(Text* option : optionTexts)
     {
@@ -33,31 +34,20 @@ MainMenuUI::~MainMenuUI()
 void MainMenuUI::setup(GameController* owner)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!titleFont.openFromFile("Assets/fonts/font.otf"))
+    if (!font.openFromFile("Assets/fonts/font.otf"))
     {
         cerr<<"Error al cargar Assets/fonts/font.otf"<<endl;
         // Intentamos cargar una fuente por defecto del sistema, si falla salimos de la funcion
-        if (!titleFont.openFromFile("C:/Windows/Fonts/arial.ttf"))
+        if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {
             cerr<<"Error al cargar font C:/Windows/Fonts/arial.ttf"<<endl;
             return;
         }
     }
 
-    // Carga las fuentes, no se manejan errores por simplicidad
-    optionsFont = titleFont;
-
-    // Configura el texto del titulo como un objeto nuevo
-    titleText = new Text(titleFont, "Adventure RPG", GlobalSettings::FONT_SIZE * 2);
-    // El texto del titulo es color rojo
-    titleText->setFillColor(Color::Red);
-    
-    // Creamos un rectangulo que tendra el tamanio del texto del titulo
-    FloatRect titleRect = titleText->getLocalBounds();
-    // El origen es el centro del rectangulo
-    titleText->setOrigin({titleRect.position.x + titleRect.size.x / 2.0f, titleRect.position.y + titleRect.size.y / 2.0f});
-    // Colocamos el titulo en la parte superior de la ventana y centrado
-    titleText->setPosition(Vector2f(owner->window.getSize().x / 2.0f, owner->window.getSize().y / 4.0f));
+    // TITULO
+    titleBox.setup(700.0f, 100.0f, (GlobalSettings::SCREEN_WIDTH - 700) / 2, 20, Color::Red, 2);
+    titleBox.setText("Proyecto Final: Adventure RPG");
 
     // Lista de opciones
     vector<string> options = {"Jugar", "Salir"};
@@ -66,52 +56,22 @@ void MainMenuUI::setup(GameController* owner)
     for (int i = 0; i < options.size(); i++)
     {
         // Creamos un nuevo texto para la opcion en puntero
-        Text* option = new Text(optionsFont, options[i], GlobalSettings::FONT_SIZE);
+        Text* option = new Text(font, options[i], GlobalSettings::FONT_SIZE);
         // Color blanco por defecto
         option->setFillColor(Color::White);
-        // Centramos el origen del texto
-        FloatRect optionRect = option->getLocalBounds();
-        // El origen es el centro del rectangulo
-        option->setOrigin({optionRect.position.x + optionRect.size.x / 2.0f, optionRect.position.y + optionRect.size.y / 2.0f});
-        // Posicionamos la opcion debajo del titulo, con un espacio de 50 pixeles entre cada una
-        option->setPosition(Vector2f(owner->window.getSize().x / 2.0f, owner->window.getSize().y / 2.0f + i * 50));
+        // Posicionamos la opcion debajo del titulo, con un espacio de 40 pixeles entre cada una
+        option->setPosition(Vector2f(50, 140 + i * 40));
         // Agregamos la opcion al vector de opciones
         optionTexts.push_back(option);
     }
-}
 
-/* Manejo de entrada del usuario */
-void MainMenuUI::handleInput(Event event, GameController* owner, int& currentSelectedOption)
-{
-    // Verificamos si el evento es de tipo KeyPressed
-    if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
-    {
-        // Navegacion por las opciones del menu
-        if (keyPressed->code == Keyboard::Key::Up || keyPressed->code == Keyboard::Key::Down)
-        {
-            currentSelectedOption = currentSelectedOption == 0 ? 1 : 0;
-        }
-        else if (keyPressed->code == Keyboard::Key::Z)
-        {
-            if (currentSelectedOption == 0)
-            {
-                cout<<"Selected: Jugar"<<endl;
-            }
-            else if (currentSelectedOption == 1)
-            {
-                cout<<"Selected: Salir"<<endl;
-                owner->window.close();
-            }
-        }
-    }
+    descriptionBox.setup(700.0f, 150.0f, 50, 380);
 }
 
 /* Dibuja la UI del Menu Principal en la ventana */
 void MainMenuUI::draw(RenderWindow& window, int currentSelectedOption)
 {
-    // Dibuja el titulo
-    if(titleText)
-        window.draw(*titleText);
+    titleBox.draw(window);
     
     // Dibuja las opciones
     for (int i = 0; i < optionTexts.size(); i++)
@@ -137,5 +97,17 @@ void MainMenuUI::draw(RenderWindow& window, int currentSelectedOption)
         
         // Restauramos la cadena original para evitar modificaciones permanentes
         optionTexts[i]->setString(originalString);
+    }
+
+    // Dibuja la caja de descripcion
+    descriptionBox.draw(window);
+}
+
+/* Actualiza la descripcion en el Box segun la opcion seleccionada */
+void MainMenuUI::updateDescriptionBox(int selectedOption)
+{
+    if (selectedOption >= 0 && selectedOption < optionDescriptions.size())
+    {
+        descriptionBox.setText(optionDescriptions[selectedOption]);
     }
 }

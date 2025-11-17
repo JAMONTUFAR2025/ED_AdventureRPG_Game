@@ -23,7 +23,7 @@ void GameMenuState::enter(GameController* owner)
 /* Actualiza el estado del menu del juego */
 void GameMenuState::update(GameController* owner)
 {
-    gameMenuUI.updateDialogBoxDescription(selectedOption);
+    gameMenuUI.updateDescriptionBox(selectedOption);
 }
 
 /* Manejo de eventos del menu del juego */
@@ -52,11 +52,11 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     cout << "Seleccionado: Explorar" << endl;
                     
                     // Create placeholder player character
-                    BaseCharacter playerBase("Hero", 100, 15, 5, 0); // Name, MaxHealth, Attack, Defense, ExpYield
+                    BaseCharacter playerBase("Jugador", 100, 15, 5, 0); // Name, MaxHealth, Attack, Defense, ExpYield
                     Character playerChar(playerBase, 1); // BaseCharacter, initialLevel
 
                     // Create placeholder enemy character
-                    BaseCharacter enemyBase("Goblin", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield
+                    BaseCharacter enemyBase("Enemigo", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield
                     Character enemyChar(enemyBase, 1); // BaseCharacter, initialLevel
 
                     owner->stateMachine.changeState(new BattleState(playerChar, enemyChar));
@@ -72,7 +72,7 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     break;
                 case 3: // Salir
                     cout << "Seleccionado: Salir. Cerrando juego." << endl;
-                    owner->window.close(); // Close the game window
+                    owner->stateMachine.changeState(new MainMenuState());
                     break;
             }
         }

@@ -3,7 +3,6 @@
 #include "ActionSelectionState.h" // Transition back to action selection
 #include "../../GameStates/GameMenuState.h"
 #include "../../GameController.h"
-#include <cstdlib>                // For rand()
 #include <string>
 #include <queue>
 
@@ -62,18 +61,12 @@ namespace Battle
                 break;
             case ActionType::Escape:
             {
-                if (rand() % 2 == 0)
-                {
-                    messages.push("Escaped successfully!");
-                    owner->getDialogManager().startDialog(new Dialog(messages));
-                    result = BattleResult::Escape;
-                    currentStep = TurnStep::BATTLE_END;
-                    return; // Battle is over
-                }
-                else
-                {
-                    messages.push("Failed to escape!");
-                }
+                messages.push("Escaped successfully!");
+                owner->getDialogManager().startDialog(new Dialog(messages));
+                result = BattleResult::Escape;
+                currentStep = TurnStep::BATTLE_END;
+                return; // Battle is over
+                
                 break;
             }
             case ActionType::None:
@@ -175,10 +168,6 @@ namespace Battle
 
     void RunTurnState::draw(sf::RenderWindow& window)
     {
-        if (battleSystemOwner && !battleSystemOwner->getDialogManager().isActive())
-        {
-            battleSystemOwner->getBattleUI().draw(window, -1); // -1 indicates no selection
-        }
     }
 
     void RunTurnState::exit()

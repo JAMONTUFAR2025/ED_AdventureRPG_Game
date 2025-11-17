@@ -49,6 +49,7 @@ namespace Battle
     {
         stateMachine.draw(window);
         dialogManager.draw(window);
+        battleUI.draw(window, static_cast<int>(chosenAction));
     }
 
     bool BattleSystem::isBattleOver() const

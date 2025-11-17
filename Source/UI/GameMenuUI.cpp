@@ -7,7 +7,7 @@
  * Constructor de la UI del Menu del Juego
  * Inicializa los punteros a null
  */
-GameMenuUI::GameMenuUI() : titleText(nullptr)
+GameMenuUI::GameMenuUI()
 {
     // Inicializar descripciones
     optionDescriptions.push_back("Inicias un combate contra enemigos salvajes.");
@@ -22,8 +22,6 @@ GameMenuUI::GameMenuUI() : titleText(nullptr)
  */
 GameMenuUI::~GameMenuUI()
 {
-    // Libera la memoria asignada del titulo
-    delete titleText;
     // Para cada opcion
     for(Text* option : optionTexts)
     {
@@ -38,26 +36,20 @@ GameMenuUI::~GameMenuUI()
 void GameMenuUI::setup(GameController* owner)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!titleFont.openFromFile("Assets/fonts/font.otf"))
+    if (!font.openFromFile("Assets/fonts/font.otf"))
     {
         cerr<<"Error al cargar Assets/fonts/font.otf"<<endl;
         // Intentamos cargar una fuente por defecto del sistema, si falla salimos de la funcion
-        if (!titleFont.openFromFile("C:/Windows/Fonts/arial.ttf"))
+        if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {
             cerr<<"Error al cargar font C:/Windows/Fonts/arial.ttf"<<endl;
             return;
         }
     }
 
-    // Carga las fuentes, no se manejan errores por simplicidad
-    optionsFont = titleFont;
-
-    // Configura el texto del titulo como un objeto nuevo
-    titleText = new Text(titleFont, "Menu de Acciones", GlobalSettings::FONT_SIZE * 1.5f);
-    // El texto del titulo es color rojo
-    titleText->setFillColor(Color::Red);
-    // Posicionamos el titulo en la esquina superior izquierda
-    titleText->setPosition(Vector2f(20, 20));
+    // TITULO
+    titleBox.setup(700.0f, 100.0f, (GlobalSettings::SCREEN_WIDTH - 700) / 2, 20, Color::Red, 2);
+    titleBox.setText("Menu de Acciones");
 
     // Lista de opciones
     vector<string> options = {
@@ -71,25 +63,22 @@ void GameMenuUI::setup(GameController* owner)
     for (int i = 0; i < options.size(); i++)
     {
         // Creamos un nuevo texto para la opcion en puntero
-        Text* option = new Text(optionsFont, options[i], GlobalSettings::FONT_SIZE);
+        Text* option = new Text(font, options[i], GlobalSettings::FONT_SIZE);
         // Color blanco por defecto
         option->setFillColor(Color::White);
         // Posicionamos la opcion debajo del titulo, con un espacio de 40 pixeles entre cada una
-        option->setPosition(Vector2f(50, 100 + i * 40));
+        option->setPosition(Vector2f(50, 140 + i * 40));
         // Agregamos la opcion al vector de opciones
         optionTexts.push_back(option);
     }
 
-    // Setup del DialogBox
-    dialogBox.setup();
+    descriptionBox.setup(700.0f, 150.0f, 50, 380);
 }
 
 /* Dibuja la UI del Menu del Juego en la ventana */
 void GameMenuUI::draw(RenderWindow& window, int selectedOption)
 {
-    // Dibuja el titulo
-    if(titleText)
-        window.draw(*titleText);
+    titleBox.draw(window);
 
     // Dibuja las opciones
     for (int i = 0; i < optionTexts.size(); i++)
@@ -117,14 +106,14 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption)
     }
 
     // Dibuja la caja de dialogo
-    dialogBox.draw(window);
+    descriptionBox.draw(window);
 }
 
-/* Actualiza la descripcion en el DialogBox segun la opcion seleccionada */
-void GameMenuUI::updateDialogBoxDescription(int selectedOption)
+/* Actualiza la descripcion en el Box segun la opcion seleccionada */
+void GameMenuUI::updateDescriptionBox(int selectedOption)
 {
     if (selectedOption >= 0 && selectedOption < optionDescriptions.size())
     {
-        dialogBox.setText(optionDescriptions[selectedOption]);
+        descriptionBox.setText(optionDescriptions[selectedOption]);
     }
 }

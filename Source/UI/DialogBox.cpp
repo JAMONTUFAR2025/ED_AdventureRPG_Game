@@ -20,7 +20,7 @@ DialogBox::~DialogBox()
 }
 
 /* Inicializa la caja de dialogo */
-void DialogBox::setup()
+void DialogBox::setup(float width, float height, int posX, int posY, Color textColor, int characterSize)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
     if (!font.openFromFile("Assets/fonts/font.otf"))
@@ -34,21 +34,26 @@ void DialogBox::setup()
     }
 
     // Configura el tamanio del rectangulo
-    box.setSize(Vector2f(700, 150));
+    box.setSize({width, height});
     // Establece el relleno en color negro con un poco de transparencia
-    box.setFillColor(Color(0, 0, 0, 150));
+    box.setFillColor(Color(0, 0, 0, height));
     // Establece el color del borde en blanco
     box.setOutlineColor(Color::White);
     // Establece el grosor del borde en 6 pixeles
     box.setOutlineThickness(6);
     // Establece la posicion del rectangulo
-    box.setPosition({50, 380});
+    box.setPosition({float(posX), float(posY)});
 
     // Configura el texto dentro de la caja de dialogo
     text = new Text(font, "", GlobalSettings::FONT_SIZE);
-    text->setCharacterSize(GlobalSettings::FONT_SIZE);
-    text->setFillColor(Color::White);
-    text->setPosition({70, 380});
+    text->setCharacterSize(GlobalSettings::FONT_SIZE * characterSize);
+    text->setFillColor(textColor);
+    text->setPosition({float(posX) + 20.0f, float(posY)});
+}
+
+void DialogBox::setup(float width, float height, int posX, int posY)
+{
+    setup(width, height, posX, posY, Color::White, 1);
 }
 
 /* Setter para el texto */

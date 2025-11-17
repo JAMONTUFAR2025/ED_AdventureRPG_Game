@@ -26,7 +26,8 @@ public:
     /* Destructor de la caja de dialogo */
     ~DialogBox();
     /* Inicializa la caja de dialogo */
-    void setup();
+    void setup(float width, float height, int posX, int posY, Color textColor, int characterSize);
+    void setup(float width, float height, int posX, int posY);
     /* Setter para el texto */
     void setText(const string& str);
     /* Dibuja la caja de dialogo en la ventana */

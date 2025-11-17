@@ -12,7 +12,7 @@ namespace Battle
     {
     private:
         /* Rectangulo que representa la caja de acciones */
-        sf::RectangleShape box;
+        DialogBox actionBox;
         sf::Font font;
         std::vector<sf::Text*> optionTexts;
         std::vector<std::string> optionDescriptions;

@@ -15,15 +15,21 @@ namespace Battle
     private:
         sf::Font font;
         
+        DialogBox titleBox;
+
         sf::Text* player_nameText;
+        sf::Text* player_levelText;
         sf::RectangleShape player_healthBarBack;
         sf::RectangleShape player_healthBarFront;
         sf::Text* player_healthText;
 
         sf::Text* enemy_nameText;
+        sf::Text* enemy_levelText;
         sf::RectangleShape enemy_healthBarBack;
         sf::RectangleShape enemy_healthBarFront;
         sf::Text* enemy_healthText;
+
+        sf::Text* vsText;
     public:
         BattleUI();
         ~BattleUI();

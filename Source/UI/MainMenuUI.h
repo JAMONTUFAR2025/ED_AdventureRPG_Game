@@ -2,6 +2,7 @@
 #define MAINMENUUI_H
 
 #include <SFML/Graphics.hpp>
+#include "DialogBox.h"
 #include <vector>
 
 /* Namespaces para acortar */
@@ -17,17 +18,18 @@ class GameController;
 class MainMenuUI
 {
 private:
-    /* Fuente del titulo */
-    Font titleFont;
-    /* Texto en pantalla */
-    Text* titleText;
+    /* Fuente */
+    Font font;
+    /* Caja de titulo */
+    DialogBox titleBox;
 
-    /* Fuente para las opciones del menu */
-    Font optionsFont;
     /* Texto de las opciones del menu */
     vector<Text*> optionTexts;
-    /* Opcion seleccionada */
-    int selectedOption;
+    /* Texto para las descripciones del menu */
+    vector<string> optionDescriptions;
+
+    /* Cuadro de dialogo para descripciones */
+    DialogBox descriptionBox;
 
 public:
     /* Constructor */
@@ -37,10 +39,10 @@ public:
 
     /* Configura la UI del menu principal */
     void setup(GameController* owner);
-    /* Maneja la entrada del usuario */
-    void handleInput(Event event, GameController* owner, int& selectedOption);
     /* Dibuja la UI en la ventana */
     void draw(RenderWindow& window, int selectedOption);
+    /* Actualiza la descripcion en el Box segun la opcion seleccionada */
+    void updateDescriptionBox(int selectedOption);
 };
 
 #endif // MAINMENUUI_H

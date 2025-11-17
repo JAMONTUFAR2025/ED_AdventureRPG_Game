@@ -25,11 +25,6 @@ private:
     /* Opcion seleccionada */
     int selectedOption;
 
-    /* Manejador de los dialogos */
-    DialogManager dialogManager;
-    /* Indica si un dialogo acaba de terminar */
-    bool dialogJustEnded;
-
 public:
     /* Constructor del Menu Principal */
     MainMenuState();

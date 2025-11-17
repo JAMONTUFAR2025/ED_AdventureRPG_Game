@@ -32,24 +32,17 @@ namespace Battle
                 return;
             }
         }
-        // - - CAJA - -
-        // Configura el tamanio del rectangulo
-        box.setSize(Vector2f(700, 50));
-        // Establece el relleno en color negro con un poco de transparencia
-        box.setFillColor(Color(0, 0, 0, 150));
-        // Establece el color del borde en blanco
-        box.setOutlineColor(Color::White);
-        // Establece el grosor del borde en 6 pixeles
-        box.setOutlineThickness(6);
-        // Establece la posicion del rectangulo
-        box.setPosition({50, 300});
-
-        // --- Action Selection UI ---
-        std::vector<std::string> options = {"A luchar!", "Definitiva!", "En guardia!", "A escapar!"};
 
         float startX = 70;
         float startY = 300;
         float spacing = 165.0f;
+
+        // - - CAJA - -
+        actionBox.setup(700.0f, 50.0f, 50, startY);
+
+        // --- Action Selection UI ---
+        std::vector<std::string> options = {"A luchar!", "Definitiva!", "En guardia!", "A escapar!"};
+
 
         for (size_t i = 0; i < options.size(); ++i)
         {
@@ -59,12 +52,12 @@ namespace Battle
             optionTexts.push_back(optionText);
         }
 
-        dialogBox.setup();
+        dialogBox.setup(700.0f, 150.0f, 50, 380);
     }
 
     void ActionSelectionUI::draw(sf::RenderWindow& window, int selectedOption)
     {
-        window.draw(box);
+        actionBox.draw(window);
 
         // Draw action selection options
         for (size_t i = 0; i < optionTexts.size(); ++i)

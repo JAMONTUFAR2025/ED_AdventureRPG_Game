@@ -18,20 +18,18 @@ class GameController;
 class GameMenuUI
 {
 private:
-    /* Fuente del titulo */
-    Font titleFont;
-    /* Texto del titulo en pantalla */
-    Text* titleText;
+    /* Fuente */
+    Font font;
+    
+    DialogBox titleBox;
 
-    /* Fuente para las opciones del menu */
-    Font optionsFont;
     /* Texto de las opciones del menu */
     vector<Text*> optionTexts;
     /* Descripciones de las opciones */
     vector<string> optionDescriptions;
 
     /* Cuadro de dialogo para descripciones */
-    DialogBox dialogBox;
+    DialogBox descriptionBox;
 
 public:
     /* Constructor */
@@ -44,7 +42,7 @@ public:
     /* Dibuja la UI en la ventana */
     void draw(RenderWindow& window, int selectedOption);
     /* Actualiza la descripcion en el DialogBox segun la opcion seleccionada */
-    void updateDialogBoxDescription(int selectedOption);
+    void updateDescriptionBox(int selectedOption);
 };
 
 #endif // GAMEMENUUI_H
