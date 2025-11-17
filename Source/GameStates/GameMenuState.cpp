@@ -18,7 +18,6 @@ void GameMenuState::enter(GameController* owner)
 {
     cout << "Entering GameMenuState" << endl;
     gameMenuUI.setup(owner);
- // Set initial description
 }
 
 /* Actualiza el estado del menu del juego */

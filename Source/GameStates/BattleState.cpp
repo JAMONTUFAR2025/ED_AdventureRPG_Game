@@ -3,15 +3,9 @@
 #include "../GameStates/GameMenuState.h" // For transitioning back to game menu
 #include <iostream>
 
-/**
- * @brief Constructor for BattleState.
- * @param player The player's Character object.
- * @param enemy The enemy's Character object.
- */
 BattleState::BattleState(const Character& player, const Character& enemy)
     : playerCharacter(player), enemyCharacter(enemy), battleSystem(nullptr) // Initialize battleSystem to nullptr
 {
-    // The BattleSystem will be created in enter() to ensure GameController is ready
 }
 
 BattleState::~BattleState()
@@ -22,7 +16,6 @@ BattleState::~BattleState()
 void BattleState::enter(GameController* owner)
 {
     std::cout << "Entering BattleState" << std::endl;
-    // Create BattleSystem here, as it needs 'owner' reference
     battleSystem = new Battle::BattleSystem(owner, playerCharacter, enemyCharacter);
     battleSystem->startBattle();
 }
@@ -59,5 +52,4 @@ void BattleState::draw(sf::RenderWindow& window)
 void BattleState::exit()
 {
     std::cout << "Exiting BattleState" << std::endl;
-    // BattleSystem is deleted in destructor
 }

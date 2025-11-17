@@ -41,21 +41,6 @@ namespace Battle
             }
         }
 
-        // --- Action Selection UI ---
-        std::vector<std::string> options = {"Luchar", "Especial", "En Guardia", "Escapar"};
-
-        float startX = GlobalSettings::SCREEN_WIDTH * 0.7f; // Right side of the screen
-        float startY = GlobalSettings::SCREEN_HEIGHT * 0.7f; // Bottom part of the screen
-        float spacing = 30.0f;
-
-        for (size_t i = 0; i < options.size(); ++i)
-        {
-            sf::Text* optionText = new sf::Text(font, options[i], 24);
-            optionText->setFillColor(sf::Color::White);
-            optionText->setPosition(sf::Vector2f(startX, startY + i * spacing));
-            optionTexts.push_back(optionText);
-        }
-
         // --- Player UI ---
         if (player_nameText) delete player_nameText;
         player_nameText = new sf::Text(font, playerChar.getBaseCharacter().getName(), 20);
@@ -101,20 +86,6 @@ namespace Battle
 
     void BattleUI::draw(sf::RenderWindow& window, int selectedOption)
     {
-        // Draw action selection options
-        for (size_t i = 0; i < optionTexts.size(); ++i)
-        {
-            if (static_cast<int>(i) == selectedOption)
-            {
-                optionTexts[i]->setFillColor(sf::Color::Yellow);
-            }
-            else
-            {
-                optionTexts[i]->setFillColor(sf::Color::White);
-            }
-            window.draw(*optionTexts[i]);
-        }
-
         // Draw Player UI
         if (player_nameText) window.draw(*player_nameText);
         window.draw(player_healthBarBack);

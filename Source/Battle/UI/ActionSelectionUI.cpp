@@ -33,6 +33,7 @@ namespace Battle
             }
         }
 
+        // --- Action Selection UI ---
         std::vector<std::string> options = {"Luchar", "Especial", "En Guardia", "Escapar"};
 
         float startX = GlobalSettings::SCREEN_WIDTH * 0.7f; // Right side of the screen
@@ -56,6 +57,7 @@ namespace Battle
 
     void ActionSelectionUI::draw(sf::RenderWindow& window, int selectedOption)
     {
+        // Draw action selection options
         for (size_t i = 0; i < optionTexts.size(); ++i)
         {
             if (static_cast<int>(i) == selectedOption)
@@ -68,6 +70,7 @@ namespace Battle
             }
             window.draw(*optionTexts[i]);
         }
+        
         dialogBox.draw(window);
     }
 
