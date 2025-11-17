@@ -1,4 +1,5 @@
 #include "DialogBox.h"
+#include "../Gameplay/GlobalSettings.h" // For global settings like font size
 #include <iostream>
 
 /**
@@ -44,8 +45,8 @@ void DialogBox::setup()
     box.setPosition({50, 380});
 
     // Configura el texto dentro de la caja de dialogo
-    text = new Text(font, "", 32);
-    text->setCharacterSize(32);
+    text = new Text(font, "", GlobalSettings::FONT_SIZE);
+    text->setCharacterSize(GlobalSettings::FONT_SIZE);
     text->setFillColor(Color::White);
     text->setPosition({70, 420});
 }

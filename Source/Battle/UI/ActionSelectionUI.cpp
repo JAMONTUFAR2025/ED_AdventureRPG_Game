@@ -32,43 +32,58 @@ namespace Battle
                 return;
             }
         }
+        // - - CAJA - -
+        // Configura el tamanio del rectangulo
+        box.setSize(Vector2f(700, 50));
+        // Establece el relleno en color negro con un poco de transparencia
+        box.setFillColor(Color(0, 0, 0, 150));
+        // Establece el color del borde en blanco
+        box.setOutlineColor(Color::White);
+        // Establece el grosor del borde en 6 pixeles
+        box.setOutlineThickness(6);
+        // Establece la posicion del rectangulo
+        box.setPosition({50, 300});
 
         // --- Action Selection UI ---
-        std::vector<std::string> options = {"Luchar", "Especial", "En Guardia", "Escapar"};
+        std::vector<std::string> options = {"A luchar!", "Definitiva!", "En guardia!", "A escapar!"};
 
-        float startX = GlobalSettings::SCREEN_WIDTH * 0.7f; // Right side of the screen
-        float startY = GlobalSettings::SCREEN_HEIGHT * 0.7f; // Bottom part of the screen
-        float spacing = 30.0f;
+        float startX = 70;
+        float startY = 300;
+        float spacing = 165.0f;
 
         for (size_t i = 0; i < options.size(); ++i)
         {
-            sf::Text* optionText = new sf::Text(font, options[i], 24);
+            sf::Text* optionText = new sf::Text(font, options[i], GlobalSettings::FONT_SIZE);
             optionText->setFillColor(sf::Color::White);
-            optionText->setPosition(sf::Vector2f(startX, startY + i * spacing));
+            optionText->setPosition(sf::Vector2f(startX + i * spacing, startY));
             optionTexts.push_back(optionText);
         }
 
         dialogBox.setup();
-        // Position the dialog box appropriately for battle UI
-        // Assuming it needs to be higher up than in the main menu
-        // Need to adjust DialogBox position, current setup is fixed
-        // For now, it will use its default position.
     }
 
     void ActionSelectionUI::draw(sf::RenderWindow& window, int selectedOption)
     {
+        window.draw(box);
+
         // Draw action selection options
         for (size_t i = 0; i < optionTexts.size(); ++i)
         {
+            string originalString = optionTexts[i]->getString();
+
             if (static_cast<int>(i) == selectedOption)
             {
+                optionTexts[i]->setString("> " + originalString);
                 optionTexts[i]->setFillColor(sf::Color::Yellow);
             }
             else
             {
+                optionTexts[i]->setString("  " + originalString);
                 optionTexts[i]->setFillColor(sf::Color::White);
             }
             window.draw(*optionTexts[i]);
+
+            optionTexts[i]->setString(originalString);
         }
         
         dialogBox.draw(window);

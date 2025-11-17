@@ -1,5 +1,6 @@
 #include "MainMenuUI.h"
 #include "../GameController.h" // Assuming GameController is needed for window size
+#include "../Gameplay/GlobalSettings.h" // For global settings like font size
 #include <iostream>
 
 /**
@@ -47,7 +48,7 @@ void MainMenuUI::setup(GameController* owner)
     optionsFont = titleFont;
 
     // Configura el texto del titulo como un objeto nuevo
-    titleText = new Text(titleFont, "Adventure RPG", 64);
+    titleText = new Text(titleFont, "Adventure RPG", GlobalSettings::FONT_SIZE * 2);
     // El texto del titulo es color rojo
     titleText->setFillColor(Color::Red);
     
@@ -65,7 +66,7 @@ void MainMenuUI::setup(GameController* owner)
     for (int i = 0; i < options.size(); i++)
     {
         // Creamos un nuevo texto para la opcion en puntero
-        Text* option = new Text(optionsFont, options[i], 32);
+        Text* option = new Text(optionsFont, options[i], GlobalSettings::FONT_SIZE);
         // Color blanco por defecto
         option->setFillColor(Color::White);
         // Centramos el origen del texto

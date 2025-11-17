@@ -11,6 +11,9 @@ class GlobalSettings
         static const int SCREEN_WIDTH = 800;
         static const int SCREEN_HEIGHT = 600;
 
+        /* Tamanio de fuente */
+        static const int FONT_SIZE = 32;
+
         /* Jugador */
         inline static const BaseCharacter playerBaseCharacter = BaseCharacter("Hero", 20, 30, 40, 0);
 

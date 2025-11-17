@@ -16,6 +16,7 @@ namespace Battle
     private:
         int selectedOption;
         BattleSystem* battleSystemOwner; // Pointer to the owning BattleSystem
+        ActionSelectionUI actionSelectionUI;
 
     public:
         ActionSelectionState();

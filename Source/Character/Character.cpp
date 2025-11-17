@@ -4,10 +4,10 @@
 Character::Character(const BaseCharacter& baseChar, int initialLevel)
     : base(baseChar),
       level(initialLevel),
-      currentHealth(baseChar.getMaxHealth()), // Inicializa la vida actual a la maxima
       currentExp(0) // Empieza con 0 de experiencia
 {
     calculateStats();
+    currentHealth = maxHealth; // Salud inicial al maximo
 }
 
 void Character::calculateStats()

@@ -1,5 +1,6 @@
 #include "GameMenuUI.h"
 #include "../GameController.h" // Assuming GameController is needed for window size
+#include "../Gameplay/GlobalSettings.h" // For global settings like font size
 #include <iostream>
 
 /**
@@ -52,7 +53,7 @@ void GameMenuUI::setup(GameController* owner)
     optionsFont = titleFont;
 
     // Configura el texto del titulo como un objeto nuevo
-    titleText = new Text(titleFont, "Menu de Acciones", 48);
+    titleText = new Text(titleFont, "Menu de Acciones", GlobalSettings::FONT_SIZE * 1.5f);
     // El texto del titulo es color rojo
     titleText->setFillColor(Color::Red);
     // Posicionamos el titulo en la esquina superior izquierda
@@ -70,7 +71,7 @@ void GameMenuUI::setup(GameController* owner)
     for (int i = 0; i < options.size(); i++)
     {
         // Creamos un nuevo texto para la opcion en puntero
-        Text* option = new Text(optionsFont, options[i], 32);
+        Text* option = new Text(optionsFont, options[i], GlobalSettings::FONT_SIZE);
         // Color blanco por defecto
         option->setFillColor(Color::White);
         // Posicionamos la opcion debajo del titulo, con un espacio de 40 pixeles entre cada una

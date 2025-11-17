@@ -7,10 +7,10 @@ namespace Battle
     BattleUI::BattleUI()
         : player_nameText(nullptr), player_healthText(nullptr), enemy_nameText(nullptr), enemy_healthText(nullptr) // Initialize Text* members to nullptr
     {
-        optionDescriptions.push_back("Ataca al enemigo con tu arma.");
-        optionDescriptions.push_back("Usa una de tus habilidades especiales.");
-        optionDescriptions.push_back("Reduce el dano recibido en el proximo turno.");
-        optionDescriptions.push_back("Intenta huir de la batalla.");
+       // optionDescriptions.push_back("Ataca al enemigo con tu arma.");
+        // optionDescriptions.push_back("Usa una de tus habilidades especiales.");
+        // optionDescriptions.push_back("Reduce el dano recibido en el proximo turno.");
+        // optionDescriptions.push_back("Intenta huir de la batalla.");
     }
 
     BattleUI::~BattleUI()
@@ -24,13 +24,6 @@ namespace Battle
 
     void BattleUI::setup(const Character& playerChar, const Character& enemyChar)
     {
-        // Clean up existing optionTexts to prevent duplication and memory leaks
-        for (sf::Text* text : optionTexts)
-        {
-            delete text;
-        }
-        optionTexts.clear();
-
         if (!font.openFromFile("Assets/fonts/font.otf"))
         {
             std::cerr << "Error al cargar Assets/fonts/font.otf" << std::endl;
@@ -43,7 +36,7 @@ namespace Battle
 
         // --- Player UI ---
         if (player_nameText) delete player_nameText;
-        player_nameText = new sf::Text(font, playerChar.getBaseCharacter().getName(), 20);
+        player_nameText = new sf::Text(font, playerChar.getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
         player_nameText->setFillColor(sf::Color::White);
         player_nameText->setPosition(sf::Vector2f(50, 40)); // Top-left for player
         
@@ -56,14 +49,14 @@ namespace Battle
         player_healthBarFront.setPosition(sf::Vector2f(50, 70));
 
         if (player_healthText) delete player_healthText;
-        player_healthText = new sf::Text(font, "", 16);
+        player_healthText = new sf::Text(font, "", GlobalSettings::FONT_SIZE / 2);
         player_healthText->setFillColor(sf::Color::White);
         player_healthText->setPosition(sf::Vector2f(55, 70));
 
 
         // --- Enemy UI ---
         if (enemy_nameText) delete enemy_nameText;
-        enemy_nameText = new sf::Text(font, enemyChar.getBaseCharacter().getName(), 20);
+        enemy_nameText = new sf::Text(font, enemyChar.getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
         enemy_nameText->setFillColor(sf::Color::White);
         enemy_nameText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 40)); // Top-right for enemy
         
@@ -76,7 +69,7 @@ namespace Battle
         enemy_healthBarFront.setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 70));
 
         if (enemy_healthText) delete enemy_healthText;
-        enemy_healthText = new sf::Text(font, "", 16);
+        enemy_healthText = new sf::Text(font, "", GlobalSettings::FONT_SIZE / 2);
         enemy_healthText->setFillColor(sf::Color::White);
         enemy_healthText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 245, 70));
 
@@ -111,9 +104,4 @@ namespace Battle
         enemy_healthBarFront.setSize(sf::Vector2f(200 * enemyHealthRatio, 20));
         if (enemy_healthText) enemy_healthText->setString(std::to_string(enemyChar.getCurrentHealth()) + "/" + std::to_string(enemyChar.getMaxHealth()));
     }
-
-    // void BattleUI::displayBattleMessage(const std::string& message)
-    // {
-    //     // This is now handled by DialogManager
-    // }
 } // namespace Battle

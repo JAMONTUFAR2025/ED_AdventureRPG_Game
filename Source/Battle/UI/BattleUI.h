@@ -6,6 +6,7 @@
 #include <string>
 #include "../../UI/DialogBox.h" // Assuming DialogBox is in the main UI directory
 #include "../../Character/Character.h" // To get character info
+#include "ActionSelectionUI.h" // For ActionSelectionUI
 
 namespace Battle
 {
@@ -13,10 +14,7 @@ namespace Battle
     {
     private:
         sf::Font font;
-
-        std::vector<sf::Text*> optionTexts;
-        std::vector<std::string> optionDescriptions;
-
+        
         sf::Text* player_nameText;
         sf::RectangleShape player_healthBarBack;
         sf::RectangleShape player_healthBarFront;
