@@ -48,7 +48,7 @@ void DialogBox::setup()
     text = new Text(font, "", GlobalSettings::FONT_SIZE);
     text->setCharacterSize(GlobalSettings::FONT_SIZE);
     text->setFillColor(Color::White);
-    text->setPosition({70, 420});
+    text->setPosition({70, 380});
 }
 
 /* Setter para el texto */

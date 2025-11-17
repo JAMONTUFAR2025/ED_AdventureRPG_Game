@@ -24,8 +24,6 @@ namespace Battle
         sf::RectangleShape enemy_healthBarBack;
         sf::RectangleShape enemy_healthBarFront;
         sf::Text* enemy_healthText;
-
-
     public:
         BattleUI();
         ~BattleUI();

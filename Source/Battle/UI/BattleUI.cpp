@@ -33,7 +33,7 @@ namespace Battle
                 return;
             }
         }
-
+        
         // --- Player UI ---
         if (player_nameText) delete player_nameText;
         player_nameText = new sf::Text(font, playerChar.getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
@@ -42,17 +42,15 @@ namespace Battle
         
         player_healthBarBack.setSize(sf::Vector2f(200, 20));
         player_healthBarBack.setFillColor(sf::Color(50, 50, 50)); // Dark gray background
-        player_healthBarBack.setPosition(sf::Vector2f(50, 70));
+        player_healthBarBack.setPosition(sf::Vector2f(50, 100));
 
         player_healthBarFront.setSize(sf::Vector2f(200, 20));
         player_healthBarFront.setFillColor(sf::Color::Green); // Green health
-        player_healthBarFront.setPosition(sf::Vector2f(50, 70));
-
+        player_healthBarFront.setPosition(sf::Vector2f(50, 100));
         if (player_healthText) delete player_healthText;
         player_healthText = new sf::Text(font, "", GlobalSettings::FONT_SIZE / 2);
         player_healthText->setFillColor(sf::Color::White);
-        player_healthText->setPosition(sf::Vector2f(55, 70));
-
+        player_healthText->setPosition(sf::Vector2f(55, 110));
 
         // --- Enemy UI ---
         if (enemy_nameText) delete enemy_nameText;
@@ -62,16 +60,16 @@ namespace Battle
         
         enemy_healthBarBack.setSize(sf::Vector2f(200, 20));
         enemy_healthBarBack.setFillColor(sf::Color(50, 50, 50)); // Dark gray background
-        enemy_healthBarBack.setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 70));
+        enemy_healthBarBack.setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 100));
 
         enemy_healthBarFront.setSize(sf::Vector2f(200, 20));
         enemy_healthBarFront.setFillColor(sf::Color::Red); // Red health
-        enemy_healthBarFront.setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 70));
+        enemy_healthBarFront.setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 250, 100));
 
         if (enemy_healthText) delete enemy_healthText;
         enemy_healthText = new sf::Text(font, "", GlobalSettings::FONT_SIZE / 2);
         enemy_healthText->setFillColor(sf::Color::White);
-        enemy_healthText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 245, 70));
+        enemy_healthText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH - 245, 110));
 
         // Initial update of dynamic UI elements
         updateHealthBars(playerChar, enemyChar);
