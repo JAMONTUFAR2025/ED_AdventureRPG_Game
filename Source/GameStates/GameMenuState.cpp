@@ -3,6 +3,7 @@
 #include "../GameStates/MainMenuState.h" // Assuming we transition back to main menu or similar
 #include "../GameStates/BattleState.h" // Assuming we transition to battle state
 #include "../Character/Character.h" // Include Character for creating instances
+#include "../Character/Player.h" // Include Player for creating instances
 #include "../Character/BaseCharacter.h" // Include BaseCharacter for creating instances
 
 /**
@@ -53,13 +54,13 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     
                     // Create placeholder player character
                     BaseCharacter playerBase("Jugador", 100, 15, 5, 0); // Name, MaxHealth, Attack, Defense, ExpYield
-                    Character playerChar(playerBase, 100); // BaseCharacter, initialLevel
+                    Player playerChar(playerBase, 100); // BaseCharacter, initialLevel
 
                     // Create placeholder enemy character
                     BaseCharacter enemyBase("Enemigo", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield
                     Character enemyChar(enemyBase, 100); // BaseCharacter, initialLevel
 
-                    owner->stateMachine.changeState(new BattleState(playerChar, enemyChar));
+                    owner->stateMachine.changeState(new BattleState(*owner, playerChar, enemyChar));
                     break;
                 }
                 case 1: // Comprar pocion de curacion (10 puntos)

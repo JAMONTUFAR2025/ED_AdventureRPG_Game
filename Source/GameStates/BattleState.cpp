@@ -3,8 +3,8 @@
 #include "../GameStates/GameMenuState.h" // For transitioning back to game menu
 #include <iostream>
 
-BattleState::BattleState(const Character& player, const Character& enemy)
-    : playerCharacter(player), enemyCharacter(enemy), battleSystem(nullptr) // Initialize battleSystem to nullptr
+BattleState::BattleState(GameController& owner, Player& player, Character& enemy)
+    : player(player), enemyCharacter(enemy), battleSystem(nullptr) // Initialize battleSystem to nullptr
 {
 }
 
@@ -16,7 +16,7 @@ BattleState::~BattleState()
 void BattleState::enter(GameController* owner)
 {
     std::cout << "Entering BattleState" << std::endl;
-    battleSystem = new Battle::BattleSystem(owner, playerCharacter, enemyCharacter);
+    battleSystem = new Battle::BattleSystem(owner, player, enemyCharacter);
     battleSystem->startBattle();
 }
 
