@@ -24,7 +24,7 @@ class Character
         void levelUp();
         void gainExperience(int amount);
         
-        int takeDamage(Character attacker, int power);
+        int takeDamage(Character& attacker, int power);
         void heal(int amount);
         
         const BaseCharacter& getBaseCharacter() const;
@@ -32,7 +32,7 @@ class Character
         int getLevel() const;
         int getMaxHealth() const;
         int getAttack() const;
-        int getDefense() const;
+        virtual int getDefense() const;
 
         int getCurrentHealth() const;
         int getCurrentExp() const;

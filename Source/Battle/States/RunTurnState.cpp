@@ -19,6 +19,8 @@ namespace Battle
         std::cout << "Entering RunTurnState" << std::endl;
         this->battleSystemOwner = owner;
         currentStep = TurnStep::START;
+        owner->setPlayerGuarding(false); // Reset guard status at the start of the turn
+        owner->getPlayer().setDefenseMultiplier(1.0f); // Reset defense multiplier
     }
 
     void RunTurnState::handleEvent(BattleSystem* owner, sf::Event event)
@@ -48,18 +50,19 @@ namespace Battle
             {
             case ActionType::Fight:
             {
-                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 100);
+                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 10);
                 messages.push(owner->getPlayer().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                 break;
             }
             case ActionType::Special:
-                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 500);
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " uses a special move and it deals + " + std::to_string(playerDamage) + "!");
+                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 50);
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " uses a special move and it deals " + std::to_string(playerDamage) + "!");
                 // TODO: Implement actual special move logic
                 break;
             case ActionType::Guard:
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " is guarding!");
-                // TODO: Implement guard status (e.g., damage reduction flag)
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " is guarding! Defense x2!");
+                owner->setPlayerGuarding(true);
+                owner->getPlayer().setDefenseMultiplier(2.0f); // Double defense for this turn
                 break;
             case ActionType::Escape:
             {
@@ -100,7 +103,7 @@ namespace Battle
         {
             // --- Enemy Action Execution (Simple AI: always attack) ---
             std::queue<std::string> messages;
-            int enemyDamage = owner->getPlayer().takeDamage(owner->getEnemy(), 100);
+            int enemyDamage = owner->getPlayer().takeDamage(owner->getEnemy(), 10);
             
             messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
             owner->getDialogManager().startDialog(new Dialog(messages));
@@ -122,6 +125,8 @@ namespace Battle
             break;
 
         case TurnStep::FINISH_TURN:
+            owner->getPlayer().setDefenseMultiplier(1.0f); // Reset defense multiplier after turn
+            owner->setPlayerGuarding(false); // Reset guarding status after turn
             owner->getStateMachine().changeState(new ActionSelectionState());
             break;
         

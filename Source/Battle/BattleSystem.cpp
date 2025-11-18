@@ -5,8 +5,8 @@
 
 namespace Battle
 {
-    BattleSystem::BattleSystem(GameController* owner, const Character& playerCharacter, const Character& enemyCharacter)
-        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false)
+    BattleSystem::BattleSystem(GameController* owner, const Player& playerCharacter, const Character& enemyCharacter)
+        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false)
     {
     }
 

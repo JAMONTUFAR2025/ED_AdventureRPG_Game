@@ -35,7 +35,7 @@ void Character::gainExperience(int amount)
     }
 }
 
-int Character::takeDamage(Character attacker, int power)
+int Character::takeDamage(Character& attacker, int power)
 {
     // --- Formula de daño estilo Pokemon ---
     // ((2 * Nivel / 5 + 2) * Poder * Ataque / Defensa / 50) + 2
