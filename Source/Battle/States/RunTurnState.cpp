@@ -5,6 +5,7 @@
 #include "../../GameController.h"
 #include <string>
 #include <queue>
+#include <cstdlib> // For rand()
 
 namespace Battle
 {
@@ -40,19 +41,20 @@ namespace Battle
 
         case TurnStep::PLAYER_ACTION:
         {
+            int playerDamage;
             // --- Player Action Execution ---
             std::queue<std::string> messages;
             switch (owner->getChosenAction())
             {
             case ActionType::Fight:
             {
-                int playerDamage = owner->getPlayer().getAttack();
-                owner->getEnemy().takeDamage(playerDamage);
+                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 100);
                 messages.push(owner->getPlayer().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                 break;
             }
             case ActionType::Special:
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " uses a special move!");
+                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 500);
+                messages.push(owner->getPlayer().getBaseCharacter().getName() + " uses a special move and it deals + " + std::to_string(playerDamage) + "!");
                 // TODO: Implement actual special move logic
                 break;
             case ActionType::Guard:
@@ -98,8 +100,8 @@ namespace Battle
         {
             // --- Enemy Action Execution (Simple AI: always attack) ---
             std::queue<std::string> messages;
-            int enemyDamage = owner->getEnemy().getAttack();
-            owner->getPlayer().takeDamage(enemyDamage);
+            int enemyDamage = owner->getPlayer().takeDamage(owner->getEnemy(), 100);
+            
             messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
             owner->getDialogManager().startDialog(new Dialog(messages));
             currentStep = TurnStep::PLAYER_CHECK;

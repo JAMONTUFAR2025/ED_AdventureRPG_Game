@@ -35,13 +35,35 @@ void Character::gainExperience(int amount)
     }
 }
 
-void Character::takeDamage(int damage)
+int Character::takeDamage(Character attacker, int power)
 {
-    currentHealth -= damage;
+    // --- Formula de daño estilo Pokemon ---
+    // ((2 * Nivel / 5 + 2) * Poder * Ataque / Defensa / 50) + 2
+    
+    // Usamos float para la precision
+    float level_factor = (2.0f * attacker.getLevel() / 5.0f) + 2.0f;
+    float attack_defense_ratio = static_cast<float>(attacker.getAttack()) / static_cast<float>(defense);
+    
+    // Calculo base del daño
+    float base_damage = (level_factor * power * attack_defense_ratio / 50.0f) + 2.0f;
+
+    // Modificador aleatorio (entre 0.85 y 1.0)
+    float random_modifier = (rand() % 16 + 85) / 100.0f; // Numero entre 0.85 y 1.00
+    
+    int final_damage = static_cast<int>(base_damage * random_modifier);
+
+    // Asegurarse de que el daño sea al menos 1 si el calculo es muy bajo
+    if (final_damage < 1) {
+        final_damage = 1;
+    }
+
+    currentHealth -= final_damage;
     if (currentHealth < 0)
     {
         currentHealth = 0;
     }
+
+    return final_damage;
 }
 
 void Character::heal(int amount)

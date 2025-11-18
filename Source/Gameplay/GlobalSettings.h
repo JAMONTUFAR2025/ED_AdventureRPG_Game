@@ -14,9 +14,6 @@ class GlobalSettings
         /* Tamanio de fuente */
         static const int FONT_SIZE = 32;
 
-        /* Jugador */
-        inline static const BaseCharacter playerBaseCharacter = BaseCharacter("Hero", 20, 30, 40, 0);
-
         /* Puntos del jugador */
         static int playerPoints;
         /* Puntos de definitiva del juegador */

@@ -24,7 +24,7 @@ class Character
         void levelUp();
         void gainExperience(int amount);
         
-        void takeDamage(int damage);
+        int takeDamage(Character attacker, int power);
         void heal(int amount);
         
         const BaseCharacter& getBaseCharacter() const;

@@ -53,11 +53,11 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     
                     // Create placeholder player character
                     BaseCharacter playerBase("Jugador", 100, 15, 5, 0); // Name, MaxHealth, Attack, Defense, ExpYield
-                    Character playerChar(playerBase, 1); // BaseCharacter, initialLevel
+                    Character playerChar(playerBase, 100); // BaseCharacter, initialLevel
 
                     // Create placeholder enemy character
                     BaseCharacter enemyBase("Enemigo", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield
-                    Character enemyChar(enemyBase, 1); // BaseCharacter, initialLevel
+                    Character enemyChar(enemyBase, 100); // BaseCharacter, initialLevel
 
                     owner->stateMachine.changeState(new BattleState(playerChar, enemyChar));
                     break;
