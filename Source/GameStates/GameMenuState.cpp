@@ -19,6 +19,7 @@ GameMenuState::GameMenuState() : selectedOption(0)
 /* Al entrar al menu, dibujamos e inicializamos la UI */
 void GameMenuState::enter(GameController* owner)
 {
+    this->owner = owner;
     cout << "Entering GameMenuState" << endl;
     Player* player = owner->getPlayer();
     if (player)
@@ -35,6 +36,10 @@ void GameMenuState::enter(GameController* owner)
 /* Actualiza el estado del menu del juego */
 void GameMenuState::update(GameController* owner)
 {
+    if (owner->getDialogManager()->isActive())
+    {
+        return; // Wait for messages to finish displaying
+    }
     gameMenuUI.updateDescriptionBox(selectedOption);
 }
 
@@ -44,6 +49,16 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
     // Verificamos si el evento es de tipo KeyPressed
     if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
+        // Si hay un dialogo activo, se avanza el dialogo
+        if (owner->getDialogManager()->isActive())
+        {
+            if (keyPressed->code == Keyboard::Key::Z)
+            {
+                owner->getDialogManager()->nextLine();
+            }
+            return;
+        }
+
         // Navegacion por las opciones del menu
         if (keyPressed->code == Keyboard::Key::Up)
         {
@@ -57,17 +72,18 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
         }
         else if (keyPressed->code == Keyboard::Key::Z)
         {
+            Player* player = owner->getPlayer();
+            if (!player)
+            {
+                cout << "Error: Player not found!" << endl;
+                return;
+            }
+
             switch (selectedOption)
             {
                 case 0: // Explorar
                 {
                     cout << "Seleccionado: Explorar" << endl;
-                    Player* player = owner->getPlayer();
-                    if (!player)
-                    {
-                        cout << "Error: Player not found!" << endl;
-                        break;
-                    }
                     
                     // Create placeholder enemy character
                     CharacterDB characterDB;
@@ -78,25 +94,44 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     break;
                 }
                 case 1: // Comprar pocion de curacion (10 puntos)
+                {
                     cout << "Seleccionado: Comprar pocion." << endl;
-                    
-                    if(owner->getPlayer()->getPoints() >= 10)
+                    std::queue<std::string> dialogQueue;
+                    if (player->getCharacter().getCurrentHealth() == player->getCharacter().getMaxHealth())
                     {
-                        owner->getPlayer()->gainPoints(-10);
-                        owner->getPlayer()->getCharacter().setCurrentHealth(owner->getPlayer()->getCharacter().getMaxHealth());
+                        dialogQueue.push("Tus PS estan al maximo!");
+                        owner->getDialogManager()->startDialog(new Dialog(dialogQueue));
                     }
-
+                    else if(player->getPoints() >= 10)
+                    {
+                        player->gainPoints(-10);
+                        player->getCharacter().setCurrentHealth(player->getCharacter().getMaxHealth());
+                        dialogQueue.push("PS restaurados al maximo!");
+                        owner->getDialogManager()->startDialog(new Dialog(dialogQueue));
+                    }
+                    else
+                    {
+                        dialogQueue.push("Puntos insuficientes!");
+                        owner->getDialogManager()->startDialog(new Dialog(dialogQueue));
+                    }
                     break;
+                }
                 case 2: // Comprar trofeo (1000 puntos)
+                {
                     cout << "Seleccionado: Comprar trofeo." << endl;
-
-                    if(owner->getPlayer()->getPoints() >= 100)
+                    std::queue<std::string> dialogQueue;
+                    if(player->getPoints() >= 1000)
                     {
-                        owner->getPlayer()->gainPoints(-100);
-                        owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won0
+                        player->gainPoints(-1000);
+                        owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won
                     }
-
+                    else
+                    {
+                        dialogQueue.push("Puntos insuficientes!");
+                        owner->getDialogManager()->startDialog(new Dialog(dialogQueue));
+                    }
                     break;
+                }
                 case 3: // Salir
                     cout << "Seleccionado: Salir. Volviendo al menu principal." << endl;
                     owner->destroyPlayer();
@@ -110,7 +145,7 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
 /* Dibuja el menu del juego en la ventana */
 void GameMenuState::draw(RenderWindow& window)
 {
-    gameMenuUI.draw(window, selectedOption);
+    gameMenuUI.draw(window, selectedOption, owner->getDialogManager()->isActive());
 }
 
 /* Al salir del menu, realizamos las acciones necesarias */

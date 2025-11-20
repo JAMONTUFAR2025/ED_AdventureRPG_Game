@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Util/StateMachine/StateMachine.h"
 #include "Character/Player.h"
+#include "Dialog/DialogManager.h" // Include DialogManager
 
 using namespace std;
 using namespace sf;
@@ -17,6 +18,8 @@ class GameController
 private:
     /* Personaje del jugador */
     Player* player;
+    /* Manejador de dialogos */
+    DialogManager dialogManager;
 
     /* Para manejar las entradas */
     void processEvents();
@@ -39,6 +42,7 @@ public:
     void createPlayer();
     void destroyPlayer();
     Player* getPlayer();
+    DialogManager* getDialogManager(); // Getter para el DialogManager
 };
 
 #endif // GAMECONTROLLER_H

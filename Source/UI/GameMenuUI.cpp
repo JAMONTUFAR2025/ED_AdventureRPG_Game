@@ -144,7 +144,7 @@ void GameMenuUI::setup(GameController* owner, Player* player)
 }
 
 /* Dibuja la UI del Menu del Juego en la ventana */
-void GameMenuUI::draw(RenderWindow& window, int selectedOption)
+void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogActive)
 {
     titleBox.draw(window);
 
@@ -173,8 +173,11 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption)
         optionTexts[i]->setString(originalString);
     }
 
-    // Dibuja la caja de dialogo
-    descriptionBox.draw(window);
+    // Dibuja la caja de dialogo solo si no hay un dialogo activo
+    if (!isDialogActive)
+    {
+        descriptionBox.draw(window);
+    }
 
     // Dibuja el HUD del jugador
     if (playerChar)

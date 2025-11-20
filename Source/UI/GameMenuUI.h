@@ -56,7 +56,7 @@ public:
     /* Configura la UI del menu del juego */
     void setup(GameController* owner, Player* player);
     /* Dibuja la UI en la ventana */
-    void draw(RenderWindow& window, int selectedOption);
+    void draw(RenderWindow& window, int selectedOption, bool isDialogActive);
     /* Actualiza la descripcion en el DialogBox segun la opcion seleccionada */
     void updateDescriptionBox(int selectedOption);
 

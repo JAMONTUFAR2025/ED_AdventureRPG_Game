@@ -9,7 +9,7 @@
  * y utiliza una maquina de estados para gestionar los diferentes
  * estados del juego (menu principal, juego, pausa, etc).
  */
-GameController::GameController() : window(VideoMode({GlobalSettings::SCREEN_WIDTH, GlobalSettings::SCREEN_HEIGHT}), "Adventure RPG", Style::Close | Style::Titlebar), stateMachine(this)
+GameController::GameController() : window(VideoMode({GlobalSettings::SCREEN_WIDTH, GlobalSettings::SCREEN_HEIGHT}), "Adventure RPG", Style::Close | Style::Titlebar), stateMachine(this), dialogManager()
 {
     // Oculta el cursor del mouse
     window.setMouseCursorVisible(false);
@@ -27,6 +27,7 @@ void GameController::runGameLoop()
     {
         // Procesa los eventos, ejecuta la logica del estado actual y renderiza
         processEvents();
+        dialogManager.update(); // Update the dialog manager before updating the state machine
         stateMachine.update();
         render();
     }
@@ -54,6 +55,7 @@ void GameController::render()
     window.clear();
     // Dibujamos el estado actual de la maquina de estados
     stateMachine.draw(window);
+    dialogManager.draw(window); // Draw the dialog manager
     window.display();
 }
 
@@ -80,4 +82,10 @@ void GameController::destroyPlayer()
 Player* GameController::getPlayer()
 {
     return player;
+}
+
+/* Obtiene el manejador de dialogos */
+DialogManager* GameController::getDialogManager()
+{
+    return &dialogManager;
 }

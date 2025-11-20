@@ -21,6 +21,8 @@ class GameMenuState : public IState<GameController>
 private:
     /* UI del menu del juego */
     GameMenuUI gameMenuUI;
+    /* Poseedor del controlador del juego */
+    GameController* owner;
     /* Opcion seleccionada */
     int selectedOption;
 
