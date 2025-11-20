@@ -8,8 +8,7 @@
 GameOverUI::GameOverUI()
 {
     // Inicializar descripciones
-    optionDescriptions.push_back("Reintentar el combate desde el principio.");
-    optionDescriptions.push_back("Volver al menu principal.");
+    optionDescriptions.push_back("Regresar al menu principal.");
 }
 
 /**
@@ -47,7 +46,7 @@ void GameOverUI::setup(bool isGameLost)
     titleBox.setText(isGameLost ? "Has Perdido!" : "Has Ganado!");
 
     // Lista de opciones
-    vector<string> options = {"Volver al menu principal"};
+    vector<string> options = {"Salir"};
 
     // Creamos los textos para cada opcion
     for (int i = 0; i < options.size(); i++)
@@ -56,16 +55,13 @@ void GameOverUI::setup(bool isGameLost)
         Text* option = new Text(font, options[i], GlobalSettings::FONT_SIZE);
         // Color blanco por defecto
         option->setFillColor(Color::White);
-        // Posicionamos las opciones centradas horizontalmente y con espacio vertical entre ellas
-        float posX = (GlobalSettings::SCREEN_WIDTH - option->getLocalBounds().position.x) / 2;
-        float posY = 200.0f + i * 100.0f;
-        option->setPosition(Vector2f(posX, posY));
-        // Agregamos la opcion al vector de textos
+        // Posicionamos la opcion debajo del titulo, con un espacio de 40 pixeles entre cada una
+        option->setPosition(Vector2f(50, 140 + i * 40));
+        // Agregamos la opcion al vector de opciones
         optionTexts.push_back(option);
     }
 
-    // Configuramos la caja de descripcion
-    descriptionBox.setup(700.0f, 150.0f, (GlobalSettings::SCREEN_WIDTH - 700) / 2, 400);
+    descriptionBox.setup(700.0f, 150.0f, 50, 380);
 }
 
 /* Dibuja la UI del Menu de Game Over en la ventana */
@@ -74,32 +70,29 @@ void GameOverUI::draw(RenderWindow& window, int currentSelectedOption)
     titleBox.draw(window);
 
     // Dibuja las opciones
-    for (size_t i = 0; i < optionTexts.size(); ++i)
+    for (int i = 0; i < optionTexts.size(); i++)
     {
-        string originalString = optionTexts[i]->getString();
-
-        if (static_cast<int>(i) == currentSelectedOption)
+        // Guardamos la cadena original
+        String originalString = optionTexts[i]->getString();
+        
+        // Resalta la opcion seleccionada en amarillo
+        if (i == currentSelectedOption)
         {
             optionTexts[i]->setString("> " + originalString);
             optionTexts[i]->setFillColor(Color::Yellow);
         }
+        // Opcion no seleccionada en blanco
         else
         {
-            // Remueve el "> " si estaba presente
-            if (originalString.rfind("> ", 0) == 0)
-            {
-                optionTexts[i]->setString(originalString.substr(2));
-            }
+            optionTexts[i]->setString("  " + originalString);
             optionTexts[i]->setFillColor(Color::White);
         }
-
+        
+        // Dibuja la opcion
         window.draw(*optionTexts[i]);
-    }
-
-    // Actualiza y dibuja la descripcion de la opcion seleccionada
-    if (currentSelectedOption >= 0 && currentSelectedOption < optionDescriptions.size())
-    {
-        descriptionBox.setText(optionDescriptions[currentSelectedOption]);
+        
+        // Restauramos la cadena original para evitar modificaciones permanentes
+        optionTexts[i]->setString(originalString);
     }
     descriptionBox.draw(window);
 }

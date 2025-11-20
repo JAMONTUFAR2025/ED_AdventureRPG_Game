@@ -41,27 +41,37 @@ namespace Battle
         switch (currentStep)
         {
             case TurnStep::START:
-            {
                 if (!owner->getBattleStarted())
                 {
                     messages.push("Te has encontrado con un " + owner->getEnemy().getBaseCharacter().getName() + "!");
-                    if(!messages.empty()) owner->getDialogManager().startDialog(new Dialog(messages));
+                    owner->getDialogManager().startDialog(new Dialog(messages));
                     owner->setBattleStarted(true);
+                    currentStep = TurnStep::POST_INTRO_MESSAGE;
                 }
-                currentStep = TurnStep::PLAYER_ACTION;
-            }
-            break;
+                else
+                {
+                    currentStep = TurnStep::PLAYER_ACTION;
+                }
+                break;
+            
+            case TurnStep::POST_INTRO_MESSAGE:
+                if (!owner->getDialogManager().isActive())
+                {
+                    owner->getStateMachine().changeState(new ActionSelectionState());
+                }
+                break;
+
             case TurnStep::PLAYER_ACTION:
             {
                 isCritical = false;
                 if(rand() % 100 < 20) isCritical = true;
 
-                int playerDamage = 0; // Initialize to avoid potential issues
+                int playerDamage = 0;
+                bool validAction = true;
                 switch (owner->getChosenAction())
                 {
                     case ActionType::Fight:
                         owner->getPlayer()->gainUltimatePoints(1);
-                        owner->setHasUltimatePointsUpdated(true);
                         playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 10, isCritical);
                         messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                         if(isCritical) messages.push("A critical hit!");
@@ -70,7 +80,6 @@ namespace Battle
                         if (owner->getPlayer()->getUltimatePoints() >= 5)
                         {
                             owner->getPlayer()->useUltimate(5);
-                            owner->setHasUltimatePointsUpdated(true);
                             playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  100, isCritical);
                             messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " uses a powerful ultimate move dealing " + std::to_string(playerDamage) + " damage!");
                             if(isCritical) messages.push("A devastating critical hit!");
@@ -78,14 +87,12 @@ namespace Battle
                         else
                         {
                             messages.push("Not enough ultimate points!");
-                            owner->getDialogManager().startDialog(new Dialog(messages));
-                            owner->getStateMachine().changeState(new ActionSelectionState());
-                            return;
+                            validAction = false;
                         }
                         break;
                     case ActionType::Guard:
                         owner->getPlayer()->gainUltimatePoints(2);
-                        owner->setHasUltimatePointsUpdated(true);
+                        
                         messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
                         owner->setPlayerGuarding(true);
                         owner->getPlayer()->setDefenseMultiplier(2.0f);
@@ -97,15 +104,35 @@ namespace Battle
                         currentStep = TurnStep::SHOW_EXP_RESULTS;
                         return;
                     case ActionType::None:
+                        validAction = false;
                         break;
                 }
 
                 if (!messages.empty()) owner->getDialogManager().startDialog(new Dialog(messages));
-                currentStep = TurnStep::ENEMY_CHECK;
+                
+                if (validAction) 
+                {
+                    currentStep = TurnStep::ENEMY_CHECK;
+                }
+                else
+                {
+                    currentStep = TurnStep::INVALID_ACTION;
+                }
             }
             break;
+
+            case TurnStep::INVALID_ACTION:
+                if (!owner->getDialogManager().isActive())
+                {
+                    owner->getStateMachine().changeState(new ActionSelectionState());
+                }
+                break;
+
             case TurnStep::ENEMY_CHECK:
+                // Actualizar la barra de vida del enemigo
                 owner->setHasHealthBarUpdated(true);
+                // Actualizar los puntos de definitiva del jugador
+                owner->setHasUltimatePointsUpdated(true);
                 if (owner->getEnemy().getCurrentHealth() <= 0)
                 {
                     messages.push(owner->getEnemy().getBaseCharacter().getName() + " defeated!");
@@ -149,7 +176,7 @@ namespace Battle
                 break;
             
             case TurnStep::SHOW_EXP_RESULTS:
-                if (owner->getDialogManager().isActive()) break;
+                 if (owner->getDialogManager().isActive()) break;
 
                 if (!expMessageQueued)
                 {
@@ -197,7 +224,7 @@ namespace Battle
                     messages.push("Player leveled up to level " + std::to_string(owner->getPlayer()->getCharacter().getLevel()) + "!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     owner->setHasHealthBarUpdated(true);
-                    owner->setHasPlayerLeveledUp(true); // Set the flag right before the level up message is shown
+                    owner->setHasPlayerLeveledUp(true);
                 }
                 currentStep = TurnStep::FINALIZE_BATTLE;
                 break;

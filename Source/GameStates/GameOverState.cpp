@@ -33,6 +33,7 @@ void GameOverState::handleEvent(GameController* owner, Event event)
         if (keyPressed->code == Keyboard::Key::Z)
         {
             cout<<"Seleccionado opcion: " << selectedOption << endl;
+            owner->destroyPlayer(); // Destruye el jugador actual
             owner->stateMachine.changeState(new MainMenuState());
         }
     }

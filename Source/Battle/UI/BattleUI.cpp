@@ -57,7 +57,7 @@ namespace Battle
         player_healthBarFront.setFillColor(sf::Color::White); // White health
         player_healthBarFront.setPosition(sf::Vector2f(50, 185));
         // BARRA DE VIDA TRASERA
-        player_healthBarBack.setSize(sf::Vector2f(200, 30));
+        player_healthBarBack.setSize(sf::Vector2f(200, 20));
         player_healthBarBack.setFillColor(sf::Color::Black);
         player_healthBarBack.setOutlineColor(sf::Color::White);
         player_healthBarBack.setOutlineThickness(2);
@@ -70,21 +70,22 @@ namespace Battle
 
         // --- Player Ultimate Points (PP) UI ---
         // BARRA PP TRASERA
-        player_ppBarBack = new sf::RectangleShape(sf::Vector2f(200, 15));
+        player_ppBarBack = new sf::RectangleShape(sf::Vector2f(200, 10));
         player_ppBarBack->setFillColor(sf::Color::Black);
         player_ppBarBack->setOutlineColor(sf::Color::White);
-        player_ppBarBack->setOutlineThickness(1);
-        player_ppBarBack->setPosition(sf::Vector2f(50, 260)); // Below health bar
+        player_ppBarBack->setOutlineThickness(2);
+        player_ppBarBack->setPosition(sf::Vector2f(50, 205)); // Below health bar
 
         // BARRA PP DELANTERA
-        player_ppBarFront = new sf::RectangleShape(sf::Vector2f(0, 15)); // Starts empty
+        player_ppBarFront = new sf::RectangleShape(sf::Vector2f(0, 10)); // Starts empty
         player_ppBarFront->setFillColor(sf::Color::Blue);
-        player_ppBarFront->setPosition(sf::Vector2f(50, 260));
+        player_ppBarFront->setPosition(sf::Vector2f(50, 205));
 
         // TEXTO PP
-        player_ppText = new sf::Text(font, "PP: 0/10", GlobalSettings::FONT_SIZE - 5);
-        player_ppText->setFillColor(sf::Color::White);
-        player_ppText->setPosition(sf::Vector2f(55, 260));
+        if (player_ppText) delete player_ppText;
+        player_ppText = new sf::Text(font, "PP: 0/10", GlobalSettings::FONT_SIZE);
+        player_ppText->setFillColor(sf::Color::Blue);
+        player_ppText->setPosition(sf::Vector2f(55, 215));
 
 
         // --- Enemy UI ---
@@ -155,7 +156,7 @@ namespace Battle
     {
         // Update player health bar
         float playerHealthRatio = static_cast<float>(playerChar.getCurrentHealth()) / playerChar.getMaxHealth();
-        player_healthBarFront.setSize(sf::Vector2f(200 * playerHealthRatio, 30));
+        player_healthBarFront.setSize(sf::Vector2f(200 * playerHealthRatio, 20));
         if (player_healthText) player_healthText->setString("PS: " + std::to_string(playerChar.getCurrentHealth()) + "/" + std::to_string(playerChar.getMaxHealth()));
 
         // Update enemy health bar
@@ -174,7 +175,7 @@ namespace Battle
         if (player_ppBarFront)
         {
             float ppRatio = static_cast<float>(currentPP) / 10.0f; // Max PP is 10
-            player_ppBarFront->setSize(sf::Vector2f(200 * ppRatio, 15));
+            player_ppBarFront->setSize(sf::Vector2f(200 * ppRatio, 10));
         }
         if (player_ppText)
         {

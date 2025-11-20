@@ -1,6 +1,7 @@
 #include "BattleSystem.h"
 #include "../GameController.h" // For GameController functions if needed
 #include "States/ActionSelectionState.h" // Initial state for battle
+#include "States/RunTurnState.h"
 #include <iostream>
 
 namespace Battle
@@ -20,7 +21,7 @@ namespace Battle
         battleUI.updatePlayerUltimatePoints(player->getUltimatePoints()); // Initial ultimate points update
 
         // Set the initial state for the battle (e.g., player selects action)
-        stateMachine.changeState(new ActionSelectionState());
+        stateMachine.changeState(new RunTurnState());
     }
 
     void BattleSystem::handleEvent(sf::Event event)

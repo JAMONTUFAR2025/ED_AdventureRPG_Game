@@ -22,7 +22,9 @@ namespace Battle
         enum class TurnStep
         {
             START,
+            POST_INTRO_MESSAGE,
             PLAYER_ACTION,
+            INVALID_ACTION,
             ENEMY_CHECK,
             ENEMY_ACTION,
             PLAYER_CHECK,
