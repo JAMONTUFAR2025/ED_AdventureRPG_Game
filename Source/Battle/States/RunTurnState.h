@@ -13,9 +13,6 @@ namespace Battle
         Escape
     };
     
-    /**
-     * @brief State for executing player and enemy actions in a single turn.
-     */
     class RunTurnState : public IState<BattleSystem>
     {
     private:
@@ -47,7 +44,7 @@ namespace Battle
         void enter(BattleSystem* owner) override;
         void handleEvent(BattleSystem* owner, sf::Event event) override;
         void update(BattleSystem* owner) override;
-        void draw(sf::RenderWindow& window) override; // Corrected signature
+        void draw(sf::RenderWindow& window) override;
         void exit() override;
     };
 } // namespace Battle

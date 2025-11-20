@@ -10,7 +10,7 @@
 using namespace sf;
 using namespace std;
 
-// Declaracion forward
+// Declaracion forward para evitar dependencias circulares
 class GameController;
 
 /**

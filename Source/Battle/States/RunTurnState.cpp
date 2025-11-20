@@ -1,11 +1,11 @@
 #include "RunTurnState.h"
 #include <iostream>
-#include "ActionSelectionState.h" // Transition back to action selection
+#include "ActionSelectionState.h"
 #include "../../GameStates/GameMenuState.h"
 #include "../../GameController.h"
 #include <string>
 #include <queue>
-#include <cstdlib> // For rand()
+#include <cstdlib>
 
 namespace Battle
 {
@@ -18,22 +18,21 @@ namespace Battle
     {
         this->battleSystemOwner = owner;
         currentStep = TurnStep::START;
-        owner->setPlayerGuarding(false); // Reset guard status at the start of the turn
-        owner->getPlayer()->setDefenseMultiplier(1.0f); // Reset defense multiplier
+        owner->setPlayerGuarding(false);
+        owner->getPlayer()->setDefenseMultiplier(1.0f);
     }
 
     void RunTurnState::handleEvent(BattleSystem* owner, sf::Event event)
     {
-        // Input is handled by BattleSystem to advance the dialog
     }
 
     void RunTurnState::update(BattleSystem* owner)
     {
         if (owner->getDialogManager().isActive())
         {
-            return; // Wait for messages to finish displaying
+            return;
         }
-        // Mensajes a encolar
+        
         std::queue<std::string> messages;
         bool isCritical = false;
 
@@ -128,9 +127,9 @@ namespace Battle
                 break;
 
             case TurnStep::ENEMY_CHECK:
-                // Actualizar la barra de vida del enemigo
+                
                 owner->setHasHealthBarUpdated(true);
-                // Actualizar los puntos de definitiva del jugador
+                
                 owner->setHasUltimatePointsUpdated(true);
                 if (owner->getEnemy().getCurrentHealth() <= 0)
                 {
@@ -175,7 +174,7 @@ namespace Battle
                 break;
             
             case TurnStep::SHOW_EXP_RESULTS:
-                 if (owner->getDialogManager().isActive()) break;
+                if (owner->getDialogManager().isActive()) break;
 
                 if (!expMessageQueued)
                 {
@@ -201,10 +200,8 @@ namespace Battle
                         break;
 
                         case BattleResult::Defeat:
-                            messages.push("Estas fuera de combate!");
                             break;
                         case BattleResult::Escape:
-                            // No message needed, already shown
                             break;
                     }
                     if (!messages.empty()) owner->getDialogManager().startDialog(new Dialog(messages));

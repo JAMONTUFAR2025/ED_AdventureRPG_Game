@@ -1,12 +1,12 @@
 #include "GameMenuState.h"
 #include "../GameController.h"
-#include "../GameStates/BattleState.h" // Assuming we transition to battle state
-#include "../GameStates/GameOverState.h" // For transitioning to GameOverState
-#include "../GameStates/MainMenuState.h" // Assuming we transition back to main menu or similar
-#include "../Character/Character.h" // Include Character for creating instances
-#include "../Character/Player.h" // Include Player for creating instances
-#include "../Character/BaseCharacter.h" // Include BaseCharacter for creating instances
-#include "../Character/CharacterDB.h" // Include CharacterDB for accessing base characters
+#include "../GameStates/BattleState.h"
+#include "../GameStates/GameOverState.h"
+#include "../GameStates/MainMenuState.h"
+#include "../Character/Character.h"
+#include "../Character/Player.h"
+#include "../Character/BaseCharacter.h"
+#include "../Character/CharacterDB.h"
 
 /**
  * Constructor del Menu del Juego
@@ -32,7 +32,7 @@ void GameMenuState::update(GameController* owner)
 {
     if (owner->getDialogManager()->isActive())
     {
-        return; // Wait for messages to finish displaying
+        return;
     }
     gameMenuUI.updateDescriptionBox(selectedOption);
 }
@@ -55,12 +55,12 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
         // Navegacion por las opciones del menu
         if (keyPressed->code == Keyboard::Key::W)
         {
-            selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
+            selectedOption = (selectedOption - 1 + 4) % 4;
         
         }
         else if (keyPressed->code == Keyboard::Key::S)
         {
-            selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
+            selectedOption = (selectedOption + 1) % 4;
         
         }
         else if (keyPressed->code == Keyboard::Key::E)
@@ -68,7 +68,6 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
             Player* player = owner->getPlayer();
             if (!player)
             {
-                cout << "Error: Player not found!" << endl;
                 return;
             }
 
@@ -112,7 +111,7 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     if(player->getPoints() >= 200)
                     {
                         player->gainPoints(-200);
-                        owner->getStateMachine().changeState(new GameOverState(false)); // false indicates the game is won
+                        owner->getStateMachine().changeState(new GameOverState(false)); // False significa que el juego no se perdio
                     }
                     else
                     {

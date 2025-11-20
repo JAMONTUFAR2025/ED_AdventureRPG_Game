@@ -1,7 +1,7 @@
 #include "ActionSelectionState.h"
 #include <iostream>
-#include "RunTurnState.h" // Transition to RunTurnState after action selection
-#include "../UI/ActionSelectionUI.h" // For ActionSelectionUI
+#include "RunTurnState.h"
+#include "../UI/ActionSelectionUI.h"
 
 namespace Battle
 {
@@ -12,7 +12,7 @@ namespace Battle
     void ActionSelectionState::enter(BattleSystem* owner)
     {
         this->battleSystemOwner = owner;
-        this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer()->getCharacter(), this->battleSystemOwner->getEnemy()); // Setup BattleUI with current characters
+        this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer()->getCharacter(), this->battleSystemOwner->getEnemy());
         this->battleSystemOwner->getBattleUI().updatePlayerUltimatePoints(this->battleSystemOwner->getPlayer()->getUltimatePoints());
         actionSelectionUI.setup();
     }
@@ -23,12 +23,12 @@ namespace Battle
         {
             if (keyPressed->code == sf::Keyboard::Key::A)
             {
-                selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
+                selectedOption = (selectedOption - 1 + 4) % 4;
 
             }
             else if (keyPressed->code == sf::Keyboard::Key::D)
             {
-                selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
+                selectedOption = (selectedOption + 1) % 4;
             }
             else if (keyPressed->code == sf::Keyboard::Key::E)
             {

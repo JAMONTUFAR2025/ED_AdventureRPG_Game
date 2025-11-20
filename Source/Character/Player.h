@@ -19,17 +19,17 @@ public:
 
     void gainExperience(int amount);
     
-    // --- Ultimate Points ---
+    // --- Puntos de definitiva ---
     int getUltimatePoints();
     void gainUltimatePoints(int amount);
     bool useUltimate(int cost);
     
-    // --- Defense Multiplier ---
+    // --- Multiplicador de defensa ---
     void setDefenseMultiplier(float multiplier);
     float getDefenseMultiplier();
     int getDefense();
 
-    // --- Character Access ---
+    // --- Acceso a Character ---
     Character& getCharacter();
     int getCurrentExp();
     int getNextLevelExp();

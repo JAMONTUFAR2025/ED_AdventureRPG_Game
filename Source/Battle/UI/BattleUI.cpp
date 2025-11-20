@@ -1,5 +1,5 @@
 #include "BattleUI.h"
-#include "../../Gameplay/GlobalSettings.h" // For screen dimensions
+#include "../../Gameplay/GlobalSettings.h"
 #include <iostream>
 
 namespace Battle
@@ -133,43 +133,35 @@ namespace Battle
 
     void BattleUI::draw(sf::RenderWindow& window, int selectedOption, bool isDialogActive)
     {
-        // Draw Title UI
         titleBox.draw(window);
 
-        // Draw Player UI
         if (player_nameText) window.draw(*player_nameText);
         if (player_levelText) window.draw(*player_levelText);
         window.draw(player_healthBarBack);
         window.draw(player_healthBarFront);
         if (player_healthText) window.draw(*player_healthText);
 
-        // Draw Player Ultimate Points (PP) UI
         if (player_ppBarBack) window.draw(*player_ppBarBack);
         if (player_ppBarFront) window.draw(*player_ppBarFront);
         if (player_ppText) window.draw(*player_ppText);
 
-        // Draw Enemy UI
         if (enemy_nameText) window.draw(*enemy_nameText);
         if(enemy_levelText) window.draw(*enemy_levelText);
         window.draw(enemy_healthBarBack);
         window.draw(enemy_healthBarFront);
         if (enemy_healthText) window.draw(*enemy_healthText);
 
-        // Draw VS Text
         if (vsText) window.draw(*vsText);
 
-        // Draw Dialog Control Text
         if (isDialogActive && dialogControlText) window.draw(*dialogControlText);
     }
 
     void BattleUI::updateHealthBars(Character& playerChar, Character& enemyChar)
     {
-        // Update player health bar
         float playerHealthRatio = static_cast<float>(playerChar.getCurrentHealth()) / playerChar.getMaxHealth();
         player_healthBarFront.setSize(sf::Vector2f(200 * playerHealthRatio, 20));
         if (player_healthText) player_healthText->setString("PS: " + std::to_string(playerChar.getCurrentHealth()) + "/" + std::to_string(playerChar.getMaxHealth()));
 
-        // Update enemy health bar
         float enemyHealthRatio = static_cast<float>(enemyChar.getCurrentHealth()) / enemyChar.getMaxHealth();
         enemy_healthBarFront.setSize(sf::Vector2f(200 * enemyHealthRatio, 30));
         if (enemy_healthText) enemy_healthText->setString("PS: " + std::to_string(enemyChar.getCurrentHealth()) + "/" + std::to_string(enemyChar.getMaxHealth()));

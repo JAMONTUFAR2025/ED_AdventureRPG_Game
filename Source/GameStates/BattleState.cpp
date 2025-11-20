@@ -1,11 +1,11 @@
 #include "BattleState.h"
 #include "../GameController.h"
-#include "../GameStates/GameMenuState.h" // For transitioning back to game menu
-#include "../GameStates/GameOverState.h" // For transitioning to GameOverState
+#include "../GameStates/GameMenuState.h"
+#include "../GameStates/GameOverState.h"
 #include <iostream>
 
 BattleState::BattleState(GameController& owner, Player* player, Character enemy)
-    : player(player), enemyCharacter(enemy), battleSystem(nullptr) // Initialize battleSystem to nullptr
+    : player(player), enemyCharacter(enemy), battleSystem(nullptr)
 {
 }
 
@@ -38,7 +38,7 @@ void BattleState::update(GameController* owner)
         {
             if(battleSystem->getPlayer()->getCharacter().getCurrentHealth() <= 0)
             {
-                owner->getStateMachine().changeState(new GameOverState(true)); // true indicates the game is lost
+                owner->getStateMachine().changeState(new GameOverState(true)); // True significa que el juego se perdio
                 return; 
             }
             

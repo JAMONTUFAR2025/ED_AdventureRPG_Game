@@ -1,5 +1,5 @@
 #include "DialogBox.h"
-#include "../Gameplay/GlobalSettings.h" // For global settings like font size
+#include "../Gameplay/GlobalSettings.h"
 #include <iostream>
 
 /**

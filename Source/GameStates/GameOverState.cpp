@@ -1,6 +1,6 @@
 #include "GameOverState.h"
 #include "../GameController.h"
-#include "../GameStates/MainMenuState.h" // Assuming we transition back to main menu or similar
+#include "../GameStates/MainMenuState.h"
 
 /**
  * Constructor del Game Over

@@ -4,14 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "../../UI/DialogBox.h" // Assuming DialogBox is in the main UI directory
+#include "../../UI/DialogBox.h"
 
 namespace Battle
 {
     class ActionSelectionUI
     {
     private:
-        /* Rectangulo que representa la caja de acciones */
         DialogBox actionBox;
         sf::Font font;
         std::vector<sf::Text*> optionTexts;

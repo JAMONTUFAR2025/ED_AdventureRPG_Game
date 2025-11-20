@@ -4,10 +4,10 @@
 #include "../Util/StateMachine/StateMachine.h"
 #include "../Character/Player.h"
 #include <SFML/Graphics.hpp>
-#include "UI/BattleUI.h" // Include BattleUI
-#include "../Dialog/DialogManager.h" // Include DialogManager
+#include "UI/BattleUI.h"
+#include "../Dialog/DialogManager.h"
 
-// Declaracion forward
+// Declaracion forward para evitar dependencias circulares
 class GameController;
 
 namespace Battle
@@ -37,10 +37,10 @@ namespace Battle
 
         Player* player;
         Character enemy;
-        BattleUI battleUI; // UI for the battle
+        BattleUI battleUI;
         DialogManager dialogManager;
 
-        ActionType chosenAction; // Stores the player's chosen action
+        ActionType chosenAction;
 
         BattleSystem(GameController* owner, Player* playerCharacter, Character& enemyCharacter);
 

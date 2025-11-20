@@ -1,5 +1,5 @@
 #include "ActionSelectionUI.h"
-#include "../../Gameplay/GlobalSettings.h" // For screen dimensions
+#include "../../Gameplay/GlobalSettings.h"
 #include <iostream>
 
 namespace Battle
@@ -44,10 +44,8 @@ namespace Battle
         float startY = 300;
         float spacing = 165.0f;
 
-        // - - CAJA - -
         actionBox.setup(700.0f, 50.0f, 50, startY);
 
-        // --- Action Selection UI ---
         std::vector<std::string> options = {"Luchar!", "Definitiva!", "En guardia!", "Escapar!"};
 
 
@@ -59,7 +57,6 @@ namespace Battle
             optionTexts.push_back(optionText);
         }
 
-        // Lista de controles
         std::vector<std::string> controls = {
             "A / D - Cambiar opcion.",
             "E - Seleccionar opcion."
@@ -83,7 +80,6 @@ namespace Battle
     {
         actionBox.draw(window);
 
-        // Draw action selection options
         for (int i = 0; i < optionTexts.size(); i++)
         {
             string originalString = optionTexts[i]->getString();
@@ -103,7 +99,6 @@ namespace Battle
             optionTexts[i]->setString(originalString);
         }
         
-        // Draw controls
         for (sf::Text* controlText : controlsTexts)
         {
             window.draw(*controlText);

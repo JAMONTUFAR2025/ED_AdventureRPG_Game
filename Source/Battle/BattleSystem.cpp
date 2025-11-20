@@ -1,6 +1,6 @@
 #include "BattleSystem.h"
-#include "../GameController.h" // For GameController functions if needed
-#include "States/ActionSelectionState.h" // Initial state for battle
+#include "../GameController.h"
+#include "States/ActionSelectionState.h"
 #include "States/RunTurnState.h"
 
 namespace Battle
@@ -12,11 +12,10 @@ namespace Battle
 
     void BattleSystem::startBattle()
     {
-        battleUI.setup(player->getCharacter(), enemy); // Setup the battle UI
-        battleUI.updateHealthBars(player->getCharacter(), enemy); // Initial health bar update
-        battleUI.updatePlayerUltimatePoints(player->getUltimatePoints()); // Initial ultimate points update
+        battleUI.setup(player->getCharacter(), enemy);
+        battleUI.updateHealthBars(player->getCharacter(), enemy);
+        battleUI.updatePlayerUltimatePoints(player->getUltimatePoints());
 
-        // Set the initial state for the battle (e.g., player selects action)
         stateMachine.changeState(new RunTurnState());
     }
 
@@ -29,7 +28,7 @@ namespace Battle
                 if (dialogManager.isActive())
                 {
                     dialogManager.nextLine();
-                    return; // Don't pass to state machine if UI handled it
+                    return;
                 }
             }
         }

@@ -4,9 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
-#include "../../UI/DialogBox.h" // Assuming DialogBox is in the main UI directory
-#include "../../Character/Character.h" // To get character info
-#include "ActionSelectionUI.h" // For ActionSelectionUI
+#include "../../UI/DialogBox.h"
+#include "../../Character/Character.h"
+#include "ActionSelectionUI.h"
 
 namespace Battle
 {
@@ -36,7 +36,7 @@ namespace Battle
 
         sf::Text* vsText;
 
-        sf::Text* dialogControlText; // New member for dialog control text
+        sf::Text* dialogControlText;
     public:
         BattleUI();
         ~BattleUI();
