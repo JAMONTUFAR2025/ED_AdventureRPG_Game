@@ -23,9 +23,9 @@ DialogBox::~DialogBox()
 void DialogBox::setup(float width, float height, int posX, int posY, Color textColor, int characterSize)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!font.openFromFile("Assets/fonts/font.otf"))
+    if (!font.openFromFile("../Assets/fonts/font.otf"))
     {
-        cout<<"Error loading font Assets/fonts/font.otf"<<endl;
+        cout<<"Error loading font ../Assets/fonts/font.otf"<<endl;
         if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {
             cout<<"Error loading fallback font C:/Windows/Fonts/arial.ttf"<<endl;

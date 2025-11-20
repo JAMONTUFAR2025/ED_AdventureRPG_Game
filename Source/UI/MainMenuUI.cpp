@@ -34,9 +34,9 @@ MainMenuUI::~MainMenuUI()
 void MainMenuUI::setup(GameController* owner)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!font.openFromFile("Assets/fonts/font.otf"))
+    if (!font.openFromFile("../Assets/fonts/font.otf"))
     {
-        cerr<<"Error al cargar Assets/fonts/font.otf"<<endl;
+        cerr<<"Error al cargar ../Assets/fonts/font.otf"<<endl;
         // Intentamos cargar una fuente por defecto del sistema, si falla salimos de la funcion
         if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {

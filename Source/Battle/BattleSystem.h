@@ -23,6 +23,9 @@ namespace Battle
 
     class BattleSystem
     {
+    private:
+        bool battleIsOver;
+        bool isPlayerGuarding;
     public:
         GameController* owner;
         StateMachine<BattleSystem> stateMachine;
@@ -34,7 +37,6 @@ namespace Battle
 
         ActionType chosenAction; // Stores the player's chosen action
 
-    public:
         BattleSystem(GameController* owner, const Player& playerCharacter, const Character& enemyCharacter);
 
         void startBattle();
@@ -58,9 +60,6 @@ namespace Battle
         bool getPlayerGuarding() const { return isPlayerGuarding; }
         void setPlayerGuarding(bool guarding) { isPlayerGuarding = guarding; }
 
-    private:
-        bool battleIsOver;
-        bool isPlayerGuarding;
     };
 } // namespace Battle
 

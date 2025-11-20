@@ -23,9 +23,9 @@ namespace Battle
 
     void ActionSelectionUI::setup()
     {
-        if (!font.openFromFile("Assets/fonts/font.otf"))
+        if (!font.openFromFile("../Assets/fonts/font.otf"))
         {
-            std::cerr << "Error al cargar Assets/fonts/font.otf" << std::endl;
+            std::cerr << "Error al cargar ../Assets/fonts/font.otf" << std::endl;
             if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
             {
                 std::cerr << "Error al cargar font C:/Windows/Fonts/arial.ttf" << std::endl;
@@ -41,7 +41,7 @@ namespace Battle
         actionBox.setup(700.0f, 50.0f, 50, startY);
 
         // --- Action Selection UI ---
-        std::vector<std::string> options = {"A luchar!", "Definitiva!", "En guardia!", "A escapar!"};
+        std::vector<std::string> options = {"Luchar!", "Definitiva!", "Recargar!", "Escapar!"};
 
 
         for (size_t i = 0; i < options.size(); ++i)

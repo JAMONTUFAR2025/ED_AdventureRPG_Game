@@ -21,6 +21,7 @@ namespace Battle
         currentStep = TurnStep::START;
         owner->setPlayerGuarding(false); // Reset guard status at the start of the turn
         owner->getPlayer().setDefenseMultiplier(1.0f); // Reset defense multiplier
+        std::cout << "[DEBUG] RunTurnState::enter - Defense multiplier reset to: " << owner->getPlayer().getDefenseMultiplier() << std::endl;
     }
 
     void RunTurnState::handleEvent(BattleSystem* owner, sf::Event event)
@@ -82,6 +83,7 @@ namespace Battle
             {
                 owner->getDialogManager().startDialog(new Dialog(messages));
             }
+            std::cout << "[DEBUG] RunTurnState::PLAYER_ACTION - Multiplier is: " << owner->getPlayer().getDefenseMultiplier() << std::endl;
             currentStep = TurnStep::ENEMY_CHECK;
             break;
         }
@@ -103,6 +105,7 @@ namespace Battle
         {
             // --- Enemy Action Execution (Simple AI: always attack) ---
             std::queue<std::string> messages;
+            std::cout << "[DEBUG] RunTurnState::ENEMY_ACTION - Multiplier before attack is: " << owner->getPlayer().getDefenseMultiplier() << std::endl;
             int enemyDamage = owner->getPlayer().takeDamage(owner->getEnemy(), 10);
             
             messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
