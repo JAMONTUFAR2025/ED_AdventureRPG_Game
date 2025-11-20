@@ -23,6 +23,11 @@ namespace Battle
         sf::RectangleShape player_healthBarFront;
         sf::Text* player_healthText;
 
+        // Ultimate Points (PP) UI elements
+        sf::RectangleShape* player_ppBarBack;
+        sf::RectangleShape* player_ppBarFront;
+        sf::Text* player_ppText;
+
         sf::Text* enemy_nameText;
         sf::Text* enemy_levelText;
         sf::RectangleShape enemy_healthBarBack;

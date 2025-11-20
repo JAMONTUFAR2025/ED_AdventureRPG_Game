@@ -22,12 +22,15 @@ public:
 
     // --- Character Access ---
     Character& getCharacter();
+    int getPoints() const;
+    void gainPoints(int amount);
 
 private:
     Character playerCharacter;
     int currentExp;
     int ultimatePoints;
     float defenseMultiplier;
+    int points;
 
     void levelUp();
 };

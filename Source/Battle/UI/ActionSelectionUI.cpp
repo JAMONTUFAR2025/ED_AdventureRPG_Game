@@ -6,10 +6,10 @@ namespace Battle
 {
     ActionSelectionUI::ActionSelectionUI()
     {
-        optionDescriptions.push_back("Ataca al enemigo con tu arma.");
-        optionDescriptions.push_back("Usa una de tus habilidades especiales.");
-        optionDescriptions.push_back("Reduce el dano recibido en el proximo turno.");
-        optionDescriptions.push_back("Intenta huir de la batalla.");
+        optionDescriptions.push_back("Ejecuta un ataque basico.\nRecargas 1 punto de definitiva.");
+        optionDescriptions.push_back("Ejecuta un potente ataque especial. \nCosto: 5 puntos de definitiva." );
+        optionDescriptions.push_back("Duplicas tu defensa durante este turno.\nRecargas 2 puntos de definitiva.");
+        optionDescriptions.push_back("Escapas y terminas el combate.\nNo ganaras experiencia ni puntos.");
     }
 
     ActionSelectionUI::~ActionSelectionUI()
@@ -41,7 +41,7 @@ namespace Battle
         actionBox.setup(700.0f, 50.0f, 50, startY);
 
         // --- Action Selection UI ---
-        std::vector<std::string> options = {"Luchar!", "Definitiva!", "Recargar!", "Escapar!"};
+        std::vector<std::string> options = {"Luchar!", "Definitiva!", "En guardia!", "Escapar!"};
 
 
         for (size_t i = 0; i < options.size(); ++i)

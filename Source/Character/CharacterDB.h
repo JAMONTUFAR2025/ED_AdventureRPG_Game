@@ -13,8 +13,11 @@ class CharacterDB
     public:
         CharacterDB();
 
-        /* Obtiene un BaseCharacter por su indice */
-        BaseCharacter getBaseCharacter(int index) const;
+        /* Obtiene al jugador */
+        BaseCharacter getPlayerBaseCharacter() const;
+
+        /* Obtiene un BaseCharacter aleatorio */
+        BaseCharacter getRandomBaseCharacter() const;
 };
 
 #endif // CHARACTERDB_H

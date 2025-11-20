@@ -5,6 +5,7 @@
 #include "../Character/Character.h" // Include Character for creating instances
 #include "../Character/Player.h" // Include Player for creating instances
 #include "../Character/BaseCharacter.h" // Include BaseCharacter for creating instances
+#include "../Character/CharacterDB.h" // Include CharacterDB for accessing base characters
 
 /**
  * Constructor del Menu del Juego
@@ -59,8 +60,9 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     }
                     
                     // Create placeholder enemy character
-                    BaseCharacter enemyBase("Enemigo", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield
-                    Character enemyChar(enemyBase, 1); // BaseCharacter, initialLevel
+                    CharacterDB characterDB;
+                    BaseCharacter enemyBase = characterDB.getRandomBaseCharacter(); // Get a random enemy
+                    Character enemyChar(enemyBase, player->getCharacter().getLevel()); // BaseCharacter, mismo nivel que el jugador
 
                     owner->stateMachine.changeState(new BattleState(*owner, player, enemyChar));
                     break;

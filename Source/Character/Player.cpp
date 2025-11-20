@@ -1,10 +1,11 @@
 #include "Player.h"
 
 Player::Player(int initialLevel)
-    : playerCharacter(CharacterDB().getBaseCharacter(0), initialLevel),
+    : playerCharacter(CharacterDB().getPlayerBaseCharacter(), initialLevel),
         currentExp(0),
         ultimatePoints(0),
-        defenseMultiplier(1.0f)
+        defenseMultiplier(1.0f),
+        points(0)
 {
 }
 
@@ -68,4 +69,14 @@ int Player::getDefense()
 Character& Player::getCharacter() 
 { 
     return playerCharacter; 
+}
+
+int Player::getPoints() const
+{
+    return points;
+}
+
+void Player::gainPoints(int amount)
+{
+    points += amount;
 }

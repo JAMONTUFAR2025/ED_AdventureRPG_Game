@@ -52,16 +52,26 @@ namespace Battle
                 switch (owner->getChosenAction())
                 {
                     case ActionType::Fight:
+                        owner->getPlayer()->gainUltimatePoints(1);
                         playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 10, isCritical);
                         messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                         if(isCritical) messages.push("A critical hit!");
                         break;
                     case ActionType::Special:
-                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  50, isCritical);
-                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " uses a special move and it deals " + std::to_string(playerDamage) + "!");
-                        if(isCritical) messages.push("A critical hit!");
+                        if (owner->getPlayer()->getUltimatePoints() >= 5)
+                        {
+                            owner->getPlayer()->useUltimate(5);
+                            playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  100, isCritical);
+                            messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " uses a powerful ultimate move dealing " + std::to_string(playerDamage) + " damage!");
+                            if(isCritical) messages.push("A devastating critical hit!");
+                        }
+                        else
+                        {
+                            messages.push("Not enough ultimate points!");
+                        }
                         break;
                     case ActionType::Guard:
+                        owner->getPlayer()->gainUltimatePoints(2);
                         messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
                         owner->setPlayerGuarding(true);
                         owner->getPlayer()->setDefenseMultiplier(2.0f);
@@ -129,20 +139,26 @@ namespace Battle
 
                 if (!expMessageQueued)
                 {
-                    int expGained = 0;
-                    int oldLevel, newLevel;
                     switch(result)
                     {
                         case BattleResult::Victory:
-                            expGained = owner->getEnemy().getBaseCharacter().getExpYield();
+                        {
+                            int expGained = owner->getEnemy().getBaseCharacter().getExpYield() * (1 + owner->getEnemy().getLevel() / 5);
                             messages.push("Victory!\n\nPlayer gained " + std::to_string(expGained) + " EXP!");
 
-                            oldLevel = owner->getPlayer()->getCharacter().getLevel();
+                            int enemyPoints = owner->getEnemy().getBaseCharacter().getPointsYield() * (1 + owner->getEnemy().getLevel() / 5);
+                            owner->getPlayer()->gainPoints(enemyPoints);
+                            messages.push("Player gained " + std::to_string(enemyPoints) + " points!");
+
+                            int oldLevel = owner->getPlayer()->getCharacter().getLevel();
                             owner->getPlayer()->gainExperience(expGained);
-                            newLevel = owner->getPlayer()->getCharacter().getLevel();
+                            int newLevel = owner->getPlayer()->getCharacter().getLevel();
 
                             if (newLevel > oldLevel) levelUpOccurred = true;
-                            break;
+                        }
+                        
+                        break;
+
                         case BattleResult::Defeat:
                             messages.push("Defeat!");
                             break;
