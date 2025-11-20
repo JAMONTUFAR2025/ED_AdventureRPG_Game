@@ -20,7 +20,6 @@ namespace Battle
 
     public:
         ActionSelectionState();
-        ~ActionSelectionState();
 
         void enter(BattleSystem* owner) override;
         void handleEvent(BattleSystem* owner, sf::Event event) override;

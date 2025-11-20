@@ -51,17 +51,17 @@ namespace Battle
             {
             case ActionType::Fight:
             {
-                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 10);
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
+                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer().getCharacter(), 10);
+                messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                 break;
             }
             case ActionType::Special:
-                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer(), 50);
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " uses a special move and it deals " + std::to_string(playerDamage) + "!");
+                playerDamage = owner->getEnemy().takeDamage(owner->getPlayer().getCharacter(), 50);
+                messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " uses a special move and it deals " + std::to_string(playerDamage) + "!");
                 // TODO: Implement actual special move logic
                 break;
             case ActionType::Guard:
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " is guarding! Defense x2!");
+                messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
                 owner->setPlayerGuarding(true);
                 owner->getPlayer().setDefenseMultiplier(2.0f); // Double defense for this turn
                 break;
@@ -106,7 +106,7 @@ namespace Battle
             // --- Enemy Action Execution (Simple AI: always attack) ---
             std::queue<std::string> messages;
             std::cout << "[DEBUG] RunTurnState::ENEMY_ACTION - Multiplier before attack is: " << owner->getPlayer().getDefenseMultiplier() << std::endl;
-            int enemyDamage = owner->getPlayer().takeDamage(owner->getEnemy(), 10);
+            int enemyDamage = owner->getPlayer().getCharacter().takeDamage(owner->getEnemy(), 10);
             
             messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
             owner->getDialogManager().startDialog(new Dialog(messages));
@@ -115,10 +115,10 @@ namespace Battle
         }
 
         case TurnStep::PLAYER_CHECK:
-            if (owner->getPlayer().getCurrentHealth() <= 0)
+            if (owner->getPlayer().getCharacter().getCurrentHealth() <= 0)
             {
                 std::queue<std::string> messages;
-                messages.push(owner->getPlayer().getBaseCharacter().getName() + " defeated!");
+                messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " defeated!");
                 owner->getDialogManager().startDialog(new Dialog(messages));
                 result = BattleResult::Defeat;
                 currentStep = TurnStep::BATTLE_END;

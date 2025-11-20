@@ -26,7 +26,7 @@ public:
      * @param player The player's Character object.
      * @param enemy The enemy's Character object.
      */
-    BattleState(GameController& owner, Player& player, Character& enemy);
+    BattleState(GameController& owner, Player& player, Character enemy);
     ~BattleState();
 
     void enter(GameController* owner) override;

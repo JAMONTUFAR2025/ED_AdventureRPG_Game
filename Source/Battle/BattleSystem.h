@@ -37,7 +37,7 @@ namespace Battle
 
         ActionType chosenAction; // Stores the player's chosen action
 
-        BattleSystem(GameController* owner, const Player& playerCharacter, const Character& enemyCharacter);
+        BattleSystem(GameController* owner, const Player& playerCharacter, const Character enemyCharacter);
 
         void startBattle();
         void handleEvent(sf::Event event);

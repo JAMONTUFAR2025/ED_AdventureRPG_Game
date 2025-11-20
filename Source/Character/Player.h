@@ -3,24 +3,33 @@
 
 #include "Character.h"
 
-class Player : public Character
+class Player
 {
 public:
-    Player(const BaseCharacter& baseChar, int initialLevel = 1);
+    Player(BaseCharacter& baseChar, int initialLevel = 1);
 
+    void gainExperience(int amount);
+    
     // --- Ultimate Points ---
-    int getUltimatePoints() const;
+    int getUltimatePoints();
     void gainUltimatePoints(int amount);
     bool useUltimate(int cost);
-
+    
     // --- Defense Multiplier ---
     void setDefenseMultiplier(float multiplier);
-    float getDefenseMultiplier() const;
-    int getDefense() const;
+    float getDefenseMultiplier();
+    int getDefense();
+
+    // --- Character Access ---
+    Character& getCharacter();
 
 private:
+    Character playerCharacter;
+    int currentExp;
     int ultimatePoints;
     float defenseMultiplier;
+
+    void levelUp();
 };
 
 #endif // PLAYER_H

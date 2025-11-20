@@ -3,7 +3,7 @@
 #include "../GameStates/GameMenuState.h" // For transitioning back to game menu
 #include <iostream>
 
-BattleState::BattleState(GameController& owner, Player& player, Character& enemy)
+BattleState::BattleState(GameController& owner, Player& player, Character enemy)
     : player(player), enemyCharacter(enemy), battleSystem(nullptr) // Initialize battleSystem to nullptr
 {
 }

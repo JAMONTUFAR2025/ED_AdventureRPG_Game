@@ -23,9 +23,9 @@ namespace Battle
 
     void ActionSelectionUI::setup()
     {
-        if (!font.openFromFile("../Assets/fonts/font.otf"))
+        if (!font.openFromFile(GlobalSettings::FONT_PATH))
         {
-            std::cerr << "Error al cargar ../Assets/fonts/font.otf" << std::endl;
+            std::cerr << "Error al cargar " << GlobalSettings::FONT_PATH << std::endl;
             if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
             {
                 std::cerr << "Error al cargar font C:/Windows/Fonts/arial.ttf" << std::endl;

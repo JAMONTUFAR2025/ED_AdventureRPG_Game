@@ -3,8 +3,7 @@
 
 Character::Character(const BaseCharacter& baseChar, int initialLevel)
     : base(baseChar),
-      level(initialLevel),
-      currentExp(0) // Empieza con 0 de experiencia
+      level(initialLevel)
 {
     calculateStats();
     currentHealth = maxHealth; // Salud inicial al maximo
@@ -15,24 +14,6 @@ void Character::calculateStats()
     maxHealth = (base.getMaxHealth() * 2 * level) / 100 + level + 10;
     attack = (base.getAttack() * 2 * level) / 100 + 5;
     defense = (base.getDefense() * 2 * level) / 100 + 5;
-}
-
-void Character::levelUp()
-{
-    level++;
-    currentHealth = base.getMaxHealth();
-    calculateStats();
-}
-
-void Character::gainExperience(int amount)
-{
-    currentExp += amount;
-    int expToLevelUp = level * 100;
-    if (currentExp >= expToLevelUp)
-    {
-        currentExp -= expToLevelUp;
-        levelUp();
-    }
 }
 
 int Character::takeDamage(Character& attacker, int power)
@@ -77,10 +58,11 @@ void Character::heal(int amount)
 
 const BaseCharacter& Character::getBaseCharacter() const { return base; }
 
+void Character::setLevel(int newLevel) { level = newLevel; calculateStats(); }
 int Character::getLevel() const { return level; }
 int Character::getMaxHealth() const { return maxHealth; }
 int Character::getAttack() const { return attack; }
 int Character::getDefense() const { return defense; }
 
+void Character::setCurrentHealth(int health) { currentHealth = health; }
 int Character::getCurrentHealth() const { return currentHealth; }
-int Character::getCurrentExp() const { return currentExp; }

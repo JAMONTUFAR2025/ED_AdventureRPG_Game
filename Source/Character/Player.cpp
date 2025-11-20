@@ -1,23 +1,39 @@
 #include "Player.h"
 
-Player::Player(const BaseCharacter& baseChar, int initialLevel)
-    : Character(baseChar, initialLevel),
-      ultimatePoints(0),
-      defenseMultiplier(1.0f)
+Player::Player(BaseCharacter& baseChar, int initialLevel)
+    : playerCharacter(baseChar, initialLevel),
+        currentExp(0),
+        ultimatePoints(0),
+        defenseMultiplier(1.0f)
 {
 }
 
-int Player::getUltimatePoints() const
+void Player::gainExperience(int amount)
 {
-    return ultimatePoints;
+    currentExp += amount;
+    int expToLevelUp = playerCharacter.getLevel() * 100;
+    if (currentExp >= expToLevelUp)
+    {
+        currentExp -= expToLevelUp;
+        levelUp();
+    }
 }
+
+void Player::levelUp()
+{
+    playerCharacter.setLevel(playerCharacter.getLevel() + 1);
+    playerCharacter.setCurrentHealth(playerCharacter.getMaxHealth());
+}
+
+
+int Player::getUltimatePoints() { return ultimatePoints; }
 
 void Player::gainUltimatePoints(int amount)
 {
     ultimatePoints += amount;
-    if (ultimatePoints > 100)
+    if (ultimatePoints > 10)
     {
-        ultimatePoints = 100; // Cap at 100
+        ultimatePoints = 10; // Cap at 10
     }
 }
 
@@ -31,17 +47,22 @@ bool Player::useUltimate(int cost)
     return false;
 }
 
-void Player::setDefenseMultiplier(float multiplier)
-{
-    defenseMultiplier = multiplier;
+void Player::setDefenseMultiplier(float multiplier) 
+{ 
+    defenseMultiplier = multiplier; 
 }
 
-float Player::getDefenseMultiplier() const
-{
-    return defenseMultiplier;
+float Player::getDefenseMultiplier() 
+{ 
+    return defenseMultiplier; 
 }
 
-int Player::getDefense() const
-{
-    return static_cast<int>(Character::getDefense() * defenseMultiplier);
+int Player::getDefense() 
+{ 
+    return static_cast<int>(playerCharacter.getDefense() * defenseMultiplier); 
+}
+
+Character& Player::getCharacter() 
+{ 
+    return playerCharacter; 
 }
