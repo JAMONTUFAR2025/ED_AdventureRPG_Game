@@ -22,7 +22,7 @@ class Character
         
         void calculateStats();
         
-        int takeDamage(Character& attacker, int power);
+        int takeDamage(Character& source, int targetDefense, int power, bool isCritical);
         void heal(int amount);
         
         const BaseCharacter& getBaseCharacter() const;

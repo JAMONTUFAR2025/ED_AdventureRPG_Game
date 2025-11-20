@@ -2,11 +2,11 @@
 #define PLAYER_H
 
 #include "Character.h"
-
+#include "CharacterDB.h"
 class Player
 {
 public:
-    Player(BaseCharacter& baseChar, int initialLevel = 1);
+    Player(int initialLevel = 1);
 
     void gainExperience(int amount);
     

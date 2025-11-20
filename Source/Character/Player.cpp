@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(BaseCharacter& baseChar, int initialLevel)
-    : playerCharacter(baseChar, initialLevel),
+Player::Player(int initialLevel)
+    : playerCharacter(CharacterDB().getBaseCharacter(0), initialLevel),
         currentExp(0),
         ultimatePoints(0),
         defenseMultiplier(1.0f)

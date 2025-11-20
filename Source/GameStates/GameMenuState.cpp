@@ -51,10 +51,8 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                 case 0: // Explorar
                 {
                     cout << "Seleccionado: Explorar" << endl;
+                    Player playerChar(100); // BaseCharacter, initialLevel
                     
-                    // Create placeholder player character
-                    BaseCharacter playerBase("Jugador", 100, 15, 5, 0); // Name, MaxHealth, Attack, Defense, ExpYield
-                    Player playerChar(playerBase, 100); // BaseCharacter, initialLevel
 
                     // Create placeholder enemy character
                     BaseCharacter enemyBase("Enemigo", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield

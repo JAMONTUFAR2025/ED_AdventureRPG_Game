@@ -16,35 +16,40 @@ void Character::calculateStats()
     defense = (base.getDefense() * 2 * level) / 100 + 5;
 }
 
-int Character::takeDamage(Character& attacker, int power)
+int Character::takeDamage(Character& source, int targetDefense, int power, bool isCritical)
 {
-    // --- Formula de daño estilo Pokemon ---
-    // ((2 * Nivel / 5 + 2) * Poder * Ataque / Defensa / 50) + 2
+    // --- Formula de danio basada en Pokemon ---
+    float levelFactor = (2.0f * source.getLevel() / 5.0f) + 2.0f;
+    float attackDefenseRatio = static_cast<float>(source.getAttack()) / static_cast<float>(targetDefense);
     
-    // Usamos float para la precision
-    float level_factor = (2.0f * attacker.getLevel() / 5.0f) + 2.0f;
-    float attack_defense_ratio = static_cast<float>(attacker.getAttack()) / static_cast<float>(defense);
-    
-    // Calculo base del daño
-    float base_damage = (level_factor * power * attack_defense_ratio / 50.0f) + 2.0f;
+    float baseDamage = (levelFactor * power * attackDefenseRatio / 50.0f) + 2.0f;
 
     // Modificador aleatorio (entre 0.85 y 1.0)
-    float random_modifier = (rand() % 16 + 85) / 100.0f; // Numero entre 0.85 y 1.00
+    float randomModifier = (rand() % 16 + 85) / 100.0f;
+    float calculatedDamage = baseDamage * randomModifier;
     
-    int final_damage = static_cast<int>(base_damage * random_modifier);
-
-    // Asegurarse de que el daño sea al menos 1 si el calculo es muy bajo
-    if (final_damage < 1) {
-        final_damage = 1;
+    // Si es golpe critico
+    if (isCritical) 
+    {
+        // Multiplicador de 1.5 (50% más de daño)
+        calculatedDamage *= 1.5f; 
+        std::cout << source.getBaseCharacter().getName() << " lands a CRITICAL HIT!" << std::endl; // O el mensaje de tu motor
+    }
+    
+    int finalDamage = static_cast<int>(calculatedDamage);
+    // El danio al menos es 1
+    if (finalDamage < 1) {
+        finalDamage = 1;
     }
 
-    currentHealth -= final_damage;
+    // Aplicar danio
+    currentHealth -= finalDamage;
     if (currentHealth < 0)
     {
         currentHealth = 0;
     }
 
-    return final_damage;
+    return finalDamage;
 }
 
 void Character::heal(int amount)

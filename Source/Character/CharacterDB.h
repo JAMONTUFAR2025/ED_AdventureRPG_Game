@@ -1,7 +1,7 @@
 #ifndef CHARACTERDB_H
 #define CHARACTERDB_H
 
-#include "../Character/BaseCharacter.h"
+#include "BaseCharacter.h"
 #include <vector>
 using namespace std;
 

@@ -68,7 +68,5 @@ class StateMachine
          */
         vector<IState<T>*> getStack();
 };
-
 #include "StateMachine.tpp"
-
 #endif // STATEMACHINE_H
