@@ -8,7 +8,7 @@
  * Constructor de la UI del Menu del Juego
  * Inicializa los punteros a null
  */
-GameMenuUI::GameMenuUI() : playerChar(nullptr), player_nameText(nullptr), player_levelText(nullptr), player_healthText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr), expNextLevel(nullptr), playerPointsText(nullptr)
+GameMenuUI::GameMenuUI() : playerChar(nullptr), player_nameText(nullptr), player_levelText(nullptr), player_healthText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr), expNextLevel(nullptr), playerPointsText(nullptr), dialogControlText(nullptr)
 {
     // Inicializar descripciones
     optionDescriptions.push_back("Inicias un combate contra enemigos salvajes. \nEstos siempre estan igualados a tu nivel. \nGana experiencia y puntos de jugador.");
@@ -49,6 +49,7 @@ GameMenuUI::~GameMenuUI()
     delete player_ppText;
     delete expNextLevel;
     delete playerPointsText;
+    delete dialogControlText;
 }
 
 /* Configuracion inicial de la UI del Menu del Juego */
@@ -172,12 +173,35 @@ void GameMenuUI::setup(GameController* owner, Player* player)
         controlsTexts.push_back(control);
     }
 
+    // Texto de control de dialogo
+    if (dialogControlText) delete dialogControlText;
+    dialogControlText = new sf::Text(font, "E - Siguiente dialogo", GlobalSettings::FONT_SIZE);
+    dialogControlText->setFillColor(sf::Color::White);
+    dialogControlText->setPosition({startX + spacing / 2, startY});
+
     descriptionBox.setup(700.0f, 150.0f, 50, 380);
 }
 
 /* Dibuja la UI del Menu del Juego en la ventana */
 void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogActive)
 {
+    if (isDialogActive)
+    {
+        if (dialogControlText) window.draw(*dialogControlText);
+    }
+    else // Si no hay dialogo activo, dibuja todos los elementos del menu
+    {
+        
+        // Dibuja los controles
+        for (Text* control : controlsTexts)
+        {
+            window.draw(*control);
+        }
+        
+        // Dibuja la caja de dialogo
+        descriptionBox.draw(window);
+    }
+    
     titleBox.draw(window);
 
     // Dibuja las opciones
@@ -205,19 +229,7 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogAct
         optionTexts[i]->setString(originalString);
     }
 
-    // Dibuja los controles
-    for (Text* control : controlsTexts)
-    {
-        window.draw(*control);
-    }
-
-    // Dibuja la caja de dialogo solo si no hay un dialogo activo
-    if (!isDialogActive)
-    {
-        descriptionBox.draw(window);
-    }
-
-    // Dibuja el HUD del jugador
+    // Dibuja el HUD del jugador (siempre visible)
     if (playerChar)
     {
         updatePlayerHUD();
@@ -255,7 +267,7 @@ void GameMenuUI::updatePlayerHUD()
     // Actualizar puntos de ultimate
     float ppRatio = static_cast<float>(playerChar->getUltimatePoints()) / 10.0f; // Max PP is 10
     player_ppBarFront->setSize(sf::Vector2f(200 * ppRatio, 10));
-    player_ppText->setString("PP: " + std::to_string(playerChar->getUltimatePoints()) + "/10");
+    player_ppText->setString("PD: " + std::to_string(playerChar->getUltimatePoints()) + "/10");
 
     // Actualizar nivel
     player_levelText->setString("Nv " + std::to_string(playerChar->getCharacter().getLevel()));

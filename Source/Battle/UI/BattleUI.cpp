@@ -7,13 +7,13 @@ namespace Battle
     BattleUI::BattleUI()
         : player_nameText(nullptr), player_levelText(nullptr),  player_healthText(nullptr),
         enemy_nameText(nullptr), enemy_levelText(nullptr), enemy_healthText(nullptr),
-        vsText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr)
+        vsText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr),
+        dialogControlText(nullptr)
     {
     }
 
     BattleUI::~BattleUI()
     {
-        // optionTexts are now cleaned up in setup()
         delete player_nameText;
         delete player_levelText;
         delete player_healthText;
@@ -24,6 +24,7 @@ namespace Battle
         delete player_ppBarBack;
         delete player_ppBarFront;
         delete player_ppText;
+        delete dialogControlText;
     }
 
     void BattleUI::setup(const Character& playerChar, const Character& enemyChar)
@@ -83,7 +84,7 @@ namespace Battle
 
         // TEXTO PP
         if (player_ppText) delete player_ppText;
-        player_ppText = new sf::Text(font, "PP: 0/10", GlobalSettings::FONT_SIZE);
+        player_ppText = new sf::Text(font, "PD: 0/10", GlobalSettings::FONT_SIZE);
         player_ppText->setFillColor(sf::Color::Cyan);
         player_ppText->setPosition(sf::Vector2f(165, 220));
 
@@ -120,6 +121,13 @@ namespace Battle
         vsText->setFillColor(sf::Color::White);
         vsText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH / 2 - 40, 140));
 
+        // TEXTO CONTROL DIALOGO
+        // Texto de control de dialogo
+        if (dialogControlText) delete dialogControlText;
+        dialogControlText = new sf::Text(font, "E - Siguiente dialogo", GlobalSettings::FONT_SIZE);
+        dialogControlText->setFillColor(sf::Color::White);
+        dialogControlText->setPosition({70.0f + 330.0f / 2, 550.0f}); // Centered at bottom
+
         // Initial update of dynamic UI elements
         updateHealthBars(playerChar, enemyChar);
     }
@@ -150,6 +158,9 @@ namespace Battle
 
         // Draw VS Text
         if (vsText) window.draw(*vsText);
+
+        // Draw Dialog Control Text
+        if (dialogControlText) window.draw(*dialogControlText);
     }
 
     void BattleUI::updateHealthBars(const Character& playerChar, const Character& enemyChar)
@@ -179,7 +190,7 @@ namespace Battle
         }
         if (player_ppText)
         {
-            player_ppText->setString("PP: " + std::to_string(currentPP) + "/10");
+            player_ppText->setString("PD: " + std::to_string(currentPP) + "/10");
         }
     }
 } // namespace Battle

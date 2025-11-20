@@ -18,7 +18,14 @@ namespace Battle
         {
             delete text;
         }
+
+        for (sf::Text* text : controlsTexts)
+        {
+            delete text;
+        }
+
         optionTexts.clear();
+        controlsTexts.clear();
     }
 
     void ActionSelectionUI::setup()
@@ -44,12 +51,29 @@ namespace Battle
         std::vector<std::string> options = {"Luchar!", "Definitiva!", "En guardia!", "Escapar!"};
 
 
-        for (size_t i = 0; i < options.size(); ++i)
+        for (int i = 0; i < options.size(); i++)
         {
             sf::Text* optionText = new sf::Text(font, options[i], GlobalSettings::FONT_SIZE);
             optionText->setFillColor(sf::Color::White);
             optionText->setPosition(sf::Vector2f(startX + i * spacing, startY));
             optionTexts.push_back(optionText);
+        }
+
+        // Lista de controles
+        std::vector<std::string> controls = {
+            "A / D - Cambiar opcion.",
+            "E - Seleccionar opcion."
+        };
+
+        // Creamos los textos para cada control
+        for (int i = 0; i < controls.size(); i++)
+        {
+            sf::Text* controlText = new sf::Text(font, controls[i], GlobalSettings::FONT_SIZE);
+            controlText->setFillColor(sf::Color::White);
+            // Spacing = 330 para que queden separados
+            // Para llegar a Y = 550
+            controlText->setPosition(sf::Vector2f(startX + i * (spacing + 165.0f), startY + 250.0f));
+            controlsTexts.push_back(controlText);
         }
 
         dialogBox.setup(700.0f, 150.0f, 50, 380);
@@ -60,7 +84,7 @@ namespace Battle
         actionBox.draw(window);
 
         // Draw action selection options
-        for (size_t i = 0; i < optionTexts.size(); ++i)
+        for (int i = 0; i < optionTexts.size(); i++)
         {
             string originalString = optionTexts[i]->getString();
 
@@ -79,6 +103,12 @@ namespace Battle
             optionTexts[i]->setString(originalString);
         }
         
+        // Draw controls
+        for (sf::Text* controlText : controlsTexts)
+        {
+            window.draw(*controlText);
+        }
+
         dialogBox.draw(window);
     }
 

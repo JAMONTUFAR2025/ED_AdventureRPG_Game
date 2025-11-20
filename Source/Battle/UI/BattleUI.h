@@ -35,6 +35,8 @@ namespace Battle
         sf::Text* enemy_healthText;
 
         sf::Text* vsText;
+
+        sf::Text* dialogControlText; // New member for dialog control text
     public:
         BattleUI();
         ~BattleUI();

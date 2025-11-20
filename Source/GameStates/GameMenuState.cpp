@@ -12,14 +12,14 @@
  * Constructor del Menu del Juego
  * Inicializa la opcion seleccionada en 0
  */
-GameMenuState::GameMenuState() : selectedOption(0)
+GameMenuState::GameMenuState() : selectedOption(0), owner(nullptr)
 {
 }
 
 /* Al entrar al menu, dibujamos e inicializamos la UI */
 void GameMenuState::enter(GameController* owner)
 {
-    this->owner = owner;
+    this->owner = owner; // Assign the owner
     cout << "Entering GameMenuState" << endl;
     Player* player = owner->getPlayer();
     if (player)
@@ -47,12 +47,11 @@ void GameMenuState::update(GameController* owner)
 void GameMenuState::handleEvent(GameController* owner, Event event)
 {
     // Verificamos si el evento es de tipo KeyPressed
-    if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
-    {
+    if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>()){
         // Si hay un dialogo activo, se avanza el dialogo
         if (owner->getDialogManager()->isActive())
         {
-            if (keyPressed->code == Keyboard::Key::E)
+            if (keyPressed->code == Keyboard::Key::E) // Changed from Z to E
             {
                 owner->getDialogManager()->nextLine();
             }

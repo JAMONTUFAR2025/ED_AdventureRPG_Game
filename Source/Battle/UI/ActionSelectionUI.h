@@ -16,6 +16,8 @@ namespace Battle
         sf::Font font;
         std::vector<sf::Text*> optionTexts;
         std::vector<std::string> optionDescriptions;
+        
+        std::vector<sf::Text*> controlsTexts;
         DialogBox dialogBox;
         
         public:

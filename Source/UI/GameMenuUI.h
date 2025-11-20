@@ -48,6 +48,8 @@ private:
     sf::Text* expNextLevel;
     sf::Text* playerPointsText;
 
+    sf::Text* dialogControlText; // New member for dialog control text
+
 
 public:
     /* Constructor */
