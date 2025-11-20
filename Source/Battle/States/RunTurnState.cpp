@@ -43,7 +43,7 @@ namespace Battle
             case TurnStep::START:
                 if (!owner->getBattleStarted())
                 {
-                    messages.push("Te has encontrado con un/una " + owner->getEnemy().getBaseCharacter().getName() + "!");
+                    messages.push("Te has encontrado con un/una " + owner->getEnemy().getBaseCharacter().getName() + " salvaje!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     owner->setBattleStarted(true);
                     currentStep = TurnStep::POST_INTRO_MESSAGE;
@@ -73,7 +73,7 @@ namespace Battle
                     case ActionType::Fight:
                         owner->getPlayer()->gainUltimatePoints(1);
                         playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 50, isCritical);
-                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un ataque basico! \nDanio infligido: " + std::to_string(playerDamage));
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un ataque basico! \nDanio infligido: " + std::to_string(playerDamage) + "\n+1 punto de definitiva!");
                         if(isCritical) messages.push("Un golpe critico!");
                         break;
                     case ActionType::Special:
@@ -81,7 +81,7 @@ namespace Battle
                         {
                             owner->getPlayer()->useUltimate(5);
                             playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  150, isCritical);
-                            messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un poderoso ataque definitivo! \nDanio infligido: " + std::to_string(playerDamage));
+                            messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un poderoso ataque definitivo! \nDanio infligido: " + std::to_string(playerDamage) + "\n-5 puntos de definitiva!");
                             if(isCritical) messages.push("Un golpe critico devastador!");
                         }
                         else
@@ -93,7 +93,7 @@ namespace Battle
                     case ActionType::Guard:
                         owner->getPlayer()->gainUltimatePoints(2);
                         
-                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha fortalecido su cuerpo!");
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha fortalecido su cuerpo!\nDefensa duplicada este turno!\n+2 puntos de definitiva!");
                         owner->setPlayerGuarding(true);
                         owner->getPlayer()->setDefenseMultiplier(2.0f);
                         break;
