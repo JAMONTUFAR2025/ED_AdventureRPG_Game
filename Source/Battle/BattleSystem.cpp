@@ -6,7 +6,7 @@
 namespace Battle
 {
     BattleSystem::BattleSystem(GameController* owner, Player* playerCharacter, const Character& enemyCharacter)
-        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false), hasPlayerLeveledUp(false)
+        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false), hasHealthBarUpdated(false), hasPlayerLeveledUp(false), hasUltimatePointsUpdated(false), battleStarted(false)
     {
     }
 
@@ -17,6 +17,7 @@ namespace Battle
         
         battleUI.setup(player->getCharacter(), enemy); // Setup the battle UI
         battleUI.updateHealthBars(player->getCharacter(), enemy); // Initial health bar update
+        battleUI.updatePlayerUltimatePoints(player->getUltimatePoints()); // Initial ultimate points update
 
         // Set the initial state for the battle (e.g., player selects action)
         stateMachine.changeState(new ActionSelectionState());
@@ -55,6 +56,13 @@ namespace Battle
         {
             battleUI.updatePlayerLevelText(player->getCharacter().getLevel());
             hasPlayerLeveledUp = false;
+        }
+
+        // Actualizar puntos de definitiva
+        if(hasUltimatePointsUpdated)
+        {
+            battleUI.updatePlayerUltimatePoints(player->getUltimatePoints());
+            hasUltimatePointsUpdated = false;
         }
     }
 
@@ -103,5 +111,25 @@ namespace Battle
     void BattleSystem::setHasPlayerLeveledUp(bool leveledUp)
     {
         hasPlayerLeveledUp = leveledUp;
+    }
+
+    bool BattleSystem::getHasUltimatePointsUpdated() const
+    {
+        return hasUltimatePointsUpdated;
+    }
+
+    void BattleSystem::setHasUltimatePointsUpdated(bool updated)
+    {
+        hasUltimatePointsUpdated = updated;
+    }
+
+    bool BattleSystem::getBattleStarted() const
+    {
+        return battleStarted;
+    }
+
+    void BattleSystem::setBattleStarted(bool started)
+    {
+        battleStarted = started;
     }
 } // namespace Battle

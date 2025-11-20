@@ -24,11 +24,13 @@ namespace Battle
     class BattleSystem
     {
     private:
+        bool battleStarted;
         bool battleIsOver;
         bool isPlayerGuarding;
 
         bool hasHealthBarUpdated;
         bool hasPlayerLeveledUp;
+        bool hasUltimatePointsUpdated;
     public:
         GameController* owner;
         StateMachine<BattleSystem> stateMachine;
@@ -57,6 +59,9 @@ namespace Battle
         
         StateMachine<BattleSystem>& getStateMachine() { return stateMachine; }
 
+        bool getBattleStarted() const;
+        void setBattleStarted(bool started);
+
         bool isBattleOver() const;
         void endBattle();
 
@@ -69,6 +74,8 @@ namespace Battle
         bool getHasPlayerLeveledUp() const;
         void setHasPlayerLeveledUp(bool leveledUp);
 
+        bool getHasUltimatePointsUpdated() const;
+        void setHasUltimatePointsUpdated(bool updated);
     };
 } // namespace Battle
 

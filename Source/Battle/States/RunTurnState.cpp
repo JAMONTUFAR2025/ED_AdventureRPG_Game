@@ -41,18 +41,27 @@ namespace Battle
         switch (currentStep)
         {
             case TurnStep::START:
+            {
+                if (!owner->getBattleStarted())
+                {
+                    messages.push("Te has encontrado con un " + owner->getEnemy().getBaseCharacter().getName() + "!");
+                    if(!messages.empty()) owner->getDialogManager().startDialog(new Dialog(messages));
+                    owner->setBattleStarted(true);
+                }
                 currentStep = TurnStep::PLAYER_ACTION;
-                break;
-
+            }
+            break;
             case TurnStep::PLAYER_ACTION:
+            {
                 isCritical = false;
                 if(rand() % 100 < 20) isCritical = true;
 
-                int playerDamage;
+                int playerDamage = 0; // Initialize to avoid potential issues
                 switch (owner->getChosenAction())
                 {
                     case ActionType::Fight:
                         owner->getPlayer()->gainUltimatePoints(1);
+                        owner->setHasUltimatePointsUpdated(true);
                         playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 10, isCritical);
                         messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
                         if(isCritical) messages.push("A critical hit!");
@@ -61,6 +70,7 @@ namespace Battle
                         if (owner->getPlayer()->getUltimatePoints() >= 5)
                         {
                             owner->getPlayer()->useUltimate(5);
+                            owner->setHasUltimatePointsUpdated(true);
                             playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  100, isCritical);
                             messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " uses a powerful ultimate move dealing " + std::to_string(playerDamage) + " damage!");
                             if(isCritical) messages.push("A devastating critical hit!");
@@ -68,10 +78,14 @@ namespace Battle
                         else
                         {
                             messages.push("Not enough ultimate points!");
+                            owner->getDialogManager().startDialog(new Dialog(messages));
+                            owner->getStateMachine().changeState(new ActionSelectionState());
+                            return;
                         }
                         break;
                     case ActionType::Guard:
                         owner->getPlayer()->gainUltimatePoints(2);
+                        owner->setHasUltimatePointsUpdated(true);
                         messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
                         owner->setPlayerGuarding(true);
                         owner->getPlayer()->setDefenseMultiplier(2.0f);
@@ -88,8 +102,8 @@ namespace Battle
 
                 if (!messages.empty()) owner->getDialogManager().startDialog(new Dialog(messages));
                 currentStep = TurnStep::ENEMY_CHECK;
-                break;
-
+            }
+            break;
             case TurnStep::ENEMY_CHECK:
                 owner->setHasHealthBarUpdated(true);
                 if (owner->getEnemy().getCurrentHealth() <= 0)

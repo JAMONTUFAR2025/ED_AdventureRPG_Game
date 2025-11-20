@@ -7,7 +7,7 @@ namespace Battle
     BattleUI::BattleUI()
         : player_nameText(nullptr), player_levelText(nullptr),  player_healthText(nullptr),
         enemy_nameText(nullptr), enemy_levelText(nullptr), enemy_healthText(nullptr),
-        vsText(nullptr)
+        vsText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr)
     {
     }
 
@@ -21,6 +21,9 @@ namespace Battle
         delete enemy_levelText;
         delete enemy_healthText;
         delete vsText;
+        delete player_ppBarBack;
+        delete player_ppBarFront;
+        delete player_ppText;
     }
 
     void BattleUI::setup(const Character& playerChar, const Character& enemyChar)
@@ -64,6 +67,25 @@ namespace Battle
         player_healthText = new sf::Text(font, "", GlobalSettings::FONT_SIZE);
         player_healthText->setFillColor(sf::Color::White);
         player_healthText->setPosition(sf::Vector2f(55, 220));
+
+        // --- Player Ultimate Points (PP) UI ---
+        // BARRA PP TRASERA
+        player_ppBarBack = new sf::RectangleShape(sf::Vector2f(200, 15));
+        player_ppBarBack->setFillColor(sf::Color::Black);
+        player_ppBarBack->setOutlineColor(sf::Color::White);
+        player_ppBarBack->setOutlineThickness(1);
+        player_ppBarBack->setPosition(sf::Vector2f(50, 260)); // Below health bar
+
+        // BARRA PP DELANTERA
+        player_ppBarFront = new sf::RectangleShape(sf::Vector2f(0, 15)); // Starts empty
+        player_ppBarFront->setFillColor(sf::Color::Blue);
+        player_ppBarFront->setPosition(sf::Vector2f(50, 260));
+
+        // TEXTO PP
+        player_ppText = new sf::Text(font, "PP: 0/10", GlobalSettings::FONT_SIZE - 5);
+        player_ppText->setFillColor(sf::Color::White);
+        player_ppText->setPosition(sf::Vector2f(55, 260));
+
 
         // --- Enemy UI ---
         // TEXTO NOMBRE ENEMIGO
@@ -113,6 +135,11 @@ namespace Battle
         window.draw(player_healthBarFront);
         if (player_healthText) window.draw(*player_healthText);
 
+        // Draw Player Ultimate Points (PP) UI
+        if (player_ppBarBack) window.draw(*player_ppBarBack);
+        if (player_ppBarFront) window.draw(*player_ppBarFront);
+        if (player_ppText) window.draw(*player_ppText);
+
         // Draw Enemy UI
         if (enemy_nameText) window.draw(*enemy_nameText);
         if(enemy_levelText) window.draw(*enemy_levelText);
@@ -140,5 +167,18 @@ namespace Battle
     void BattleUI::updatePlayerLevelText(int newLevel)
     {
         if (player_levelText) player_levelText->setString("Nv " + std::to_string(newLevel));
+    }
+
+    void BattleUI::updatePlayerUltimatePoints(int currentPP)
+    {
+        if (player_ppBarFront)
+        {
+            float ppRatio = static_cast<float>(currentPP) / 10.0f; // Max PP is 10
+            player_ppBarFront->setSize(sf::Vector2f(200 * ppRatio, 15));
+        }
+        if (player_ppText)
+        {
+            player_ppText->setString("PP: " + std::to_string(currentPP) + "/10");
+        }
     }
 } // namespace Battle

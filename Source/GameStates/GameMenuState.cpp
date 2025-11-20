@@ -1,7 +1,8 @@
 #include "GameMenuState.h"
 #include "../GameController.h"
-#include "../GameStates/MainMenuState.h" // Assuming we transition back to main menu or similar
 #include "../GameStates/BattleState.h" // Assuming we transition to battle state
+#include "../GameStates/GameOverState.h" // For transitioning to GameOverState
+#include "../GameStates/MainMenuState.h" // Assuming we transition back to main menu or similar
 #include "../Character/Character.h" // Include Character for creating instances
 #include "../Character/Player.h" // Include Player for creating instances
 #include "../Character/BaseCharacter.h" // Include BaseCharacter for creating instances
@@ -73,7 +74,7 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     break;
                 case 2: // Comprar trofeo (1000 puntos)
                     cout << "Seleccionado: Comprar trofeo (1000 puntos)" << endl;
-                    // TODO: Implement trophy purchase logic
+                    owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won
                     break;
                 case 3: // Salir
                     cout << "Seleccionado: Salir. Volviendo al menu principal." << endl;

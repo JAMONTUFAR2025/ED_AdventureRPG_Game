@@ -1,6 +1,7 @@
 #include "BattleState.h"
 #include "../GameController.h"
 #include "../GameStates/GameMenuState.h" // For transitioning back to game menu
+#include "../GameStates/GameOverState.h" // For transitioning to GameOverState
 #include <iostream>
 
 BattleState::BattleState(GameController& owner, Player* player, Character enemy)
@@ -35,6 +36,14 @@ void BattleState::update(GameController* owner)
         battleSystem->update();
         if (battleSystem->isBattleOver())
         {
+            if(battleSystem->getPlayer()->getCharacter().getCurrentHealth() <= 0)
+            {
+                std::cout << "Player has been defeated!" << std::endl;
+                owner->stateMachine.changeState(new GameOverState(true)); // true indicates the game is lost
+                return; 
+            }
+            
+            std::cout << "Battle is over, returning to GameMenuState." << std::endl;
             owner->stateMachine.changeState(new GameMenuState());
             return; 
         }

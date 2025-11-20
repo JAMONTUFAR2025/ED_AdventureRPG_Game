@@ -44,6 +44,7 @@ namespace Battle
         
         void updateHealthBars(const Character& playerChar, const Character& enemyChar);
         void updatePlayerLevelText(int newLevel);
+        void updatePlayerUltimatePoints(int currentPP);
 
         const sf::Text& getPlayerNameText() const { return *player_nameText; }
         const sf::Text& getEnemyNameText() const { return *enemy_nameText; }
