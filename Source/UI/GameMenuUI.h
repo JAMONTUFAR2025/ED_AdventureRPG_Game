@@ -28,6 +28,8 @@ private:
     vector<Text*> optionTexts;
     /* Descripciones de las opciones */
     vector<string> optionDescriptions;
+    /* Vector de textos para los controles */
+    vector<Text*> controlsTexts;
 
     /* Cuadro de dialogo para descripciones */
     DialogBox descriptionBox;

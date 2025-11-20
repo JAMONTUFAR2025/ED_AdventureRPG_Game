@@ -23,8 +23,18 @@ GameOverUI::~GameOverUI()
         // Libera la memoria asignada de cada opcion
         delete option;
     }
+
+    // Para cada control
+    for(Text* control : controlsTexts)
+    {
+        // Libera la memoria asignada de cada control
+        delete control;
+    }
+
     // Limpia el vector de opciones
     optionTexts.clear();
+    // Limpia el vector de controles
+    controlsTexts.clear();
 }
 /* Configuracion inicial de la UI del Menu de Game Over */
 void GameOverUI::setup(bool isGameLost)
@@ -61,6 +71,29 @@ void GameOverUI::setup(bool isGameLost)
         optionTexts.push_back(option);
     }
 
+    // Lista de controles
+    vector<string> controls = {
+        "W / S - Cambiar opcion.",
+        "E - Seleccionar opcion."
+    };
+
+    float startX = 70.0f;
+    float startY = 550.0f;
+    float spacing = 330.0f;
+
+    // Creamos los textos para cada control
+    for (int i = 0; i < controls.size(); i++)
+    {
+        // Creamos un nuevo texto para el control en puntero
+        Text* control = new Text(font, controls[i], GlobalSettings::FONT_SIZE);
+        // Color blanco por defecto
+        control->setFillColor(Color::White);
+
+        control->setPosition(Vector2f(startX + i * spacing, startY));
+        // Agregamos el control al vector de controles
+        controlsTexts.push_back(control);
+    }
+
     descriptionBox.setup(700.0f, 150.0f, 50, 380);
 }
 
@@ -94,6 +127,13 @@ void GameOverUI::draw(RenderWindow& window, int currentSelectedOption)
         // Restauramos la cadena original para evitar modificaciones permanentes
         optionTexts[i]->setString(originalString);
     }
+
+    // Dibuja los controles
+    for (Text* control : controlsTexts)
+    {
+        window.draw(*control);
+    }
+
     descriptionBox.draw(window);
 }
 

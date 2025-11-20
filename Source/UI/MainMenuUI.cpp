@@ -60,12 +60,6 @@ void MainMenuUI::setup(GameController* owner)
     // Lista de opciones
     vector<string> options = {"Nueva partida", "Salir"};
 
-    // Lista de controles
-    vector<string> controls = {
-        "W / S - Cambiar opcion.",
-        "E - Seleccionar opcion."
-    };
-
     // Creamos los textos para cada opcion
     for (int i = 0; i < options.size(); i++)
     {
@@ -78,6 +72,12 @@ void MainMenuUI::setup(GameController* owner)
         // Agregamos la opcion al vector de opciones
         optionTexts.push_back(option);
     }
+
+    // Lista de controles
+    vector<string> controls = {
+        "W / S - Cambiar opcion.",
+        "E - Seleccionar opcion."
+    };
 
     float startX = 70.0f;
     float startY = 550.0f;
