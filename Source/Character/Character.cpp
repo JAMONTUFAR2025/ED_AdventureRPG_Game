@@ -63,7 +63,7 @@ void Character::heal(int amount)
 
 const BaseCharacter& Character::getBaseCharacter() const { return base; }
 
-void Character::setLevel(int newLevel) { level = newLevel; calculateStats(); }
+void Character::setLevel(int newLevel) { level = newLevel; }
 int Character::getLevel() const { return level; }
 int Character::getMaxHealth() const { return maxHealth; }
 int Character::getAttack() const { return attack; }

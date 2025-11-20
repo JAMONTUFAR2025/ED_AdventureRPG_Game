@@ -26,6 +26,8 @@ namespace Battle
     private:
         bool battleIsOver;
         bool isPlayerGuarding;
+
+        bool hasHealthBarUpdated;
         bool hasPlayerLeveledUp;
     public:
         GameController* owner;
@@ -58,12 +60,14 @@ namespace Battle
         bool isBattleOver() const;
         void endBattle();
 
-        bool getPlayerGuarding() const { return isPlayerGuarding; }
-        void setPlayerGuarding(bool guarding) { isPlayerGuarding = guarding; }
+        bool getPlayerGuarding() const;
+        void setPlayerGuarding(bool guarding);
 
-        bool getHasPlayerLeveledUp() const { return hasPlayerLeveledUp; }
-        void setHasPlayerLeveledUp(bool leveledUp) { hasPlayerLeveledUp = leveledUp; }
+        bool getHasHealthBarUpdated() const;
+        void setHasHealthBarUpdated(bool updated);
 
+        bool getHasPlayerLeveledUp() const;
+        void setHasPlayerLeveledUp(bool leveledUp);
 
     };
 } // namespace Battle

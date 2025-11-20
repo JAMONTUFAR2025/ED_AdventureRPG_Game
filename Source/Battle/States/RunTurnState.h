@@ -27,13 +27,17 @@ namespace Battle
             ENEMY_ACTION,
             PLAYER_CHECK,
             FINISH_TURN,
-            BATTLE_END
+            SHOW_EXP_RESULTS,
+            SHOW_LEVEL_UP_RESULTS,
+            FINALIZE_BATTLE
         };
         
         TurnStep currentStep;
         BattleSystem* battleSystemOwner = nullptr;
         BattleResult result;
-        bool finalMessageQueued;
+        bool expMessageQueued;
+
+        bool levelUpOccurred;
             
     public:
         RunTurnState();

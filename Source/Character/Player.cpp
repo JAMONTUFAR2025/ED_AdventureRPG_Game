@@ -21,7 +21,11 @@ void Player::gainExperience(int amount)
 
 void Player::levelUp()
 {
+    int oldHealth = playerCharacter.getMaxHealth();
     playerCharacter.setLevel(playerCharacter.getLevel() + 1);
+    playerCharacter.calculateStats();
+    int healthDifference = playerCharacter.getMaxHealth() - oldHealth;
+    playerCharacter.setCurrentHealth(playerCharacter.getCurrentHealth() + healthDifference);
 }
 
 

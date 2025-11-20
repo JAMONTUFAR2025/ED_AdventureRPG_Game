@@ -42,7 +42,13 @@ namespace Battle
     {
         dialogManager.update();
         stateMachine.update();
-        battleUI.updateHealthBars(player->getCharacter(), enemy); // Keep health bars updated
+
+        // Actualizar las barras de vida si es necesario
+        if(hasHealthBarUpdated)
+        {
+            battleUI.updateHealthBars(player->getCharacter(), enemy);
+            hasHealthBarUpdated = false;
+        }
         
         // Cambiar el texto de subida de nivel
         if(hasPlayerLeveledUp)
@@ -67,5 +73,35 @@ namespace Battle
     void BattleSystem::endBattle()
     {
         battleIsOver = true;
+    }
+
+    bool BattleSystem::getPlayerGuarding() const
+    {
+        return isPlayerGuarding;
+    }
+
+    void BattleSystem::setPlayerGuarding(bool guarding)
+    {
+        isPlayerGuarding = guarding;
+    }
+
+    bool BattleSystem::getHasHealthBarUpdated() const
+    {
+        return hasHealthBarUpdated;
+    }
+
+    void BattleSystem::setHasHealthBarUpdated(bool updated)
+    {
+        hasHealthBarUpdated = updated;
+    }
+
+    bool BattleSystem::getHasPlayerLeveledUp() const
+    {
+        return hasPlayerLeveledUp;
+    }
+
+    void BattleSystem::setHasPlayerLeveledUp(bool leveledUp)
+    {
+        hasPlayerLeveledUp = leveledUp;
     }
 } // namespace Battle
