@@ -26,6 +26,7 @@ namespace Battle
     private:
         bool battleIsOver;
         bool isPlayerGuarding;
+        bool hasPlayerLeveledUp;
     public:
         GameController* owner;
         StateMachine<BattleSystem> stateMachine;
@@ -59,6 +60,10 @@ namespace Battle
 
         bool getPlayerGuarding() const { return isPlayerGuarding; }
         void setPlayerGuarding(bool guarding) { isPlayerGuarding = guarding; }
+
+        bool getHasPlayerLeveledUp() const { return hasPlayerLeveledUp; }
+        void setHasPlayerLeveledUp(bool leveledUp) { hasPlayerLeveledUp = leveledUp; }
+
 
     };
 } // namespace Battle

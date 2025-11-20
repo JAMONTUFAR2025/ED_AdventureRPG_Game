@@ -38,6 +38,7 @@ namespace Battle
         void draw(sf::RenderWindow& window, int selectedOption);
         
         void updateHealthBars(const Character& playerChar, const Character& enemyChar);
+        void updatePlayerLevelText(int newLevel);
 
         const sf::Text& getPlayerNameText() const { return *player_nameText; }
         const sf::Text& getEnemyNameText() const { return *enemy_nameText; }

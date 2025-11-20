@@ -153,13 +153,23 @@ namespace Battle
                 if (!finalMessageQueued)
                 {
                     int expGained;
-                    
+                    int oldLevel, newLevel;
                     switch(result)
                     {
                         case BattleResult::Victory:
                             expGained = owner->getEnemy().getBaseCharacter().getExpYield();
-                            owner->getPlayer()->gainExperience(expGained);
+                            
                             messages.push("Victory!\n\nPlayer gained " + std::to_string(expGained) + " EXP!");
+
+                            oldLevel = owner->getPlayer()->getCharacter().getLevel();
+                            owner->getPlayer()->gainExperience(expGained);
+                            newLevel = owner->getPlayer()->getCharacter().getLevel();
+
+                            if (newLevel > oldLevel)
+                            {
+                                messages.push("Player leveled up to level " + std::to_string(newLevel) + "!");
+                                owner->setHasPlayerLeveledUp(true);
+                            }
                             break;
                         case BattleResult::Defeat:
                             messages.push("Defeat!");

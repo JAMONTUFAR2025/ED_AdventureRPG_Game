@@ -136,4 +136,9 @@ namespace Battle
         enemy_healthBarFront.setSize(sf::Vector2f(200 * enemyHealthRatio, 30));
         if (enemy_healthText) enemy_healthText->setString("PS: " + std::to_string(enemyChar.getCurrentHealth()) + "/" + std::to_string(enemyChar.getMaxHealth()));
     }
+
+    void BattleUI::updatePlayerLevelText(int newLevel)
+    {
+        if (player_levelText) player_levelText->setString("Nv " + std::to_string(newLevel));
+    }
 } // namespace Battle

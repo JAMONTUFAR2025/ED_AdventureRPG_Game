@@ -6,7 +6,7 @@
 namespace Battle
 {
     BattleSystem::BattleSystem(GameController* owner, Player* playerCharacter, const Character& enemyCharacter)
-        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false)
+        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false), hasPlayerLeveledUp(false)
     {
     }
 
@@ -43,6 +43,13 @@ namespace Battle
         dialogManager.update();
         stateMachine.update();
         battleUI.updateHealthBars(player->getCharacter(), enemy); // Keep health bars updated
+        
+        // Cambiar el texto de subida de nivel
+        if(hasPlayerLeveledUp)
+        {
+            battleUI.updatePlayerLevelText(player->getCharacter().getLevel());
+            hasPlayerLeveledUp = false;
+        }
     }
 
     void BattleSystem::draw(sf::RenderWindow& window)
