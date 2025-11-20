@@ -34,11 +34,11 @@ void MainMenuState::handleEvent(GameController* owner, Event event)
     if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
         // Navegacion por las opciones del menu
-        if (keyPressed->code == Keyboard::Key::Up || keyPressed->code == Keyboard::Key::Down)
+        if (keyPressed->code == Keyboard::Key::W || keyPressed->code == Keyboard::Key::S)
         {
             selectedOption = selectedOption == 0 ? 1 : 0;
         }
-        else if (keyPressed->code == Keyboard::Key::Z)
+        else if (keyPressed->code == Keyboard::Key::E)
         {
             if (selectedOption == 0)
             {

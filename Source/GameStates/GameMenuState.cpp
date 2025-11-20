@@ -52,7 +52,7 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
         // Si hay un dialogo activo, se avanza el dialogo
         if (owner->getDialogManager()->isActive())
         {
-            if (keyPressed->code == Keyboard::Key::Z)
+            if (keyPressed->code == Keyboard::Key::E)
             {
                 owner->getDialogManager()->nextLine();
             }
@@ -60,17 +60,17 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
         }
 
         // Navegacion por las opciones del menu
-        if (keyPressed->code == Keyboard::Key::Up)
+        if (keyPressed->code == Keyboard::Key::W)
         {
             selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
         
         }
-        else if (keyPressed->code == Keyboard::Key::Down)
+        else if (keyPressed->code == Keyboard::Key::S)
         {
             selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
         
         }
-        else if (keyPressed->code == Keyboard::Key::Z)
+        else if (keyPressed->code == Keyboard::Key::E)
         {
             Player* player = owner->getPlayer();
             if (!player)
@@ -120,9 +120,9 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                 {
                     cout << "Seleccionado: Comprar trofeo." << endl;
                     std::queue<std::string> dialogQueue;
-                    if(player->getPoints() >= 1000)
+                    if(player->getPoints() >= 200)
                     {
-                        player->gainPoints(-1000);
+                        player->gainPoints(-200);
                         owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won
                     }
                     else

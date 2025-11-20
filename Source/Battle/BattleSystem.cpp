@@ -28,7 +28,7 @@ namespace Battle
     {
         if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
-            if (keyPressed->code == sf::Keyboard::Key::Z)
+            if (keyPressed->code == sf::Keyboard::Key::E)
             {
                 if (dialogManager.isActive())
                 {

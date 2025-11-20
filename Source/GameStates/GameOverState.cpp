@@ -30,7 +30,7 @@ void GameOverState::handleEvent(GameController* owner, Event event)
     // Verificamos si el evento es de tipo KeyPressed
     if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
-        if (keyPressed->code == Keyboard::Key::Z)
+        if (keyPressed->code == Keyboard::Key::E)
         {
             cout<<"Seleccionado opcion: " << selectedOption << endl;
             owner->destroyPlayer(); // Destruye el jugador actual

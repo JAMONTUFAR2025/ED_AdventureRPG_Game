@@ -11,10 +11,10 @@
 GameMenuUI::GameMenuUI() : playerChar(nullptr), player_nameText(nullptr), player_levelText(nullptr), player_healthText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr), expNextLevel(nullptr), playerPointsText(nullptr)
 {
     // Inicializar descripciones
-    optionDescriptions.push_back("Inicias un combate contra enemigos salvajes.");
-    optionDescriptions.push_back("Restaura todos tus puntos de salud.\nCosto: 10 puntos de jugador.");
-    optionDescriptions.push_back("Compra un trofeo para ganar el juego y terminar la partida actual.\nCosto: 100 puntos de jugador.");
-    optionDescriptions.push_back("Regresar al menu principal y terminar la partida actual.");
+    optionDescriptions.push_back("Inicias un combate contra enemigos salvajes. \nEstos siempre estan igualados a tu nivel. \nGana experiencia y puntos de jugador.");
+    optionDescriptions.push_back("Medicina en forma de spray que cura heridas. \nRestaura todos tus puntos de salud.\nCosto: 10 puntos de jugador.");
+    optionDescriptions.push_back("Compra un trofeo para ganar el juego. \nTermina la partida actual.\nCosto: 200 puntos de jugador.");
+    optionDescriptions.push_back("Regresar al menu principal. \nTermina la partida actual. \nADVERTENCIA: Esta accion no se puede deshacer.");
 }
 
 /**

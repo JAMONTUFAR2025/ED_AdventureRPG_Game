@@ -22,16 +22,16 @@ namespace Battle
     {
         if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
-            if (keyPressed->code == sf::Keyboard::Key::Left)
+            if (keyPressed->code == sf::Keyboard::Key::A)
             {
                 selectedOption = (selectedOption - 1 + 4) % 4; // 4 is the number of options
 
             }
-            else if (keyPressed->code == sf::Keyboard::Key::Right)
+            else if (keyPressed->code == sf::Keyboard::Key::D)
             {
                 selectedOption = (selectedOption + 1) % 4; // 4 is the number of options
             }
-            else if (keyPressed->code == sf::Keyboard::Key::Z)
+            else if (keyPressed->code == sf::Keyboard::Key::E)
             {
                 switch (selectedOption)
                 {
