@@ -6,9 +6,9 @@ CharacterDB::CharacterDB()
     baseCharacters.push_back(BaseCharacter("Jugador", 100, 50, 10, 0, 0));
     baseCharacters.push_back(BaseCharacter("Zombi", 60, 20, 20, 5, 5));
     baseCharacters.push_back(BaseCharacter("Duende", 80, 30, 15, 7, 7));
-    baseCharacters.push_back(BaseCharacter("Fenix", 10, 35, 20, 10, 10));
-    baseCharacters.push_back(BaseCharacter("Quimera", 120, 30, 15, 12, 15));
-    baseCharacters.push_back(BaseCharacter("Dragon", 200, 50, 20, 15, 20));
+    baseCharacters.push_back(BaseCharacter("Fenix", 100, 35, 20, 10, 10));
+    baseCharacters.push_back(BaseCharacter("Quimera", 120, 30, 20, 12, 15));
+    baseCharacters.push_back(BaseCharacter("Dragon", 200, 50, 20, 15, 40));
 }
 
 BaseCharacter CharacterDB::getPlayerBaseCharacter() const

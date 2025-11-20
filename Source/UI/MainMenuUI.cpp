@@ -10,8 +10,8 @@
 MainMenuUI::MainMenuUI()
 {
     // Inicializar descripciones
-    optionDescriptions.push_back("Inicia una nueva aventura.");
-    optionDescriptions.push_back("Cierra el juego.");
+    optionDescriptions.push_back("Inicia una nueva aventura.\n\nCreado por: Josue Alejandro Montufar Zuniga");
+    optionDescriptions.push_back("Cierra el juego.\n\nCreado por: Josue Alejandro Montufar Zuniga");
 }
 
 /**

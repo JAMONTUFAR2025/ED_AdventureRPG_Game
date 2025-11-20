@@ -43,7 +43,7 @@ void GameOverUI::setup(bool isGameLost)
 
     // TITULO
     titleBox.setup(700.0f, 100.0f, (GlobalSettings::SCREEN_WIDTH - 700) / 2, 20, Color::Red, 2);
-    titleBox.setText(isGameLost ? "Has Perdido!" : "Has Ganado!");
+    titleBox.setText(isGameLost ? "Uy, has perdido!" : "Felicidades, has ganado! ");
 
     // Lista de opciones
     vector<string> options = {"Salir"};

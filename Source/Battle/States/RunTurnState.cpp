@@ -80,7 +80,7 @@ namespace Battle
                         if (owner->getPlayer()->getUltimatePoints() >= 5)
                         {
                             owner->getPlayer()->useUltimate(5);
-                            playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  200, isCritical);
+                            playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  150, isCritical);
                             messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un poderoso ataque definitivo! \nDanio infligido: " + std::to_string(playerDamage));
                             if(isCritical) messages.push("Un golpe critico devastador!");
                         }
