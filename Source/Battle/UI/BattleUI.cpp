@@ -78,14 +78,14 @@ namespace Battle
 
         // BARRA PP DELANTERA
         player_ppBarFront = new sf::RectangleShape(sf::Vector2f(0, 10)); // Starts empty
-        player_ppBarFront->setFillColor(sf::Color::Blue);
+        player_ppBarFront->setFillColor(sf::Color::Cyan);
         player_ppBarFront->setPosition(sf::Vector2f(50, 205));
 
         // TEXTO PP
         if (player_ppText) delete player_ppText;
         player_ppText = new sf::Text(font, "PP: 0/10", GlobalSettings::FONT_SIZE);
-        player_ppText->setFillColor(sf::Color::Blue);
-        player_ppText->setPosition(sf::Vector2f(55, 215));
+        player_ppText->setFillColor(sf::Color::Cyan);
+        player_ppText->setPosition(sf::Vector2f(165, 220));
 
 
         // --- Enemy UI ---
