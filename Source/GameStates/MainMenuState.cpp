@@ -43,6 +43,7 @@ void MainMenuState::handleEvent(GameController* owner, Event event)
             if (selectedOption == 0)
             {
                 cout<<"Selected: Jugar"<<endl;
+                owner->createPlayer();
                 owner->stateMachine.changeState(new GameMenuState());
             }
             else if (selectedOption == 1)

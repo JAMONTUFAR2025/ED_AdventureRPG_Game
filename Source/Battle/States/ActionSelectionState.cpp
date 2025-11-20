@@ -13,7 +13,7 @@ namespace Battle
     {
         this->battleSystemOwner = owner;
         std::cout << "Entering ActionSelectionState" << std::endl;
-        this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer().getCharacter(), this->battleSystemOwner->getEnemy()); // Setup BattleUI with current characters
+        this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer()->getCharacter(), this->battleSystemOwner->getEnemy()); // Setup BattleUI with current characters
         actionSelectionUI.setup();
     }
 

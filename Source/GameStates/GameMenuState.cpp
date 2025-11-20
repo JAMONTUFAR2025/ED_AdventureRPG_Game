@@ -51,14 +51,18 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                 case 0: // Explorar
                 {
                     cout << "Seleccionado: Explorar" << endl;
-                    Player playerChar(100); // BaseCharacter, initialLevel
+                    Player* player = owner->getPlayer();
+                    if (!player)
+                    {
+                        cout << "Error: Player not found!" << endl;
+                        break;
+                    }
                     
-
                     // Create placeholder enemy character
                     BaseCharacter enemyBase("Enemigo", 50, 8, 2, 20); // Name, MaxHealth, Attack, Defense, ExpYield
-                    Character enemyChar(enemyBase, 100); // BaseCharacter, initialLevel
+                    Character enemyChar(enemyBase, 1); // BaseCharacter, initialLevel
 
-                    owner->stateMachine.changeState(new BattleState(*owner, playerChar, enemyChar));
+                    owner->stateMachine.changeState(new BattleState(*owner, player, enemyChar));
                     break;
                 }
                 case 1: // Comprar pocion de curacion (10 puntos)
@@ -70,7 +74,8 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     // TODO: Implement trophy purchase logic
                     break;
                 case 3: // Salir
-                    cout << "Seleccionado: Salir. Cerrando juego." << endl;
+                    cout << "Seleccionado: Salir. Volviendo al menu principal." << endl;
+                    owner->destroyPlayer();
                     owner->stateMachine.changeState(new MainMenuState());
                     break;
             }

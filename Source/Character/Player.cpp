@@ -11,7 +11,7 @@ Player::Player(int initialLevel)
 void Player::gainExperience(int amount)
 {
     currentExp += amount;
-    int expToLevelUp = playerCharacter.getLevel() * 100;
+    int expToLevelUp = playerCharacter.getLevel() * 10;
     if (currentExp >= expToLevelUp)
     {
         currentExp -= expToLevelUp;

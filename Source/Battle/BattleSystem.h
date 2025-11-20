@@ -30,21 +30,21 @@ namespace Battle
         GameController* owner;
         StateMachine<BattleSystem> stateMachine;
 
-        Player player;
+        Player* player;
         Character enemy;
         BattleUI battleUI; // UI for the battle
         DialogManager dialogManager;
 
         ActionType chosenAction; // Stores the player's chosen action
 
-        BattleSystem(GameController* owner, const Player& playerCharacter, const Character enemyCharacter);
+        BattleSystem(GameController* owner, Player* playerCharacter, const Character& enemyCharacter);
 
         void startBattle();
         void handleEvent(sf::Event event);
         void update();
         void draw(sf::RenderWindow& window);
 
-        Player& getPlayer() { return player; }
+        Player* getPlayer() { return player; }
         Character& getEnemy() { return enemy; }
         BattleUI& getBattleUI() { return battleUI; }
         DialogManager& getDialogManager() { return dialogManager; }

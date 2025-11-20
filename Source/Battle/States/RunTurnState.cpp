@@ -20,8 +20,7 @@ namespace Battle
         this->battleSystemOwner = owner;
         currentStep = TurnStep::START;
         owner->setPlayerGuarding(false); // Reset guard status at the start of the turn
-        owner->getPlayer().setDefenseMultiplier(1.0f); // Reset defense multiplier
-        std::cout << "[DEBUG] RunTurnState::enter - Defense multiplier reset to: " << owner->getPlayer().getDefenseMultiplier() << std::endl;
+        owner->getPlayer()->setDefenseMultiplier(1.0f); // Reset defense multiplier
     }
 
     void RunTurnState::handleEvent(BattleSystem* owner, sf::Event event)
@@ -58,8 +57,8 @@ namespace Battle
                 switch (owner->getChosenAction())
                 {
                     case ActionType::Fight:
-                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer().getCharacter(), owner->getEnemy().getDefense(), 10, isCritical);
-                        messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
+                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 10, isCritical);
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
 
                         if(isCritical)
                         {
@@ -68,17 +67,17 @@ namespace Battle
 
                         break;
                     case ActionType::Special:
-                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer().getCharacter(), owner->getEnemy().getDefense(),  50, isCritical);
-                        messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " uses a special move and it deals " + std::to_string(playerDamage) + "!");
+                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  50, isCritical);
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " uses a special move and it deals " + std::to_string(playerDamage) + "!");
                         if(isCritical)
                         {
                             messages.push("A critical hit!");
                         }
                         break;
                     case ActionType::Guard:
-                        messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
                         owner->setPlayerGuarding(true);
-                        owner->getPlayer().setDefenseMultiplier(2.0f); // Double defense for this turn
+                        owner->getPlayer()->setDefenseMultiplier(2.0f); // Double defense for this turn
                         break;
                     case ActionType::Escape:
                         messages.push("Escaped successfully!");
@@ -120,7 +119,7 @@ namespace Battle
                 }
 
                 // --- Enemy Action Execution (Simple AI: always attack) ---
-                int enemyDamage = owner->getPlayer().getCharacter().takeDamage(owner->getEnemy(), owner->getPlayer().getDefense(), 10, isCritical);
+                int enemyDamage = owner->getPlayer()->getCharacter().takeDamage(owner->getEnemy(), owner->getPlayer()->getDefense(), 10, isCritical);
                 
                 messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
                 if(isCritical)
@@ -133,9 +132,9 @@ namespace Battle
             }
 
             case TurnStep::PLAYER_CHECK:
-                if (owner->getPlayer().getCharacter().getCurrentHealth() <= 0)
+                if (owner->getPlayer()->getCharacter().getCurrentHealth() <= 0)
                 {
-                    messages.push(owner->getPlayer().getCharacter().getBaseCharacter().getName() + " defeated!");
+                    messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " defeated!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     result = BattleResult::Defeat;
                     currentStep = TurnStep::BATTLE_END;
@@ -145,7 +144,7 @@ namespace Battle
                 break;
 
             case TurnStep::FINISH_TURN:
-                owner->getPlayer().setDefenseMultiplier(1.0f); // Reset defense multiplier after turn
+                owner->getPlayer()->setDefenseMultiplier(1.0f); // Reset defense multiplier after turn
                 owner->setPlayerGuarding(false); // Reset guarding status after turn
                 owner->getStateMachine().changeState(new ActionSelectionState());
                 break;
@@ -159,7 +158,7 @@ namespace Battle
                     {
                         case BattleResult::Victory:
                             expGained = owner->getEnemy().getBaseCharacter().getExpYield();
-                            owner->getPlayer().gainExperience(expGained);
+                            owner->getPlayer()->gainExperience(expGained);
                             messages.push("Victory!\n\nPlayer gained " + std::to_string(expGained) + " EXP!");
                             break;
                         case BattleResult::Defeat:

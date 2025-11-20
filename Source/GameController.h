@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Util/StateMachine/StateMachine.h"
+#include "Character/Player.h"
 
 using namespace std;
 using namespace sf;
@@ -14,6 +15,9 @@ using namespace sf;
 class GameController
 {
 private:
+    /* Personaje del jugador */
+    Player* player;
+
     /* Para manejar las entradas */
     void processEvents();
     /* Para dibujar en la ventana */
@@ -30,6 +34,11 @@ public:
 
     /* Metodo para iniciar el bucle del juego */
     void runGameLoop();
+
+    /* Metodos para manejar el ciclo de vida del jugador */
+    void createPlayer();
+    void destroyPlayer();
+    Player* getPlayer();
 };
 
 #endif // GAMECONTROLLER_H

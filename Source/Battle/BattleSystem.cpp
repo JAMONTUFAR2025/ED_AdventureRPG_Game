@@ -5,18 +5,18 @@
 
 namespace Battle
 {
-    BattleSystem::BattleSystem(GameController* owner, const Player& playerCharacter, const Character enemyCharacter)
+    BattleSystem::BattleSystem(GameController* owner, Player* playerCharacter, const Character& enemyCharacter)
         : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false)
     {
     }
 
     void BattleSystem::startBattle()
     {
-        std::cout << "Battle started! Player: " << player.getCharacter().getBaseCharacter().getName()
+        std::cout << "Battle started! Player: " << player->getCharacter().getBaseCharacter().getName()
                   << " vs Enemy: " << enemy.getBaseCharacter().getName() << std::endl;
         
-        battleUI.setup(player.getCharacter(), enemy); // Setup the battle UI
-        battleUI.updateHealthBars(player.getCharacter(), enemy); // Initial health bar update
+        battleUI.setup(player->getCharacter(), enemy); // Setup the battle UI
+        battleUI.updateHealthBars(player->getCharacter(), enemy); // Initial health bar update
 
         // Set the initial state for the battle (e.g., player selects action)
         stateMachine.changeState(new ActionSelectionState());
@@ -42,7 +42,7 @@ namespace Battle
     {
         dialogManager.update();
         stateMachine.update();
-        battleUI.updateHealthBars(player.getCharacter(), enemy); // Keep health bars updated
+        battleUI.updateHealthBars(player->getCharacter(), enemy); // Keep health bars updated
     }
 
     void BattleSystem::draw(sf::RenderWindow& window)

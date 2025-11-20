@@ -17,7 +17,7 @@ class BattleState : public IState<GameController>
 private:
     Battle::BattleSystem* battleSystem; // The battle system instance
     // Player and Enemy characters (can be passed to BattleSystem from GameController)
-    Player player;
+    Player* player;
     Character enemyCharacter;
 
 public:
@@ -26,7 +26,7 @@ public:
      * @param player The player's Character object.
      * @param enemy The enemy's Character object.
      */
-    BattleState(GameController& owner, Player& player, Character enemy);
+    BattleState(GameController& owner, Player* player, Character enemy);
     ~BattleState();
 
     void enter(GameController* owner) override;

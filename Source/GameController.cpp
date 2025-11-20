@@ -15,6 +15,8 @@ GameController::GameController() : window(VideoMode({GlobalSettings::SCREEN_WIDT
     window.setMouseCursorVisible(false);
     /* Inicializa el estado del menu principal */
     stateMachine.push(new MainMenuState());
+    // Inicializa el puntero del jugador
+    player = nullptr;
 }
 
 /* Inicia el bucle del juego */
@@ -53,4 +55,29 @@ void GameController::render()
     // Dibujamos el estado actual de la maquina de estados
     stateMachine.draw(window);
     window.display();
+}
+
+/* Crea una instancia del jugador */
+void GameController::createPlayer()
+{
+    if (!player)
+    {
+        player = new Player();
+    }
+}
+
+/* Destruye la instancia del jugador */
+void GameController::destroyPlayer()
+{
+    if (player)
+    {
+        delete player;
+        player = nullptr;
+    }
+}
+
+/* Obtiene la instancia del jugador */
+Player* GameController::getPlayer()
+{
+    return player;
 }
