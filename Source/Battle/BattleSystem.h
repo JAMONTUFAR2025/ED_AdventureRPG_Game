@@ -42,39 +42,39 @@ namespace Battle
 
         ActionType chosenAction; // Stores the player's chosen action
 
-        BattleSystem(GameController* owner, Player* playerCharacter, const Character& enemyCharacter);
+        BattleSystem(GameController* owner, Player* playerCharacter, Character& enemyCharacter);
 
         void startBattle();
         void handleEvent(sf::Event event);
         void update();
-        void draw(sf::RenderWindow& window);
+        void draw(sf::RenderWindow& window, bool isDialogActive);
 
         Player* getPlayer() { return player; }
         Character& getEnemy() { return enemy; }
         BattleUI& getBattleUI() { return battleUI; }
         DialogManager& getDialogManager() { return dialogManager; }
         
-        ActionType getChosenAction() const { return chosenAction; }
+        ActionType getChosenAction() { return chosenAction; }
         void setChosenAction(ActionType action) { chosenAction = action; }
         
         StateMachine<BattleSystem>& getStateMachine() { return stateMachine; }
 
-        bool getBattleStarted() const;
+        bool getBattleStarted();
         void setBattleStarted(bool started);
 
-        bool isBattleOver() const;
+        bool isBattleOver();
         void endBattle();
 
-        bool getPlayerGuarding() const;
+        bool getPlayerGuarding();
         void setPlayerGuarding(bool guarding);
 
-        bool getHasHealthBarUpdated() const;
+        bool getHasHealthBarUpdated();
         void setHasHealthBarUpdated(bool updated);
 
-        bool getHasPlayerLeveledUp() const;
+        bool getHasPlayerLeveledUp();
         void setHasPlayerLeveledUp(bool leveledUp);
 
-        bool getHasUltimatePointsUpdated() const;
+        bool getHasUltimatePointsUpdated();
         void setHasUltimatePointsUpdated(bool updated);
     };
 } // namespace Battle

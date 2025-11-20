@@ -2,15 +2,17 @@
 #define GAMEMENUUI_H
 
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include <string>
 #include "DialogBox.h"
-#include "../Character/Player.h" // Incluir la definición completa de Player
+#include "../GameController.h"
+#include "../Gameplay/GlobalSettings.h"
+#include "../Character/Player.h"
+#include <iostream>
+#include <vector>
 
 using namespace sf;
 using namespace std;
 
-// Forward declaration to avoid circular dependencies
+// Declaracion forward de GameController para evitar dependencias circulares
 class GameController;
 
 /**
@@ -21,7 +23,7 @@ class GameMenuUI
 private:
     /* Fuente */
     Font font;
-    
+    /* Caja de titulo */
     DialogBox titleBox;
 
     /* Texto de las opciones del menu */
@@ -34,23 +36,25 @@ private:
     /* Cuadro de dialogo para descripciones */
     DialogBox descriptionBox;
 
-    // --- Player HUD ---
+    /* Variables para el HUD del jugador */
     Player* playerChar;
-    sf::Text* player_nameText;
-    sf::Text* player_levelText;
-    sf::RectangleShape player_healthBarBack;
-    sf::RectangleShape player_healthBarFront;
-    sf::Text* player_healthText;
-    sf::RectangleShape* player_ppBarBack;
-    sf::RectangleShape* player_ppBarFront;
-    sf::Text* player_ppText;
+    Text* playerNameText;
+    Text* playerLevelText;
+    RectangleShape playerHealthBarBack;
+    RectangleShape playerHealthBarFront;
+    Text* playerHealthText;
+    RectangleShape* playerPpBarBack;
+    RectangleShape* playerPpBarFront;
+    Text* playerPpText;
+    Text* expNextLevel;
+    Text* playerPointsText;
 
-    sf::Text* expNextLevel;
-    sf::Text* playerPointsText;
+    /* Texto para mostrar el control para pasar al siguiente dialogo */
+    Text* dialogControlText;
 
-    sf::Text* dialogControlText; // New member for dialog control text
-
-
+    /* Actualiza el HUD del jugador */
+    void updatePlayerHUD();
+    
 public:
     /* Constructor */
     GameMenuUI();
@@ -63,9 +67,6 @@ public:
     void draw(RenderWindow& window, int selectedOption, bool isDialogActive);
     /* Actualiza la descripcion en el DialogBox segun la opcion seleccionada */
     void updateDescriptionBox(int selectedOption);
-
-private:
-    void updatePlayerHUD();
 };
 
 #endif // GAMEMENUUI_H

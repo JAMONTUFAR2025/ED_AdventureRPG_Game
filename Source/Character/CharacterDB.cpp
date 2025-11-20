@@ -11,12 +11,12 @@ CharacterDB::CharacterDB()
     baseCharacters.push_back(BaseCharacter("Dragon", 200, 50, 20, 15, 40));
 }
 
-BaseCharacter CharacterDB::getPlayerBaseCharacter() const
+BaseCharacter CharacterDB::getPlayerBaseCharacter()
 {
     return baseCharacters[0]; // Asume que el primer personaje es el jugador
 }
 
-BaseCharacter CharacterDB::getRandomBaseCharacter() const
+BaseCharacter CharacterDB::getRandomBaseCharacter()
 {
     int randomIndex = 1 + (rand() % (baseCharacters.size() - 1)); // Evita el primer personaje (jugador)
     return baseCharacters[randomIndex];

@@ -16,7 +16,6 @@ MainMenuState::MainMenuState() : selectedOption(0)
 /* Al entrar al menu, dibujamos e inicializamos la UI */
 void MainMenuState::enter(GameController* owner)
 {
-    cout<<"Entering MainMenuState"<<endl;
     // Inicializa la UI del menu principal
     mainMenuUI.setup(owner);
 }
@@ -42,14 +41,12 @@ void MainMenuState::handleEvent(GameController* owner, Event event)
         {
             if (selectedOption == 0)
             {
-                cout<<"Selected: Jugar"<<endl;
                 owner->createPlayer();
-                owner->stateMachine.changeState(new GameMenuState());
+                owner->getStateMachine().changeState(new GameMenuState());
             }
             else if (selectedOption == 1)
             {
-                cout<<"Selected: Salir"<<endl;
-                owner->window.close();
+                owner->getWindow().close();
             }
         }
     }
@@ -65,12 +62,4 @@ void MainMenuState::draw(RenderWindow& window)
 /* Al salir del menu, realizamos las acciones necesarias */
 void MainMenuState::exit()
 {
-    cout<<"Exiting MainMenuState"<<endl;
-    // MainMenuState no posee el dialogo, DialogManager gestiona su ciclo de vida
-}
-
-/* Getter para el nombre de este estado */
-const char* MainMenuState::getName() const
-{
-    return "MainMenuState";
 }

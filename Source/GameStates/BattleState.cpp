@@ -16,7 +16,7 @@ BattleState::~BattleState()
 
 void BattleState::enter(GameController* owner)
 {
-    std::cout << "Entering BattleState" << std::endl;
+    this->owner = owner;
     battleSystem = new Battle::BattleSystem(owner, player, enemyCharacter);
     battleSystem->startBattle();
 }
@@ -38,13 +38,11 @@ void BattleState::update(GameController* owner)
         {
             if(battleSystem->getPlayer()->getCharacter().getCurrentHealth() <= 0)
             {
-                std::cout << "Player has been defeated!" << std::endl;
-                owner->stateMachine.changeState(new GameOverState(true)); // true indicates the game is lost
+                owner->getStateMachine().changeState(new GameOverState(true)); // true indicates the game is lost
                 return; 
             }
             
-            std::cout << "Battle is over, returning to GameMenuState." << std::endl;
-            owner->stateMachine.changeState(new GameMenuState());
+            owner->getStateMachine().changeState(new GameMenuState());
             return; 
         }
     }
@@ -54,11 +52,10 @@ void BattleState::draw(sf::RenderWindow& window)
 {
     if (battleSystem)
     {
-        battleSystem->draw(window);
+        battleSystem->draw(window, owner->getDialogManager()->isActive());
     }
 }
 
 void BattleState::exit()
 {
-    std::cout << "Exiting BattleState" << std::endl;
 }

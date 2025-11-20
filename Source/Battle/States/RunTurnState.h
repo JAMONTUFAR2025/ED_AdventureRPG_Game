@@ -49,7 +49,6 @@ namespace Battle
         void update(BattleSystem* owner) override;
         void draw(sf::RenderWindow& window) override; // Corrected signature
         void exit() override;
-        const char* getName() const override { return "RunTurnState"; }
     };
 } // namespace Battle
 

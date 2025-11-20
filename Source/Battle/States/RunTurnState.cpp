@@ -16,7 +16,6 @@ namespace Battle
 
     void RunTurnState::enter(BattleSystem* owner)
     {
-        std::cout << "Entering RunTurnState" << std::endl;
         this->battleSystemOwner = owner;
         currentStep = TurnStep::START;
         owner->setPlayerGuarding(false); // Reset guard status at the start of the turn
@@ -245,6 +244,5 @@ namespace Battle
 
     void RunTurnState::exit()
     {
-        std::cout << "Exiting RunTurnState" << std::endl;
     }
 } // namespace Battle

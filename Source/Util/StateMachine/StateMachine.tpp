@@ -24,10 +24,10 @@ StateMachine<T>::~StateMachine()
 }
 
 /**
- * Ejecuta el metodo execute del estado actual
+ * Se ejecuta en cada frame y maneja eventos del estado actual
  */
 template <typename T>
-void StateMachine<T>::handleEvent(sf::Event event)
+void StateMachine<T>::handleEvent(Event event)
 {
     // Si la pila no esta vacia, ejecutamos el estado superior
     if(!stateStack.empty())
@@ -36,6 +36,9 @@ void StateMachine<T>::handleEvent(sf::Event event)
     }
 }
 
+/**
+ * Se ejecuta en cada frame y actualiza el estado actual sin contar eventos
+ */
 template <typename T>
 void StateMachine<T>::update()
 {
@@ -50,7 +53,7 @@ void StateMachine<T>::update()
  * Dibuja el estado actual
  */
 template <typename T>
-void StateMachine<T>::draw(sf::RenderWindow& window)
+void StateMachine<T>::draw(RenderWindow& window)
 {
     // Si la pila no esta vacia, dibujamos el estado superior
     if(!stateStack.empty())

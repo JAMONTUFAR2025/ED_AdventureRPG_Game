@@ -1,5 +1,4 @@
 #include "Character.h"
-#include <iostream> // Para cout para propositos de depuracion
 
 Character::Character(const BaseCharacter& baseChar, int initialLevel)
     : base(baseChar),
@@ -33,7 +32,6 @@ int Character::takeDamage(Character& source, int targetDefense, int power, bool 
     {
         // Multiplicador de 1.5 (50% más de daño)
         calculatedDamage *= 1.5f; 
-        std::cout << source.getBaseCharacter().getName() << " lands a CRITICAL HIT!" << std::endl; // O el mensaje de tu motor
     }
     
     int finalDamage = static_cast<int>(calculatedDamage);
@@ -61,13 +59,13 @@ void Character::heal(int amount)
     }
 }
 
-const BaseCharacter& Character::getBaseCharacter() const { return base; }
+BaseCharacter& Character::getBaseCharacter() { return base; }
 
 void Character::setLevel(int newLevel) { level = newLevel; }
-int Character::getLevel() const { return level; }
-int Character::getMaxHealth() const { return maxHealth; }
-int Character::getAttack() const { return attack; }
-int Character::getDefense() const { return defense; }
+int Character::getLevel() { return level; }
+int Character::getMaxHealth() { return maxHealth; }
+int Character::getAttack() { return attack; }
+int Character::getDefense() { return defense; }
 
 void Character::setCurrentHealth(int health) { currentHealth = health; }
-int Character::getCurrentHealth() const { return currentHealth; }
+int Character::getCurrentHealth() { return currentHealth; }

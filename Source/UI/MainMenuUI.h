@@ -3,9 +3,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "DialogBox.h"
+#include "../Gameplay/GlobalSettings.h"
+#include <iostream>
 #include <vector>
 
-/* Namespaces para acortar */
 using namespace sf;
 using namespace std;
 

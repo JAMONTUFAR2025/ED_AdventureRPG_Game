@@ -19,17 +19,11 @@ GameMenuState::GameMenuState() : selectedOption(0), owner(nullptr)
 /* Al entrar al menu, dibujamos e inicializamos la UI */
 void GameMenuState::enter(GameController* owner)
 {
-    this->owner = owner; // Assign the owner
-    cout << "Entering GameMenuState" << endl;
+    this->owner = owner;
     Player* player = owner->getPlayer();
     if (player)
     {
         gameMenuUI.setup(owner, player);
-    }
-    else
-    {
-        // This should not happen if the game logic is correct
-        cout << "CRITICAL ERROR: Player is null when entering GameMenuState." << endl;
     }
 }
 
@@ -82,19 +76,16 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
             {
                 case 0: // Explorar
                 {
-                    cout << "Seleccionado: Explorar" << endl;
-                    
                     // Create placeholder enemy character
                     CharacterDB characterDB;
                     BaseCharacter enemyBase = characterDB.getRandomBaseCharacter(); // Get a random enemy
                     Character enemyChar(enemyBase, player->getCharacter().getLevel()); // BaseCharacter, mismo nivel que el jugador
 
-                    owner->stateMachine.changeState(new BattleState(*owner, player, enemyChar));
+                    owner->getStateMachine().changeState(new BattleState(*owner, player, enemyChar));
                     break;
                 }
                 case 1: // Comprar pocion de curacion (10 puntos)
                 {
-                    cout << "Seleccionado: Comprar pocion." << endl;
                     std::queue<std::string> dialogQueue;
                     if (player->getCharacter().getCurrentHealth() == player->getCharacter().getMaxHealth())
                     {
@@ -117,12 +108,11 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                 }
                 case 2: // Comprar trofeo (1000 puntos)
                 {
-                    cout << "Seleccionado: Comprar trofeo." << endl;
                     std::queue<std::string> dialogQueue;
                     if(player->getPoints() >= 200)
                     {
                         player->gainPoints(-200);
-                        owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won
+                        owner->getStateMachine().changeState(new GameOverState(false)); // false indicates the game is won
                     }
                     else
                     {
@@ -132,9 +122,8 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     break;
                 }
                 case 3: // Salir
-                    cout << "Seleccionado: Salir. Volviendo al menu principal." << endl;
                     owner->destroyPlayer();
-                    owner->stateMachine.changeState(new MainMenuState());
+                    owner->getStateMachine().changeState(new MainMenuState());
                     break;
             }
         }
@@ -150,11 +139,4 @@ void GameMenuState::draw(RenderWindow& window)
 /* Al salir del menu, realizamos las acciones necesarias */
 void GameMenuState::exit()
 {
-    cout << "Exiting GameMenuState" << endl;
-}
-
-/* Getter para el nombre de este estado */
-const char* GameMenuState::getName() const
-{
-    return "GameMenuState";
 }

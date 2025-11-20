@@ -4,6 +4,7 @@
 #include "../Util/StateMachine/IState.h"
 #include <SFML/Graphics.hpp>
 #include "../Battle/BattleSystem.h" // Include the BattleSystem
+#include "../Dialog/DialogManager.h" // Include DialogManager
 
 // Forward declaration
 class GameController;
@@ -15,10 +16,12 @@ class GameController;
 class BattleState : public IState<GameController>
 {
 private:
+    GameController* owner; // Pointer to the GameController
     Battle::BattleSystem* battleSystem; // The battle system instance
     // Player and Enemy characters (can be passed to BattleSystem from GameController)
     Player* player;
     Character enemyCharacter;
+    DialogManager* dialogManager; // Pointer to the DialogManager
 
 public:
     /**
@@ -30,11 +33,10 @@ public:
     ~BattleState();
 
     void enter(GameController* owner) override;
-    void handleEvent(GameController* owner, sf::Event event) override;
+    void handleEvent(GameController* owner, Event event) override;
     void update(GameController* owner) override;
-    void draw(sf::RenderWindow& window) override;
+    void draw(RenderWindow& window) override;
     void exit() override;
-    const char* getName() const override { return "BattleState"; }
 };
 
 #endif // BATTLESTATE_H

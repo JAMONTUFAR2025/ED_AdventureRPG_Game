@@ -1,14 +1,19 @@
 #include "GameMenuUI.h"
-#include "../GameController.h" // Assuming GameController is needed for window size
-#include "../Gameplay/GlobalSettings.h" // For global settings like font size
-#include "../Character/Player.h" // Include Player for direct access
-#include <iostream>
-
 /**
  * Constructor de la UI del Menu del Juego
  * Inicializa los punteros a null
  */
-GameMenuUI::GameMenuUI() : playerChar(nullptr), player_nameText(nullptr), player_levelText(nullptr), player_healthText(nullptr), player_ppBarBack(nullptr), player_ppBarFront(nullptr), player_ppText(nullptr), expNextLevel(nullptr), playerPointsText(nullptr), dialogControlText(nullptr)
+GameMenuUI::GameMenuUI() : 
+        playerChar(nullptr), 
+        playerNameText(nullptr), 
+        playerLevelText(nullptr), 
+        playerHealthText(nullptr), 
+        playerPpBarBack(nullptr), 
+        playerPpBarFront(nullptr),
+        playerPpText(nullptr), 
+        expNextLevel(nullptr), 
+        playerPointsText(nullptr), 
+        dialogControlText(nullptr)
 {
     // Inicializar descripciones
     optionDescriptions.push_back("Inicias un combate contra enemigos salvajes. \nEstos siempre estan igualados a tu nivel. \nGana experiencia y puntos de jugador.");
@@ -28,6 +33,8 @@ GameMenuUI::~GameMenuUI()
     {
         // Libera la memoria asignada de cada opcion
         delete option;
+        // Buena practica
+        option = nullptr;
     }
 
     // Para cada control
@@ -35,18 +42,20 @@ GameMenuUI::~GameMenuUI()
     {
         // Libera la memoria asignada de cada control
         delete control;
+        // Buena practica
+        control = nullptr;
     }
     // Limpia el vector de opciones
     optionTexts.clear();
     // Limpia el vector de controles
     controlsTexts.clear();
 
-    delete player_nameText;
-    delete player_levelText;
-    delete player_healthText;
-    delete player_ppBarBack;
-    delete player_ppBarFront;
-    delete player_ppText;
+    delete playerNameText;
+    delete playerLevelText;
+    delete playerHealthText;
+    delete playerPpBarBack;
+    delete playerPpBarFront;
+    delete playerPpText;
     delete expNextLevel;
     delete playerPointsText;
     delete dialogControlText;
@@ -55,6 +64,7 @@ GameMenuUI::~GameMenuUI()
 /* Configuracion inicial de la UI del Menu del Juego */
 void GameMenuUI::setup(GameController* owner, Player* player)
 {
+    // Asigna el jugador a la variable miembro
     this->playerChar = player;
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
     if (!font.openFromFile(GlobalSettings::FONT_PATH))
@@ -68,66 +78,65 @@ void GameMenuUI::setup(GameController* owner, Player* player)
         }
     }
 
-    // TITULO
+    // Configura la caja de titulo
     titleBox.setup(700.0f, 100.0f, (GlobalSettings::SCREEN_WIDTH - 700) / 2, 20, Color::Red, 2);
+    // Establece el texto del titulo
     titleBox.setText("Menu de Acciones");
 
-    // --- Player HUD (lado derecho) ---
+    /* HUD DEL JUGADOR EN EL LADO DERECHO */
     float hudX = GlobalSettings::SCREEN_WIDTH - 250;
     // TEXTO NOMBRE JUGADOR
-    if (player_nameText) delete player_nameText;
-    player_nameText = new sf::Text(font, playerChar->getCharacter().getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
-    player_nameText->setFillColor(sf::Color::White);
-    player_nameText->setPosition(sf::Vector2f(hudX, 140));
+    if (playerNameText) delete playerNameText;
+    playerNameText = new Text(font, playerChar->getCharacter().getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
+    playerNameText->setFillColor(Color::White);
+    playerNameText->setPosition({hudX, 140});
     // TEXTO NIVEL JUGADOR
-    if (player_levelText) delete player_levelText;
-    player_levelText = new sf::Text(font, "Nv " + std::to_string(playerChar->getCharacter().getLevel()), GlobalSettings::FONT_SIZE);
-    player_levelText->setFillColor(sf::Color::White);
-    player_levelText->setPosition(sf::Vector2f(hudX + 150, 140));
+    if (playerLevelText) delete playerLevelText;
+    playerLevelText = new Text(font, "Nv " + to_string(playerChar->getCharacter().getLevel()), GlobalSettings::FONT_SIZE);
+    playerLevelText->setFillColor(Color::White);
+    playerLevelText->setPosition({hudX + 150, 140});
     // BARRA DE VIDA DELANTERA
-    player_healthBarFront.setFillColor(sf::Color::White); // White health
-    player_healthBarFront.setPosition(sf::Vector2f(hudX, 185));
+    playerHealthBarFront.setFillColor(Color::White); // White health
+    playerHealthBarFront.setPosition({hudX, 185});
     // BARRA DE VIDA TRASERA
-    player_healthBarBack.setSize(sf::Vector2f(200, 20));
-    player_healthBarBack.setFillColor(sf::Color::Black);
-    player_healthBarBack.setOutlineColor(sf::Color::White);
-    player_healthBarBack.setOutlineThickness(2);
-    player_healthBarBack.setPosition(sf::Vector2f(hudX, 185));
+    playerHealthBarBack.setSize({200, 20});
+    playerHealthBarBack.setFillColor(Color::Black);
+    playerHealthBarBack.setOutlineColor(Color::White);
+    playerHealthBarBack.setOutlineThickness(2);
+    playerHealthBarBack.setPosition({hudX, 185});
     // TEXTO DE VIDA
-    if (player_healthText) delete player_healthText;
-    player_healthText = new sf::Text(font, "", GlobalSettings::FONT_SIZE);
-    player_healthText->setFillColor(sf::Color::White);
-    player_healthText->setPosition(sf::Vector2f(hudX + 5, 220));
+    if (playerHealthText) delete playerHealthText;
+    playerHealthText = new Text(font, "", GlobalSettings::FONT_SIZE);
+    playerHealthText->setFillColor(Color::White);
+    playerHealthText->setPosition({hudX + 5, 220});
 
-    // --- Player Ultimate Points (PP) UI ---
-    // BARRA PP TRASERA
-    player_ppBarBack = new sf::RectangleShape(sf::Vector2f(200, 10));
-    player_ppBarBack->setFillColor(sf::Color::Black);
-    player_ppBarBack->setOutlineColor(sf::Color::White);
-    player_ppBarBack->setOutlineThickness(2);
-    player_ppBarBack->setPosition(sf::Vector2f(hudX, 205)); // Below health bar
-
+    /* PUNTOS ULTIMOS DEL JUGADOR (PD) */
+    // BARRA PD TRASERA
+    playerPpBarBack = new RectangleShape({200, 10});
+    playerPpBarBack->setFillColor(Color::Black);
+    playerPpBarBack->setOutlineColor(Color::White);
+    playerPpBarBack->setOutlineThickness(2);
+    playerPpBarBack->setPosition({hudX, 205}); // Below health bar
     // BARRA PP DELANTERA
-    player_ppBarFront = new sf::RectangleShape(sf::Vector2f(0, 10)); // Starts empty
-    player_ppBarFront->setFillColor(sf::Color::Cyan);
-    player_ppBarFront->setPosition(sf::Vector2f(hudX, 205));
-
-    // TEXTO PP
-    if (player_ppText) delete player_ppText;
-    player_ppText = new sf::Text(font, "PP: 0/10", GlobalSettings::FONT_SIZE);
-    player_ppText->setFillColor(sf::Color::Cyan);
-    player_ppText->setPosition(sf::Vector2f(hudX + 115, 220));
+    playerPpBarFront = new RectangleShape({0, 10}); // Starts empty
+    playerPpBarFront->setFillColor(Color::Cyan);
+    playerPpBarFront->setPosition({hudX, 205});
+    // TEXTO PD
+    if (playerPpText) delete playerPpText;
+    playerPpText = new Text(font, "PD: 0/10", GlobalSettings::FONT_SIZE);
+    playerPpText->setFillColor(Color::Cyan);
+    playerPpText->setPosition({hudX + 115, 220});
 
     // TEXTO EXP PARA SIGUIENTE NIVEL
     if (expNextLevel) delete expNextLevel;
-    expNextLevel = new sf::Text(font, "", GlobalSettings::FONT_SIZE);
-    expNextLevel->setFillColor(sf::Color::White);
-    expNextLevel->setPosition(sf::Vector2f(hudX, 250));
+    expNextLevel = new Text(font, "", GlobalSettings::FONT_SIZE);
+    expNextLevel->setFillColor(Color::White);
+    expNextLevel->setPosition({hudX, 250});
     // TEXTO PUNTOS DEL JUGADOR
     if (playerPointsText) delete playerPointsText;
-    playerPointsText = new sf::Text(font, "", GlobalSettings::FONT_SIZE);
-    playerPointsText->setFillColor(sf::Color::White);
-    playerPointsText->setPosition(sf::Vector2f(hudX, 280));
+    playerPointsText = new Text(font, "", GlobalSettings::FONT_SIZE);
+    playerPointsText->setFillColor(Color::White);
+    playerPointsText->setPosition({hudX, 280});
 
     // Lista de opciones
     vector<string> options = {
@@ -150,12 +159,13 @@ void GameMenuUI::setup(GameController* owner, Player* player)
         optionTexts.push_back(option);
     }
 
-    // Lista de controles
+    // Vector de controles
     vector<string> controls = {
         "W / S - Cambiar opcion.",
         "E - Seleccionar opcion."
     };
 
+    // Variables para posicionar los controles
     float startX = 70.0f;
     float startY = 550.0f;
     float spacing = 330.0f;
@@ -175,24 +185,31 @@ void GameMenuUI::setup(GameController* owner, Player* player)
 
     // Texto de control de dialogo
     if (dialogControlText) delete dialogControlText;
-    dialogControlText = new sf::Text(font, "E - Siguiente dialogo", GlobalSettings::FONT_SIZE);
-    dialogControlText->setFillColor(sf::Color::White);
+
+    // Texto de control de dialogo
+    dialogControlText = new Text(font, "E - Siguiente dialogo", GlobalSettings::FONT_SIZE);
+    // Color blanco por defecto
+    dialogControlText->setFillColor(Color::White);
+    // Posicionamos el texto centrado debajo del menu
     dialogControlText->setPosition({startX + spacing / 2, startY});
 
+    // Configura la caja de descripcion
     descriptionBox.setup(700.0f, 150.0f, 50, 380);
 }
 
 /* Dibuja la UI del Menu del Juego en la ventana */
 void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogActive)
 {
+    // Si hay un dialogo activo
     if (isDialogActive)
     {
+        // Dibuja el texto de control para avanzar el dialogo
         if (dialogControlText) window.draw(*dialogControlText);
     }
-    else // Si no hay dialogo activo, dibuja todos los elementos del menu
+    // Si no hay dialogo activo
+    else
     {
-        
-        // Dibuja los controles
+        // Dibuja los controles para seleccionar una opcion
         for (Text* control : controlsTexts)
         {
             window.draw(*control);
@@ -202,6 +219,7 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogAct
         descriptionBox.draw(window);
     }
     
+    // Dibuja la caja de titulo
     titleBox.draw(window);
 
     // Dibuja las opciones
@@ -229,18 +247,18 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogAct
         optionTexts[i]->setString(originalString);
     }
 
-    // Dibuja el HUD del jugador (siempre visible)
+    // Dibuja el HUD del jugador
     if (playerChar)
     {
         updatePlayerHUD();
-        window.draw(*player_nameText);
-        window.draw(*player_levelText);
-        window.draw(player_healthBarBack);
-        window.draw(player_healthBarFront);
-        window.draw(*player_healthText);
-        window.draw(*player_ppBarBack);
-        window.draw(*player_ppBarFront);
-        window.draw(*player_ppText);
+        window.draw(*playerNameText);
+        window.draw(*playerLevelText);
+        window.draw(playerHealthBarBack);
+        window.draw(playerHealthBarFront);
+        window.draw(*playerHealthText);
+        window.draw(*playerPpBarBack);
+        window.draw(*playerPpBarFront);
+        window.draw(*playerPpText);
         window.draw(*expNextLevel);
         window.draw(*playerPointsText);
     }
@@ -255,26 +273,28 @@ void GameMenuUI::updateDescriptionBox(int selectedOption)
     }
 }
 
+/* ACTUALIZA EL HUD DEL JUGADOR */
 void GameMenuUI::updatePlayerHUD()
 {
+    // Si no hay jugador, salir
     if (!playerChar) return;
 
     // Actualizar barra de vida
     float playerHealthRatio = static_cast<float>(playerChar->getCharacter().getCurrentHealth()) / playerChar->getCharacter().getMaxHealth();
-    player_healthBarFront.setSize(sf::Vector2f(200 * playerHealthRatio, 20));
-    player_healthText->setString("PS: " + std::to_string(playerChar->getCharacter().getCurrentHealth()) + "/" + std::to_string(playerChar->getCharacter().getMaxHealth()));
+    playerHealthBarFront.setSize(Vector2f(200 * playerHealthRatio, 20));
+    playerHealthText->setString("PS: " + to_string(playerChar->getCharacter().getCurrentHealth()) + "/" + to_string(playerChar->getCharacter().getMaxHealth()));
 
-    // Actualizar puntos de ultimate
-    float ppRatio = static_cast<float>(playerChar->getUltimatePoints()) / 10.0f; // Max PP is 10
-    player_ppBarFront->setSize(sf::Vector2f(200 * ppRatio, 10));
-    player_ppText->setString("PD: " + std::to_string(playerChar->getUltimatePoints()) + "/10");
+    // Actualizar puntos de definitiva
+    float ppRatio = static_cast<float>(playerChar->getUltimatePoints()) / 10.0f;
+    playerPpBarFront->setSize(Vector2f(200 * ppRatio, 10));
+    playerPpText->setString("PD: " + to_string(playerChar->getUltimatePoints()) + "/10");
 
     // Actualizar nivel
-    player_levelText->setString("Nv " + std::to_string(playerChar->getCharacter().getLevel()));
+    playerLevelText->setString("Nv " + to_string(playerChar->getCharacter().getLevel()));
 
     // Actualizar exp siguiente nivel
-    expNextLevel->setString("Siguiente nivel: " + std::to_string(playerChar->getNextLevelExp() - playerChar->getCurrentExp()));
+    expNextLevel->setString("Siguiente nivel: " + to_string(playerChar->getNextLevelExp() - playerChar->getCurrentExp()));
 
     // Actualizar puntos del jugador
-    playerPointsText->setString("Puntos de jugador: " + std::to_string(playerChar->getPoints()));
+    playerPointsText->setString("Puntos de jugador: " + to_string(playerChar->getPoints()));
 }

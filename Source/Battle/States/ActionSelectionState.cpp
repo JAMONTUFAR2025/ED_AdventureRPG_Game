@@ -12,7 +12,6 @@ namespace Battle
     void ActionSelectionState::enter(BattleSystem* owner)
     {
         this->battleSystemOwner = owner;
-        std::cout << "Entering ActionSelectionState" << std::endl;
         this->battleSystemOwner->getBattleUI().setup(this->battleSystemOwner->getPlayer()->getCharacter(), this->battleSystemOwner->getEnemy()); // Setup BattleUI with current characters
         this->battleSystemOwner->getBattleUI().updatePlayerUltimatePoints(this->battleSystemOwner->getPlayer()->getUltimatePoints());
         actionSelectionUI.setup();
@@ -36,22 +35,18 @@ namespace Battle
                 switch (selectedOption)
                 {
                     case 0: // Luchar
-                        std::cout << "Player selected: Luchar" << std::endl;
                         owner->setChosenAction(ActionType::Fight);
                         owner->getStateMachine().changeState(new RunTurnState());
                         break;
                     case 1: // Especial
-                        std::cout << "Player selected: Especial" << std::endl;
                         owner->setChosenAction(ActionType::Special);
                         owner->getStateMachine().changeState(new RunTurnState());
                         break;
                     case 2: // En Guardia
-                        std::cout << "Player selected: En Guardia" << std::endl;
                         owner->setChosenAction(ActionType::Guard);
                         owner->getStateMachine().changeState(new RunTurnState());
                         break;
                     case 3: // Escapar
-                        std::cout << "Player selected: Escapar" << std::endl;
                         owner->setChosenAction(ActionType::Escape);
                         owner->getStateMachine().changeState(new RunTurnState());
                         break;
@@ -72,7 +67,6 @@ namespace Battle
 
     void ActionSelectionState::exit()
     {
-        std::cout << "Exiting ActionSelectionState" << std::endl;
     }
 } // namespace Battle
 

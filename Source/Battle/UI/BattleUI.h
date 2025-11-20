@@ -41,15 +41,15 @@ namespace Battle
         BattleUI();
         ~BattleUI();
 
-        void setup(const Character& playerChar, const Character& enemyChar);
-        void draw(sf::RenderWindow& window, int selectedOption);
+        void setup(Character& playerChar, Character& enemyChar);
+        void draw(sf::RenderWindow& window, int selectedOption, bool isDialogActive);
         
-        void updateHealthBars(const Character& playerChar, const Character& enemyChar);
+        void updateHealthBars(Character& playerChar, Character& enemyChar);
         void updatePlayerLevelText(int newLevel);
         void updatePlayerUltimatePoints(int currentPP);
 
-        const sf::Text& getPlayerNameText() const { return *player_nameText; }
-        const sf::Text& getEnemyNameText() const { return *enemy_nameText; }
+        sf::Text& getPlayerNameText() { return *player_nameText; }
+        sf::Text& getEnemyNameText() { return *enemy_nameText; }
     };
 } // namespace Battle
 

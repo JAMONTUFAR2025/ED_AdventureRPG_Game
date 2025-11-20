@@ -31,9 +31,9 @@ public:
 
     // --- Character Access ---
     Character& getCharacter();
-    int getCurrentExp() const;
-    int getNextLevelExp() const;
-    int getPoints() const;
+    int getCurrentExp();
+    int getNextLevelExp();
+    int getPoints();
     void gainPoints(int amount);
 
 };

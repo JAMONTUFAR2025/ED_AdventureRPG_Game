@@ -37,8 +37,6 @@ public:
     void draw(RenderWindow& window) override;
     /* Al salir del menu, realizamos las acciones necesarias */
     void exit() override;
-    /* Obtiene el nombre del estado, para depuracion */
-    const char* getName() const override;
 };
 
 #endif // MAINMENUSTATE_H

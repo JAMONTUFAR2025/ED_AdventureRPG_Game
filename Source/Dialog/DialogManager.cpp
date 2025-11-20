@@ -98,7 +98,7 @@ void DialogManager::update()
     if(clock.getElapsedTime().asSeconds() > 0.03f)
     {
         // Obtiene la linea actual del dialogo
-        const string& currentLineText = currentDialog->getLines().front();
+        string& currentLineText = currentDialog->getLines().front();
         // Si no hemos terminado de escribir la linea actual
         if(currentCharacter < currentLineText.length())
         {

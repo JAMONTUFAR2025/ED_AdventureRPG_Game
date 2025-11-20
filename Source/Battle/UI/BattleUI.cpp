@@ -27,7 +27,7 @@ namespace Battle
         delete dialogControlText;
     }
 
-    void BattleUI::setup(const Character& playerChar, const Character& enemyChar)
+    void BattleUI::setup(Character& playerChar, Character& enemyChar)
     {
         if (!font.openFromFile(GlobalSettings::FONT_PATH))
         {
@@ -122,17 +122,16 @@ namespace Battle
         vsText->setPosition(sf::Vector2f(GlobalSettings::SCREEN_WIDTH / 2 - 40, 140));
 
         // TEXTO CONTROL DIALOGO
-        // Texto de control de dialogo
         if (dialogControlText) delete dialogControlText;
         dialogControlText = new sf::Text(font, "E - Siguiente dialogo", GlobalSettings::FONT_SIZE);
         dialogControlText->setFillColor(sf::Color::White);
-        dialogControlText->setPosition({70.0f + 330.0f / 2, 550.0f}); // Centered at bottom
+        dialogControlText->setPosition({70.0f + 330.0f / 2, 550.0f});
 
         // Initial update of dynamic UI elements
         updateHealthBars(playerChar, enemyChar);
     }
 
-    void BattleUI::draw(sf::RenderWindow& window, int selectedOption)
+    void BattleUI::draw(sf::RenderWindow& window, int selectedOption, bool isDialogActive)
     {
         // Draw Title UI
         titleBox.draw(window);
@@ -160,10 +159,10 @@ namespace Battle
         if (vsText) window.draw(*vsText);
 
         // Draw Dialog Control Text
-        if (dialogControlText) window.draw(*dialogControlText);
+        if (isDialogActive && dialogControlText) window.draw(*dialogControlText);
     }
 
-    void BattleUI::updateHealthBars(const Character& playerChar, const Character& enemyChar)
+    void BattleUI::updateHealthBars(Character& playerChar, Character& enemyChar)
     {
         // Update player health bar
         float playerHealthRatio = static_cast<float>(playerChar.getCurrentHealth()) / playerChar.getMaxHealth();

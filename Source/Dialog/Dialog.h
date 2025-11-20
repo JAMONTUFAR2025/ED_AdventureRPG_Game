@@ -17,9 +17,9 @@ class Dialog
 
     public:
         /* Constructor que recibe la cola de dialogo */
-        Dialog(const queue<string>& dialogLines);
-        /* Getter de la cola de dialogo, CONST significa que no se modificara */
-        const queue<string>& getLines() const;
+        Dialog(queue<string>& dialogLines);
+        /* Getter de la cola de dialogo, significa que no se modificara */
+        queue<string>& getLines();
         /* Elimina la linea actual del dialogo */
         void popLine();
 };

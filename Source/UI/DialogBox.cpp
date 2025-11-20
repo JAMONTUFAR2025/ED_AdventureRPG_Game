@@ -17,9 +17,10 @@ DialogBox::DialogBox() : text(nullptr)
 DialogBox::~DialogBox()
 {
     delete text;
+    text = nullptr;
 }
 
-/* Inicializa la caja de dialogo */
+/* Inicializa la caja de dialogo, se pueden configurar titulos */
 void DialogBox::setup(float width, float height, int posX, int posY, Color textColor, int characterSize)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
@@ -51,6 +52,7 @@ void DialogBox::setup(float width, float height, int posX, int posY, Color textC
     text->setPosition({float(posX) + 20.0f, float(posY)});
 }
 
+/* Inicializa la caja de dialogo, esto no es un titulo */
 void DialogBox::setup(float width, float height, int posX, int posY)
 {
     setup(width, height, posX, posY, Color::White, 1);
@@ -59,6 +61,7 @@ void DialogBox::setup(float width, float height, int posX, int posY)
 /* Setter para el texto */
 void DialogBox::setText(const string& str)
 {
+    // Si hay texto, lo escribe
     if(text)
         text->setString(str);
 }
@@ -66,7 +69,9 @@ void DialogBox::setText(const string& str)
 /* Dibuja la caja de dialogo en la ventana */
 void DialogBox::draw(RenderWindow& window)
 {
+    // Dibuja el rectangulo de la caja de dialogo
     window.draw(box);
+    // Dibuja el texto dentro de la caja de dialogo
     if(text)
         window.draw(*text);
 }

@@ -1,19 +1,19 @@
 #include "GameController.h"
-#include "Gameplay/GlobalSettings.h"
-#include "GameStates/MainMenuState.h"
-#include <iostream>
 
 /**
- * Controlador principal del juego.
- * Hereda de SFML RenderWindow para manejar la ventana del juego
- * y utiliza una maquina de estados para gestionar los diferentes
- * estados del juego (menu principal, juego, pausa, etc).
+ * Constructor del controlador principal del juego
+ * Inicializa la ventana, la maquina de estados y el manejador de dialogos
  */
-GameController::GameController() : window(VideoMode({GlobalSettings::SCREEN_WIDTH, GlobalSettings::SCREEN_HEIGHT}), "Adventure RPG", Style::Close | Style::Titlebar), stateMachine(this), dialogManager()
+GameController::GameController() : 
+        window(VideoMode({GlobalSettings::SCREEN_WIDTH, GlobalSettings::SCREEN_HEIGHT}), 
+        "Adventure RPG", 
+        Style::Close | Style::Titlebar), 
+        stateMachine(this), 
+        dialogManager()
 {
     // Oculta el cursor del mouse
     window.setMouseCursorVisible(false);
-    /* Inicializa el estado del menu principal */
+    // Inicia la maquina de estados con el estado del menu principal
     stateMachine.push(new MainMenuState());
     // Inicializa el puntero del jugador
     player = nullptr;
@@ -27,8 +27,11 @@ void GameController::runGameLoop()
     {
         // Procesa los eventos, ejecuta la logica del estado actual y renderiza
         processEvents();
-        dialogManager.update(); // Update the dialog manager before updating the state machine
+        // Actualiza el manejador de dialogos
+        dialogManager.update();
+        // Actualiza la maquina de estados
         stateMachine.update();
+        // Renderiza la ventana
         render();
     }
 }
@@ -37,7 +40,7 @@ void GameController::runGameLoop()
 void GameController::processEvents()
 {
     // Variable para almacenar los eventos
-    while (const optional<Event> event = window.pollEvent())
+    while (optional<Event> event = window.pollEvent())
     {
         // Si se recibe un evento de cierre, cierra la ventana
         if(event->is<Event::Closed>())
@@ -45,6 +48,7 @@ void GameController::processEvents()
             window.close();
         }
         
+        // Pasa el evento a la maquina de estados
         stateMachine.handleEvent(*event);
     }
 }
@@ -52,13 +56,28 @@ void GameController::processEvents()
 /* Renderiza la ventana */
 void GameController::render()
 {
+    // Limpiamos la ventana
     window.clear();
     // Dibujamos el estado actual de la maquina de estados
     stateMachine.draw(window);
-    dialogManager.draw(window); // Draw the dialog manager
+    // Dibujamos el manejador de dialogos
+    dialogManager.draw(window);
+    // Mostramos el contenido de la ventana
     window.display();
 }
 
+/**
+ * Ventana principal
+ */
+/* Getter de la ventana principal */
+RenderWindow& GameController::getWindow()
+{
+    return window;
+}
+
+/**
+ * Jugador
+ */
 /* Crea una instancia del jugador */
 void GameController::createPlayer()
 {
@@ -77,15 +96,36 @@ void GameController::destroyPlayer()
         player = nullptr;
     }
 }
-
-/* Obtiene la instancia del jugador */
+/* Getter de la instancia del jugador */
 Player* GameController::getPlayer()
 {
     return player;
 }
 
-/* Obtiene el manejador de dialogos */
+/**
+ * Maquina de estados
+ */
+/* Getter para la maquina de estados */
+StateMachine<GameController>& GameController::getStateMachine()
+{
+    return stateMachine;
+}
+/* Setter para la maquina de estados */
+void GameController::setStateMachine(StateMachine<GameController>& stateMachine)
+{
+    this->stateMachine = stateMachine;
+}
+
+/**
+ * Manejador de dialogos
+ */
+/* Getter del manejador de dialogos */
 DialogManager* GameController::getDialogManager()
 {
     return &dialogManager;
+}
+/* Setter para el manejador de dialogos */
+void GameController::setDialogManager(DialogManager& dialogManager)
+{
+    this->dialogManager = dialogManager;
 }

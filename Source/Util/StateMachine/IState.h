@@ -2,6 +2,7 @@
 #define ISTATE_H
 
 #include <SFML/Graphics.hpp>
+using namespace sf;
 
 /**
  * Definicion forward de la clase StateMachine para evitar referencias circulares
@@ -16,36 +17,23 @@ template <typename T> class StateMachine;
 template <typename T> class IState
 {
 public:
-    /**
-     * Destructor virtual
-     */
+    /* Destructor virtual */
     virtual ~IState() = default;
 
-    /**
-     * Se ejecuta una vez al entrar en el estado
-     */
+    /* Se ejecuta una vez al entrar en el estado */
     virtual void enter(T* owner) = 0;
 
-    /**
-     * Se ejecuta en cada frame mientras se este en el estado
-     */
-    virtual void handleEvent(T* owner, sf::Event event) = 0;
+    /* Se ejecuta en cada frame mientras se este en el estado */
+    // Para manejar eventos
+    virtual void handleEvent(T* owner, Event event) = 0;
+    // Para actualizar la logica sin contar eventos
     virtual void update(T* owner) = 0;
 
-    /**
-     * Se ejecuta en cada frame para dibujar los elementos del estado
-     */
-    virtual void draw(sf::RenderWindow& window) = 0;
+    /* Se ejecuta en cada frame para dibujar los elementos del estado */
+    virtual void draw(RenderWindow& window) = 0;
 
-    /**
-     * Se ejecuta una vez al salir del estado
-     */
+    /* Se ejecuta una vez al salir del estado */
     virtual void exit() = 0;
-
-    /**
-     * Obtiene el nombre del estado
-     */
-    virtual const char* getName() const = 0;
 };
 
 #endif // ISTATE_H

@@ -14,14 +14,13 @@ GameOverState::GameOverState(bool isGameLost_) : selectedOption(0), isGameLost(i
 /* Al entrar al Game Over, dibujamos e inicializamos la UI */
 void GameOverState::enter(GameController* owner)
 {
-    cout << "Entering GameOverState" << endl;
     gameOverUI.setup(isGameLost);
 }
 
 /* Actualiza el estado del Game Over */
 void GameOverState::update(GameController* owner)
 {
-    gameOverUI.updateDescriptionBox(selectedOption);
+    gameOverUI.updateDescriptionBox();
 }
 
 /* Manejo de eventos del Game Over */
@@ -32,9 +31,8 @@ void GameOverState::handleEvent(GameController* owner, Event event)
     {
         if (keyPressed->code == Keyboard::Key::E)
         {
-            cout<<"Seleccionado opcion: " << selectedOption << endl;
             owner->destroyPlayer(); // Destruye el jugador actual
-            owner->stateMachine.changeState(new MainMenuState());
+            owner->getStateMachine().changeState(new MainMenuState());
         }
     }
 }
@@ -48,11 +46,4 @@ void GameOverState::draw(RenderWindow& window)
 /* Al salir del menu, realizamos las acciones necesarias */
 void GameOverState::exit()
 {
-    cout << "Exiting GameOverState" << endl;
-}
-
-/* Getter para el nombre de este estado */
-const char* GameOverState::getName() const
-{
-    return "GameMenuState";
 }

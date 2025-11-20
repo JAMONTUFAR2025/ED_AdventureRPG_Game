@@ -2,20 +2,16 @@
 #include "../GameController.h" // For GameController functions if needed
 #include "States/ActionSelectionState.h" // Initial state for battle
 #include "States/RunTurnState.h"
-#include <iostream>
 
 namespace Battle
 {
-    BattleSystem::BattleSystem(GameController* owner, Player* playerCharacter, const Character& enemyCharacter)
+    BattleSystem::BattleSystem(GameController* owner, Player* playerCharacter, Character& enemyCharacter)
         : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false), hasHealthBarUpdated(false), hasPlayerLeveledUp(false), hasUltimatePointsUpdated(false), battleStarted(false)
     {
     }
 
     void BattleSystem::startBattle()
     {
-        std::cout << "Battle started! Player: " << player->getCharacter().getBaseCharacter().getName()
-                  << " vs Enemy: " << enemy.getBaseCharacter().getName() << std::endl;
-        
         battleUI.setup(player->getCharacter(), enemy); // Setup the battle UI
         battleUI.updateHealthBars(player->getCharacter(), enemy); // Initial health bar update
         battleUI.updatePlayerUltimatePoints(player->getUltimatePoints()); // Initial ultimate points update
@@ -67,14 +63,14 @@ namespace Battle
         }
     }
 
-    void BattleSystem::draw(sf::RenderWindow& window)
+    void BattleSystem::draw(sf::RenderWindow& window, bool isDialogActive)
     {
         stateMachine.draw(window);
         dialogManager.draw(window);
-        battleUI.draw(window, static_cast<int>(chosenAction));
+        battleUI.draw(window, static_cast<int>(chosenAction), dialogManager.isActive());
     }
 
-    bool BattleSystem::isBattleOver() const
+    bool BattleSystem::isBattleOver()
     {
         return battleIsOver;
     }
@@ -84,7 +80,7 @@ namespace Battle
         battleIsOver = true;
     }
 
-    bool BattleSystem::getPlayerGuarding() const
+    bool BattleSystem::getPlayerGuarding()
     {
         return isPlayerGuarding;
     }
@@ -94,7 +90,7 @@ namespace Battle
         isPlayerGuarding = guarding;
     }
 
-    bool BattleSystem::getHasHealthBarUpdated() const
+    bool BattleSystem::getHasHealthBarUpdated()
     {
         return hasHealthBarUpdated;
     }
@@ -104,7 +100,7 @@ namespace Battle
         hasHealthBarUpdated = updated;
     }
 
-    bool BattleSystem::getHasPlayerLeveledUp() const
+    bool BattleSystem::getHasPlayerLeveledUp()
     {
         return hasPlayerLeveledUp;
     }
@@ -114,7 +110,7 @@ namespace Battle
         hasPlayerLeveledUp = leveledUp;
     }
 
-    bool BattleSystem::getHasUltimatePointsUpdated() const
+    bool BattleSystem::getHasUltimatePointsUpdated()
     {
         return hasUltimatePointsUpdated;
     }
@@ -124,7 +120,7 @@ namespace Battle
         hasUltimatePointsUpdated = updated;
     }
 
-    bool BattleSystem::getBattleStarted() const
+    bool BattleSystem::getBattleStarted()
     {
         return battleStarted;
     }

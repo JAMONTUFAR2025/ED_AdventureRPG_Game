@@ -14,10 +14,10 @@ class CharacterDB
         CharacterDB();
 
         /* Obtiene al jugador */
-        BaseCharacter getPlayerBaseCharacter() const;
+        BaseCharacter getPlayerBaseCharacter();
 
         /* Obtiene un BaseCharacter aleatorio */
-        BaseCharacter getRandomBaseCharacter() const;
+        BaseCharacter getRandomBaseCharacter();
 };
 
 #endif // CHARACTERDB_H

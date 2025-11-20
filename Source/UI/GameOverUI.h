@@ -2,9 +2,10 @@
 #define GAMEOVERUI_H
 #include <SFML/Graphics.hpp>
 #include "DialogBox.h"
+#include "../Gameplay/GlobalSettings.h"
+#include <iostream>
 #include <vector>
 
-/* Namespaces para acortar */
 using namespace std;
 using namespace sf;
 
@@ -20,11 +21,11 @@ private:
     DialogBox titleBox;
 
     /* Texto de las opciones del menu */
-    vector<Text*> optionTexts;
+    Text* optionText;
     /* Texto para las descripciones del menu */
-    vector<string> optionDescriptions;
+    string optionDescription;
     /* Texto para los controles del menu */
-    vector<Text*> controlsTexts;
+    Text* controlsText;
 
     /* Cuadro de dialogo para descripciones */
     DialogBox descriptionBox;
@@ -38,7 +39,7 @@ public:
     /* Dibuja la UI en la ventana */
     void draw(RenderWindow& window, int selectedOption);
     /* Actualiza la descripcion en el Box segun la opcion seleccionada */
-    void updateDescriptionBox(int selectedOption);
+    void updateDescriptionBox();
 };
 
 #endif // GAMEOVERUI_H

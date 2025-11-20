@@ -9,32 +9,32 @@ BaseCharacter::BaseCharacter(std::string name, int maxHealth, int attack, int de
 {
 }
 
-const string& BaseCharacter::getName() const
+string& BaseCharacter::getName()
 {
     return name;
 }
 
-int BaseCharacter::getMaxHealth() const
+int BaseCharacter::getMaxHealth()
 {
     return maxHealth;
 }
 
-int BaseCharacter::getAttack() const
+int BaseCharacter::getAttack()
 {
     return attack;
 }
 
-int BaseCharacter::getDefense() const
+int BaseCharacter::getDefense()
 {
     return defense;
 }
 
-int BaseCharacter::getExpYield() const
+int BaseCharacter::getExpYield()
 {
     return expYield;
 }
 
-int BaseCharacter::getPointsYield() const
+int BaseCharacter::getPointsYield()
 {
     return pointsYield;
 }

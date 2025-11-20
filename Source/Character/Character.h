@@ -25,16 +25,16 @@ class Character
         int takeDamage(Character& source, int targetDefense, int power, bool isCritical);
         void heal(int amount);
         
-        const BaseCharacter& getBaseCharacter() const;
+        BaseCharacter& getBaseCharacter();
 
         void setLevel(int newLevel);
-        int getLevel() const;
-        int getMaxHealth() const;
-        int getAttack() const;
-        virtual int getDefense() const;
+        int getLevel();
+        int getMaxHealth();
+        int getAttack();
+        virtual int getDefense();
 
         void setCurrentHealth(int health);
-        int getCurrentHealth() const;
+        int getCurrentHealth();
     };
 
 #endif // CHARACTER_H
