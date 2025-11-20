@@ -71,6 +71,16 @@ Character& Player::getCharacter()
     return playerCharacter; 
 }
 
+int Player::getCurrentExp() const
+{
+    return currentExp;
+}
+
+int Player::getNextLevelExp() const
+{
+    return playerCharacter.getLevel() * 10;
+}
+
 int Player::getPoints() const
 {
     return points;

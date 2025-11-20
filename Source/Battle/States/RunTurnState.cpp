@@ -43,7 +43,7 @@ namespace Battle
             case TurnStep::START:
                 if (!owner->getBattleStarted())
                 {
-                    messages.push("Te has encontrado con un " + owner->getEnemy().getBaseCharacter().getName() + "!");
+                    messages.push("Te has encontrado con un/una " + owner->getEnemy().getBaseCharacter().getName() + "!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     owner->setBattleStarted(true);
                     currentStep = TurnStep::POST_INTRO_MESSAGE;
@@ -72,33 +72,33 @@ namespace Battle
                 {
                     case ActionType::Fight:
                         owner->getPlayer()->gainUltimatePoints(1);
-                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 10, isCritical);
-                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " attacks for " + std::to_string(playerDamage) + " damage!");
-                        if(isCritical) messages.push("A critical hit!");
+                        playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(), 50, isCritical);
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un ataque basico! \nDanio infligido: " + std::to_string(playerDamage));
+                        if(isCritical) messages.push("Un golpe critico!");
                         break;
                     case ActionType::Special:
                         if (owner->getPlayer()->getUltimatePoints() >= 5)
                         {
                             owner->getPlayer()->useUltimate(5);
-                            playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  100, isCritical);
-                            messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " uses a powerful ultimate move dealing " + std::to_string(playerDamage) + " damage!");
-                            if(isCritical) messages.push("A devastating critical hit!");
+                            playerDamage = owner->getEnemy().takeDamage(owner->getPlayer()->getCharacter(), owner->getEnemy().getDefense(),  500, isCritical);
+                            messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha usado un poderoso ataqe definitivo! \nDanio infligido: " + std::to_string(playerDamage));
+                            if(isCritical) messages.push("Un golpe critico devastador!");
                         }
                         else
                         {
-                            messages.push("Not enough ultimate points!");
+                            messages.push("No tienes suficientes puntos de definitiva!");
                             validAction = false;
                         }
                         break;
                     case ActionType::Guard:
                         owner->getPlayer()->gainUltimatePoints(2);
                         
-                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " is guarding! Defense x2!");
+                        messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha fortalecido su cuerpo!");
                         owner->setPlayerGuarding(true);
                         owner->getPlayer()->setDefenseMultiplier(2.0f);
                         break;
                     case ActionType::Escape:
-                        messages.push("Escaped successfully!");
+                        messages.push("Escapaste sin problemas!");
                         owner->getDialogManager().startDialog(new Dialog(messages));
                         result = BattleResult::Escape;
                         currentStep = TurnStep::SHOW_EXP_RESULTS;
@@ -135,7 +135,7 @@ namespace Battle
                 owner->setHasUltimatePointsUpdated(true);
                 if (owner->getEnemy().getCurrentHealth() <= 0)
                 {
-                    messages.push(owner->getEnemy().getBaseCharacter().getName() + " defeated!");
+                    messages.push(owner->getEnemy().getBaseCharacter().getName() + " ha sido derrotado!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     result = BattleResult::Victory;
                     currentStep = TurnStep::SHOW_EXP_RESULTS;
@@ -148,9 +148,9 @@ namespace Battle
             {
                 isCritical = false;
                 if(rand() % 100 < 20) isCritical = true;
-                int enemyDamage = owner->getPlayer()->getCharacter().takeDamage(owner->getEnemy(), owner->getPlayer()->getDefense(), 10, isCritical);
-                messages.push(owner->getEnemy().getBaseCharacter().getName() + " attacks for " + std::to_string(enemyDamage) + " damage!");
-                if(isCritical) messages.push("A critical hit!");
+                int enemyDamage = owner->getPlayer()->getCharacter().takeDamage(owner->getEnemy(), owner->getPlayer()->getDefense(), 50, isCritical);
+                messages.push(owner->getEnemy().getBaseCharacter().getName() + " lanzo un ataque! \nDanio infligido: " + std::to_string(enemyDamage));
+                if(isCritical) messages.push("Un golpe critico!");
                 owner->getDialogManager().startDialog(new Dialog(messages));
                 currentStep = TurnStep::PLAYER_CHECK;
                 break;
@@ -160,7 +160,7 @@ namespace Battle
                 owner->setHasHealthBarUpdated(true);
                 if (owner->getPlayer()->getCharacter().getCurrentHealth() <= 0)
                 {
-                    messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " defeated!");
+                    messages.push(owner->getPlayer()->getCharacter().getBaseCharacter().getName() + " ha sido derrotado...");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     result = BattleResult::Defeat;
                     currentStep = TurnStep::SHOW_EXP_RESULTS;
@@ -184,12 +184,13 @@ namespace Battle
                     {
                         case BattleResult::Victory:
                         {
+                            messages.push("Victoria!");
                             int expGained = owner->getEnemy().getBaseCharacter().getExpYield() * (1 + owner->getEnemy().getLevel() / 5);
-                            messages.push("Victory!\n\nPlayer gained " + std::to_string(expGained) + " EXP!");
+                            messages.push("Has ganado " + std::to_string(expGained) + " puntos de experiencia!");
 
                             int enemyPoints = owner->getEnemy().getBaseCharacter().getPointsYield() * (1 + owner->getEnemy().getLevel() / 5);
                             owner->getPlayer()->gainPoints(enemyPoints);
-                            messages.push("Player gained " + std::to_string(enemyPoints) + " points!");
+                            messages.push("Tambien has ganado " + std::to_string(enemyPoints) + " puntos de jugador!");
 
                             int oldLevel = owner->getPlayer()->getCharacter().getLevel();
                             owner->getPlayer()->gainExperience(expGained);
@@ -201,7 +202,7 @@ namespace Battle
                         break;
 
                         case BattleResult::Defeat:
-                            messages.push("Defeat!");
+                            messages.push("Estas fuera de combate!");
                             break;
                         case BattleResult::Escape:
                             // No message needed, already shown
@@ -221,7 +222,7 @@ namespace Battle
 
                 if (levelUpOccurred)
                 {
-                    messages.push("Player leveled up to level " + std::to_string(owner->getPlayer()->getCharacter().getLevel()) + "!");
+                    messages.push("Has subido al nivel " + std::to_string(owner->getPlayer()->getCharacter().getLevel()) + "!");
                     owner->getDialogManager().startDialog(new Dialog(messages));
                     owner->setHasHealthBarUpdated(true);
                     owner->setHasPlayerLeveledUp(true);

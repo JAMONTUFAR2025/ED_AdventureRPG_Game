@@ -20,7 +20,16 @@ GameMenuState::GameMenuState() : selectedOption(0)
 void GameMenuState::enter(GameController* owner)
 {
     cout << "Entering GameMenuState" << endl;
-    gameMenuUI.setup(owner);
+    Player* player = owner->getPlayer();
+    if (player)
+    {
+        gameMenuUI.setup(owner, player);
+    }
+    else
+    {
+        // This should not happen if the game logic is correct
+        cout << "CRITICAL ERROR: Player is null when entering GameMenuState." << endl;
+    }
 }
 
 /* Actualiza el estado del menu del juego */
@@ -69,12 +78,24 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                     break;
                 }
                 case 1: // Comprar pocion de curacion (10 puntos)
-                    cout << "Seleccionado: Comprar pocion de curacion (10 puntos)" << endl;
-                    // TODO: Implement potion purchase logic
+                    cout << "Seleccionado: Comprar pocion." << endl;
+                    
+                    if(owner->getPlayer()->getPoints() >= 10)
+                    {
+                        owner->getPlayer()->gainPoints(-10);
+                        owner->getPlayer()->getCharacter().setCurrentHealth(owner->getPlayer()->getCharacter().getMaxHealth());
+                    }
+
                     break;
                 case 2: // Comprar trofeo (1000 puntos)
-                    cout << "Seleccionado: Comprar trofeo (1000 puntos)" << endl;
-                    owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won
+                    cout << "Seleccionado: Comprar trofeo." << endl;
+
+                    if(owner->getPlayer()->getPoints() >= 100)
+                    {
+                        owner->getPlayer()->gainPoints(-100);
+                        owner->stateMachine.changeState(new GameOverState(false)); // false indicates the game is won0
+                    }
+
                     break;
                 case 3: // Salir
                     cout << "Seleccionado: Salir. Volviendo al menu principal." << endl;

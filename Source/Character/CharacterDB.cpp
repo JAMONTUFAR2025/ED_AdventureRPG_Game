@@ -3,11 +3,12 @@
 CharacterDB::CharacterDB()
 {
     // Inicializa la base de datos con algunos personajes de ejemplo
-    baseCharacters.push_back(BaseCharacter("Jugador", 50, 50, 50, 0, 0));
-    baseCharacters.push_back(BaseCharacter("Moscarron", 1, 1, 1, 1, 1));
-    baseCharacters.push_back(BaseCharacter("Zombi", 30, 40, 20, 20, 5));
-    baseCharacters.push_back(BaseCharacter("Quimera", 80, 40, 50, 40, 10));
-    baseCharacters.push_back(BaseCharacter("Dragon", 200, 70, 80, 100, 25));
+    baseCharacters.push_back(BaseCharacter("Jugador", 100, 50, 10, 0, 0));
+    baseCharacters.push_back(BaseCharacter("Zombi", 60, 20, 20, 5, 10));
+    baseCharacters.push_back(BaseCharacter("Duende", 80, 30, 15, 10, 10));
+    baseCharacters.push_back(BaseCharacter("Fenix", 10, 35, 20, 15, 15));
+    baseCharacters.push_back(BaseCharacter("Quimera", 120, 30, 15, 20, 20));
+    baseCharacters.push_back(BaseCharacter("Dragon", 200, 50, 20, 40, 30));
 }
 
 BaseCharacter CharacterDB::getPlayerBaseCharacter() const

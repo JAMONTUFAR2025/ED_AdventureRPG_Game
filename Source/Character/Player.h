@@ -5,8 +5,17 @@
 #include "CharacterDB.h"
 class Player
 {
+private:
+    Character playerCharacter;
+    int currentExp;
+    int ultimatePoints;
+    float defenseMultiplier;
+    int points;
+
+    void levelUp();
+
 public:
-    Player(int initialLevel = 1);
+    Player(int initialLevel = 5);
 
     void gainExperience(int amount);
     
@@ -22,17 +31,11 @@ public:
 
     // --- Character Access ---
     Character& getCharacter();
+    int getCurrentExp() const;
+    int getNextLevelExp() const;
     int getPoints() const;
     void gainPoints(int amount);
 
-private:
-    Character playerCharacter;
-    int currentExp;
-    int ultimatePoints;
-    float defenseMultiplier;
-    int points;
-
-    void levelUp();
 };
 
 #endif // PLAYER_H
