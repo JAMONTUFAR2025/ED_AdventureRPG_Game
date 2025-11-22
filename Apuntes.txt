@@ -18,7 +18,7 @@ Combate:
 Menu del juego
 - Explorar
 - Comprar pocion de curacion (10 puntos)
-- Comprar trofeo (1000 puntos)
+- Comprar trofeo (200 puntos)
 - Salir
 
 Otros aspectos:
