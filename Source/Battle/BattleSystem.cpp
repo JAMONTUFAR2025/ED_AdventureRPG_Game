@@ -3,26 +3,37 @@
 #include "States/ActionSelectionState.h"
 #include "States/RunTurnState.h"
 
+/* Namespace Battle, para mejor organizacion */
 namespace Battle
 {
+    /**
+     * Constructor
+     * Inicializa el sistema de batalla con el propietario, el jugador y el enemigo
+     */
     BattleSystem::BattleSystem(GameController* owner, Player* playerCharacter, Character& enemyCharacter)
-        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false), hasHealthBarUpdated(false), hasPlayerLeveledUp(false), hasUltimatePointsUpdated(false), battleStarted(false)
+        : owner(owner), stateMachine(this), player(playerCharacter), enemy(enemyCharacter), battleUI(), chosenAction(ActionType::None), battleIsOver(false), isPlayerGuarding(false), hasHealthBarUpdated(false), hasPlayerLeveledUp(false), hasUltimatePointsUpdated(false)
     {
     }
 
+    /* Metodo que inicia la batalla */
     void BattleSystem::startBattle()
     {
+        // Configura la UI de la batalla
         battleUI.setup(player->getCharacter(), enemy);
+        // Actualiza las barras de vida y puntos de definitiva
         battleUI.updateHealthBars(player->getCharacter(), enemy);
         battleUI.updatePlayerUltimatePoints(player->getUltimatePoints());
-
+        // Coloca el estado inicial de RunTurnState
         stateMachine.changeState(new RunTurnState());
     }
 
+    /* Metodo que maneja los eventos de la batalla */
     void BattleSystem::handleEvent(sf::Event event)
     {
+        // Si se presiono una tecla
         if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
         {
+            // Avanzar dialogo si se presiona E
             if (keyPressed->code == sf::Keyboard::Key::E)
             {
                 if (dialogManager.isActive())
@@ -32,11 +43,14 @@ namespace Battle
                 }
             }
         }
+        // Delegar el manejo de eventos a la maquina de estados
         stateMachine.handleEvent(event);
     }
 
+    /* Metodo que actualiza el sistema de batalla */
     void BattleSystem::update()
     {
+        // Actualizar el gestor de dialogos y la maquina de estados
         dialogManager.update();
         stateMachine.update();
 
@@ -62,70 +76,38 @@ namespace Battle
         }
     }
 
+    /* Metodo que dibuja la batalla */
     void BattleSystem::draw(sf::RenderWindow& window, bool isDialogActive)
     {
+        // Dibujar la maquina de estados, el gestor de dialogos y la UI de la batalla
         stateMachine.draw(window);
         dialogManager.draw(window);
         battleUI.draw(window, static_cast<int>(chosenAction), dialogManager.isActive());
     }
 
-    bool BattleSystem::isBattleOver()
-    {
-        return battleIsOver;
-    }
+    /* Getter y Setters */
+    Player* BattleSystem::getPlayer() { return player; }
+    Character& BattleSystem::getEnemy() { return enemy; }
+    BattleUI& BattleSystem::getBattleUI() { return battleUI; }
+    DialogManager& BattleSystem::getDialogManager() { return dialogManager; }
 
-    void BattleSystem::endBattle()
-    {
-        battleIsOver = true;
-    }
+    ActionType BattleSystem::getChosenAction() { return chosenAction; }
+    void BattleSystem::setChosenAction(ActionType action) { chosenAction = action; }
 
-    bool BattleSystem::getPlayerGuarding()
-    {
-        return isPlayerGuarding;
-    }
+    StateMachine<BattleSystem>& BattleSystem::getStateMachine() { return stateMachine; }
 
-    void BattleSystem::setPlayerGuarding(bool guarding)
-    {
-        isPlayerGuarding = guarding;
-    }
+    bool BattleSystem::isBattleOver() { return battleIsOver; }
+    void BattleSystem::endBattle() { battleIsOver = true; }
 
-    bool BattleSystem::getHasHealthBarUpdated()
-    {
-        return hasHealthBarUpdated;
-    }
+    bool BattleSystem::getPlayerGuarding() { return isPlayerGuarding; }
+    void BattleSystem::setPlayerGuarding(bool guarding) { isPlayerGuarding = guarding; }
 
-    void BattleSystem::setHasHealthBarUpdated(bool updated)
-    {
-        hasHealthBarUpdated = updated;
-    }
+    bool BattleSystem::getHasHealthBarUpdated() { return hasHealthBarUpdated; }
+    void BattleSystem::setHasHealthBarUpdated(bool updated) { hasHealthBarUpdated = updated; }
 
-    bool BattleSystem::getHasPlayerLeveledUp()
-    {
-        return hasPlayerLeveledUp;
-    }
+    bool BattleSystem::getHasPlayerLeveledUp() { return hasPlayerLeveledUp; }
+    void BattleSystem::setHasPlayerLeveledUp(bool leveledUp) { hasPlayerLeveledUp = leveledUp; }
 
-    void BattleSystem::setHasPlayerLeveledUp(bool leveledUp)
-    {
-        hasPlayerLeveledUp = leveledUp;
-    }
-
-    bool BattleSystem::getHasUltimatePointsUpdated()
-    {
-        return hasUltimatePointsUpdated;
-    }
-
-    void BattleSystem::setHasUltimatePointsUpdated(bool updated)
-    {
-        hasUltimatePointsUpdated = updated;
-    }
-
-    bool BattleSystem::getBattleStarted()
-    {
-        return battleStarted;
-    }
-
-    void BattleSystem::setBattleStarted(bool started)
-    {
-        battleStarted = started;
-    }
+    bool BattleSystem::getHasUltimatePointsUpdated() { return hasUltimatePointsUpdated; }
+    void BattleSystem::setHasUltimatePointsUpdated(bool updated) { hasUltimatePointsUpdated = updated; }
 } // namespace Battle

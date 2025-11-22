@@ -10,8 +10,10 @@
 // Declaracion forward para evitar dependencias circulares
 class GameController;
 
+/* Namespace Battle, para mejor organizacion */
 namespace Battle
 {
+    /* Clase enum para representar los tipos de acciones en batalla */
     enum class ActionType
     {
         None,
@@ -21,46 +23,57 @@ namespace Battle
         Escape
     };
 
+    /* Clase que representa el sistema de batalla */
     class BattleSystem
     {
     private:
-        bool battleStarted;
+        /* Banderines */
+        /* La batalla ha terminado */
         bool battleIsOver;
+        /* El jugador esta en guardia */
         bool isPlayerGuarding;
 
+        /* Indicadores de actualizacion */
         bool hasHealthBarUpdated;
         bool hasPlayerLeveledUp;
         bool hasUltimatePointsUpdated;
     public:
+        /* Puntero al controlador del juego que posee este sistema de batalla */
         GameController* owner;
+        /* Maquina de subestados para gestionar los estados de la batalla */
         StateMachine<BattleSystem> stateMachine;
 
+        /* Personaje jugador */
         Player* player;
+        /* Personaje enemigo */
         Character enemy;
+        /* Interfaz de usuario de la batalla */
         BattleUI battleUI;
+        /* Gestor de dialogos */
         DialogManager dialogManager;
 
+        /* Accion elegida por el jugador */
         ActionType chosenAction;
 
+        /* Constructor */
         BattleSystem(GameController* owner, Player* playerCharacter, Character& enemyCharacter);
 
+        /* Metodos para controlar la batalla */
         void startBattle();
         void handleEvent(sf::Event event);
         void update();
         void draw(sf::RenderWindow& window, bool isDialogActive);
 
-        Player* getPlayer() { return player; }
-        Character& getEnemy() { return enemy; }
-        BattleUI& getBattleUI() { return battleUI; }
-        DialogManager& getDialogManager() { return dialogManager; }
+        /* Getters y Setters */
+        Player* getPlayer();
+        Character& getEnemy();
+        BattleUI& getBattleUI();
+        DialogManager& getDialogManager();
         
-        ActionType getChosenAction() { return chosenAction; }
-        void setChosenAction(ActionType action) { chosenAction = action; }
+        ActionType getChosenAction();
+        void setChosenAction(ActionType action);
         
-        StateMachine<BattleSystem>& getStateMachine() { return stateMachine; }
-
-        bool getBattleStarted();
-        void setBattleStarted(bool started);
+        StateMachine<BattleSystem>& getStateMachine();
 
         bool isBattleOver();
         void endBattle();

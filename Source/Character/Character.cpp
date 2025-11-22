@@ -1,20 +1,28 @@
 #include "Character.h"
 
+/**
+ * Constructor
+ * Inicializa el personaje con su BaseCharacter y nivel inicial
+ * Calcula las estadisticas y establece la salud actual al maximo
+ */
 Character::Character(const BaseCharacter& baseChar, int initialLevel)
     : base(baseChar),
       level(initialLevel)
 {
     calculateStats();
-    currentHealth = maxHealth; // Salud inicial al maximo
+    currentHealth = maxHealth;
 }
 
+/* Calcula las estadisticas del personaje basadas en su nivel y base */
 void Character::calculateStats()
 {
+    // --- Formula de estadisticas basada en Pokemon ---
     maxHealth = (base.getMaxHealth() * 2 * level) / 100 + level + 10;
     attack = (base.getAttack() * 2 * level) / 100 + 5;
     defense = (base.getDefense() * 2 * level) / 100 + 5;
 }
 
+/* Metodo para recibir danio */
 int Character::takeDamage(Character& source, int targetDefense, int power, bool isCritical)
 {
     // --- Formula de danio basada en Pokemon ---
@@ -30,7 +38,7 @@ int Character::takeDamage(Character& source, int targetDefense, int power, bool 
     // Si es golpe critico
     if (isCritical) 
     {
-        // Multiplicador de 1.5 (50% más de daño)
+        // Multiplicador de 1.5 (50% mas de danio)
         calculatedDamage *= 1.5f; 
     }
     
@@ -50,6 +58,7 @@ int Character::takeDamage(Character& source, int targetDefense, int power, bool 
     return finalDamage;
 }
 
+/* Metodo para curar al personaje */
 void Character::heal(int amount)
 {
     currentHealth += amount;
@@ -59,11 +68,14 @@ void Character::heal(int amount)
     }
 }
 
+/* Getters y Setters */
 BaseCharacter& Character::getBaseCharacter() { return base; }
 
 void Character::setLevel(int newLevel) { level = newLevel; }
 int Character::getLevel() { return level; }
+
 int Character::getMaxHealth() { return maxHealth; }
+
 int Character::getAttack() { return attack; }
 int Character::getDefense() { return defense; }
 

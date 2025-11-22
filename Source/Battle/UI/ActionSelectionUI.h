@@ -6,8 +6,10 @@
 #include <string>
 #include "../../UI/DialogBox.h"
 
+/* Namespace Battle, para mejor organizacion */
 namespace Battle
 {
+    
     class ActionSelectionUI
     {
     private:

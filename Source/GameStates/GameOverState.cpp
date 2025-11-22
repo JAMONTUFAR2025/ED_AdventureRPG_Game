@@ -4,11 +4,10 @@
 
 /**
  * Constructor del Game Over
- * Inicializa la opcion seleccionada en 0
+ * Inicializa la opcion seleccionada en 0 y la bandera de perdida de juego
  */
 GameOverState::GameOverState(bool isGameLost_) : selectedOption(0), isGameLost(isGameLost_)
 {
-    
 }
 
 /* Al entrar al Game Over, dibujamos e inicializamos la UI */
@@ -26,9 +25,10 @@ void GameOverState::update(GameController* owner)
 /* Manejo de eventos del Game Over */
 void GameOverState::handleEvent(GameController* owner, Event event)
 {
-    // Verificamos si el evento es de tipo KeyPressed
+    // Verificamos si se pulso una tecla
     if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
+        // Seleccion de opcion
         if (keyPressed->code == Keyboard::Key::E)
         {
             owner->destroyPlayer(); // Destruye el jugador actual
@@ -46,4 +46,5 @@ void GameOverState::draw(RenderWindow& window)
 /* Al salir del menu, realizamos las acciones necesarias */
 void GameOverState::exit()
 {
+    // Actualmente no hay acciones necesarias al salir del menu principal, ya que se maneja en el destructor de las clases correspondientes
 }

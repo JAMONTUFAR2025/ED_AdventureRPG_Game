@@ -11,14 +11,12 @@ GameOverUI::GameOverUI() : optionText(nullptr), controlsText(nullptr)
 
 /**
  * Destructor de la UI del Menu de Game Over
- * Libera la memoria asignada a los textos como punteros y los pone a null como buena practica
+ * Libera la memoria asignada a los textos como punteros
  */
 GameOverUI::~GameOverUI()
 {
     delete optionText;
-    optionText = nullptr;
     delete controlsText;
-    controlsText = nullptr;
 }
 
 /* Configuracion inicial de la UI del Menu de Game Over */

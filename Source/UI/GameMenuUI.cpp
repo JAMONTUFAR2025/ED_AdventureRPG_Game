@@ -33,8 +33,6 @@ GameMenuUI::~GameMenuUI()
     {
         // Libera la memoria asignada de cada opcion
         delete option;
-        // Buena practica
-        option = nullptr;
     }
 
     // Para cada control
@@ -42,8 +40,6 @@ GameMenuUI::~GameMenuUI()
     {
         // Libera la memoria asignada de cada control
         delete control;
-        // Buena practica
-        control = nullptr;
     }
     // Limpia el vector de opciones
     optionTexts.clear();
@@ -83,8 +79,10 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     // Establece el texto del titulo
     titleBox.setText("Menu de Acciones");
 
-    /* HUD DEL JUGADOR EN EL LADO DERECHO */
+    // HUD DEL JUGADOR EN EL LADO DERECHO
     float hudX = GlobalSettings::SCREEN_WIDTH - 250;
+
+    // Verificamos si los elementos ya existen y los eliminamos para evitar fugas de memoria
     // TEXTO NOMBRE JUGADOR
     if (playerNameText) delete playerNameText;
     playerNameText = new Text(font, playerChar->getCharacter().getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
@@ -116,12 +114,13 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     playerPpBarBack->setFillColor(Color::Black);
     playerPpBarBack->setOutlineColor(Color::White);
     playerPpBarBack->setOutlineThickness(2);
-    playerPpBarBack->setPosition({hudX, 205}); // Below health bar
+    playerPpBarBack->setPosition({hudX, 205});
     // BARRA PP DELANTERA
-    playerPpBarFront = new RectangleShape({0, 10}); // Starts empty
+    playerPpBarFront = new RectangleShape({0, 10});
     playerPpBarFront->setFillColor(Color::Cyan);
     playerPpBarFront->setPosition({hudX, 205});
-    // TEXTO PD
+
+    // TEXTO PUNTOS DEFINITIVA
     if (playerPpText) delete playerPpText;
     playerPpText = new Text(font, "PD: 0/10", GlobalSettings::FONT_SIZE);
     playerPpText->setFillColor(Color::Cyan);

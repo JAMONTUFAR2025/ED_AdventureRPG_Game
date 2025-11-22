@@ -21,8 +21,6 @@ MainMenuUI::~MainMenuUI()
     {
         // Libera la memoria asignada de cada opcion
         delete option;
-        // Buena practica
-        option = nullptr;
     }
 
     // Para cada control
@@ -30,8 +28,6 @@ MainMenuUI::~MainMenuUI()
     {
         // Libera la memoria asignada de cada control
         delete control;
-        // Buena practica
-        control = nullptr;
     }
 
     // Limpia el vector de opciones

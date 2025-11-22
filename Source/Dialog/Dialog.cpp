@@ -11,8 +11,10 @@ queue<string>& Dialog::getLines()
     return lines;
 }
 
+/* Elimina la linea actual del dialogo */
 void Dialog::popLine()
 {
+    // Elimina la linea actual si no esta vacia
     if (!lines.empty())
     {
         lines.pop();

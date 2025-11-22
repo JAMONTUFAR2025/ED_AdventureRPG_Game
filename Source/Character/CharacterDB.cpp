@@ -1,5 +1,8 @@
 #include "CharacterDB.h"
 
+/**
+ * Constructor que inicializa la base de datos con personajes base
+ */
 CharacterDB::CharacterDB()
 {
     // Inicializa la base de datos con algunos personajes
@@ -11,11 +14,13 @@ CharacterDB::CharacterDB()
     baseCharacters.push_back(BaseCharacter("Dragon", 200, 50, 20, 15, 40));
 }
 
+/* Metodo para obtener al jugador */
 BaseCharacter CharacterDB::getPlayerBaseCharacter()
 {
     return baseCharacters[0]; // El primer personaje es el jugador
 }
 
+/* Metodo para obtener un BaseCharacter aleatorio */
 BaseCharacter CharacterDB::getRandomBaseCharacter()
 {
     int randomIndex = 1 + (rand() % (baseCharacters.size() - 1)); // Evita el primer personaje que es el jugador

@@ -17,7 +17,6 @@ DialogBox::DialogBox() : text(nullptr)
 DialogBox::~DialogBox()
 {
     delete text;
-    text = nullptr;
 }
 
 /* Inicializa la caja de dialogo, se pueden configurar titulos */
