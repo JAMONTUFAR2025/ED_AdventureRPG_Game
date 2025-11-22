@@ -1,10 +1,17 @@
 #ifndef BATTLESTATE_H
 #define BATTLESTATE_H
 
-#include "../Util/StateMachine/IState.h"
 #include <SFML/Graphics.hpp>
+#include "../Util/StateMachine/IState.h"
+#include "../GameController.h"
 #include "../Battle/BattleSystem.h"
+#include "../GameStates/GameMenuState.h"
+#include "../GameStates/GameOverState.h"
 #include "../Dialog/DialogManager.h"
+#include <iostream>
+
+using namespace std;
+using namespace sf;
 
 // Declaracion forward para evitar dependencias circulares
 class GameController;

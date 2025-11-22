@@ -1,6 +1,4 @@
 #include "DialogBox.h"
-#include "../Gameplay/GlobalSettings.h"
-#include <iostream>
 
 /**
  * Constructor de la caja de dialogo
@@ -23,10 +21,10 @@ DialogBox::~DialogBox()
 void DialogBox::setup(float width, float height, int posX, int posY, Color textColor, int characterSize)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!font.openFromFile(GlobalSettings::FONT_PATH))
+    if(!font.openFromFile(GlobalSettings::FONT_PATH))
     {
-        cout<<"Error loading font " << GlobalSettings::FONT_PATH << endl;
-        if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
+        cout<<"Error loading font "<<GlobalSettings::FONT_PATH<<endl;
+        if(!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {
             cout<<"Error loading fallback font C:/Windows/Fonts/arial.ttf"<<endl;
             return;

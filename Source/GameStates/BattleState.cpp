@@ -1,8 +1,4 @@
 #include "BattleState.h"
-#include "../GameController.h"
-#include "../GameStates/GameMenuState.h"
-#include "../GameStates/GameOverState.h"
-#include <iostream>
 
 /**
  * Constructor
@@ -33,10 +29,10 @@ void BattleState::enter(GameController* owner)
 }
 
 /* Maneja los eventos del estado */
-void BattleState::handleEvent(GameController* owner, sf::Event event)
+void BattleState::handleEvent(GameController* owner, Event event)
 {
     // Pasa el evento al sistema de batalla
-    if (battleSystem)
+    if(battleSystem)
     {
         battleSystem->handleEvent(event);
     }
@@ -46,12 +42,12 @@ void BattleState::handleEvent(GameController* owner, sf::Event event)
 void BattleState::update(GameController* owner)
 {
     // Si hay un sistema de batalla, actualiza su logica
-    if (battleSystem)
+    if(battleSystem)
     {
         // Actualiza el sistema de batalla
         battleSystem->update();
         // Si la batalla ha terminado, regresar al menu del juego o al game over
-        if (battleSystem->isBattleOver())
+        if(battleSystem->isBattleOver())
         {
             // Verifica si el jugador perdio
             if(battleSystem->getPlayer()->getCharacter().getCurrentHealth() <= 0)
@@ -68,10 +64,10 @@ void BattleState::update(GameController* owner)
 }
 
 /* Dibuja el estado en la ventana */
-void BattleState::draw(sf::RenderWindow& window)
+void BattleState::draw(RenderWindow& window)
 {
     // Si hay un sistema de batalla, dibuja sus elementos
-    if (battleSystem)
+    if(battleSystem)
     {
         // Dibuja el sistema de batalla
         battleSystem->draw(window, owner->getDialogManager()->isActive());

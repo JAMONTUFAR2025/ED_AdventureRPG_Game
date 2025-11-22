@@ -1,9 +1,4 @@
 #include "MainMenuState.h"
-#include "../GameController.h"
-#include <iostream>
-#include <queue>
-#include <string>
-#include "GameMenuState.h"
 
 /**
  * Constructor del Menu Principal
@@ -31,25 +26,25 @@ void MainMenuState::update(GameController* owner)
 void MainMenuState::handleEvent(GameController* owner, Event event)
 {   
     // Verificamos si el evento es de tipo KeyPressed
-    if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
+    if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
         // Navegacion por las opciones del menu principal
-        if (keyPressed->code == Keyboard::Key::W || keyPressed->code == Keyboard::Key::S)
+        if(keyPressed->code == Keyboard::Key::W || keyPressed->code == Keyboard::Key::S)
         {
             selectedOption = selectedOption == 0 ? 1 : 0;
         }
         // Seleccion de opcion
-        else if (keyPressed->code == Keyboard::Key::E)
+        else if(keyPressed->code == Keyboard::Key::E)
         {
             // Jugar
-            if (selectedOption == 0)
+            if(selectedOption == 0)
             {
                 // Creamos al jugador y cambiamos al estado del menu del juego
                 owner->createPlayer();
                 owner->getStateMachine().changeState(new GameMenuState());
             }
             // Salir
-            else if (selectedOption == 1)
+            else if(selectedOption == 1)
             {
                 owner->getWindow().close();
             }

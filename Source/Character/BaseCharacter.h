@@ -2,6 +2,7 @@
 #define BASECHARACTER_H
 
 #include <string>
+
 using namespace std;
 
 /**

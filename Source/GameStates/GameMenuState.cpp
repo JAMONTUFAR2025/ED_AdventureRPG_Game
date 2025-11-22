@@ -1,12 +1,4 @@
 #include "GameMenuState.h"
-#include "../GameController.h"
-#include "../GameStates/BattleState.h"
-#include "../GameStates/GameOverState.h"
-#include "../GameStates/MainMenuState.h"
-#include "../Character/Character.h"
-#include "../Character/Player.h"
-#include "../Character/BaseCharacter.h"
-#include "../Character/CharacterDB.h"
 
 /**
  * Constructor del Menu del Juego
@@ -23,7 +15,7 @@ void GameMenuState::enter(GameController* owner)
     this->owner = owner;
     // Guardamos el jugador actual
     Player* player = owner->getPlayer();
-    if (player)
+    if(player)
     {
         // Configuramos la UI
         gameMenuUI.setup(owner, player);
@@ -34,7 +26,7 @@ void GameMenuState::enter(GameController* owner)
 void GameMenuState::update(GameController* owner)
 {
     // Si hay un dialogo activo, regresar y desactivar actualizacion de descripcion
-    if (owner->getDialogManager()->isActive())
+    if(owner->getDialogManager()->isActive())
     {
         return;
     }
@@ -46,12 +38,12 @@ void GameMenuState::update(GameController* owner)
 void GameMenuState::handleEvent(GameController* owner, Event event)
 {
     // Verificamos si el evento es de tipo KeyPressed
-    if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>()){
+    if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>()){
         // Si hay un dialogo activo, se avanza el dialogo
-        if (owner->getDialogManager()->isActive())
+        if(owner->getDialogManager()->isActive())
         {
             // Avanza el dialogo si se presiona E
-            if (keyPressed->code == Keyboard::Key::E)
+            if(keyPressed->code == Keyboard::Key::E)
             {
                 owner->getDialogManager()->nextLine();
             }
@@ -61,21 +53,21 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
 
         // Navegacion por las opciones del menu
         // Subir entre 4 opciones
-        if (keyPressed->code == Keyboard::Key::W)
+        if(keyPressed->code == Keyboard::Key::W)
         {
             selectedOption = (selectedOption - 1 + 4) % 4;
         }
         // Bajar entre 4 opciones
-        else if (keyPressed->code == Keyboard::Key::S)
+        else if(keyPressed->code == Keyboard::Key::S)
         {
             selectedOption = (selectedOption + 1) % 4;
         }
         // Seleccion de opcion
-        else if (keyPressed->code == Keyboard::Key::E)
+        else if(keyPressed->code == Keyboard::Key::E)
         {
             // Obtener el jugador actual
             Player* player = owner->getPlayer();
-            if (!player)
+            if(!player)
             {
                 return;
             }
@@ -95,9 +87,9 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                 case 1: // Comprar pocion de curacion (10 puntos)
                 {
                     // Cola de dialogos a mostrar
-                    std::queue<std::string> dialogQueue;
+                    queue<string> dialogQueue;
                     // Evitar comprar si ya tiene la salud al maximo
-                    if (player->getCharacter().getCurrentHealth() == player->getCharacter().getMaxHealth())
+                    if(player->getCharacter().getCurrentHealth() == player->getCharacter().getMaxHealth())
                     {
                         dialogQueue.push("Tus PS estan al maximo!");
                         owner->getDialogManager()->startDialog(new Dialog(dialogQueue));
@@ -121,7 +113,7 @@ void GameMenuState::handleEvent(GameController* owner, Event event)
                 case 2: // Comprar trofeo (200 puntos)
                 {
                     // Cola de dialogos a mostrar
-                    std::queue<std::string> dialogQueue;
+                    queue<string> dialogQueue;
                     // Comprar trofeo si hay puntos suficientes
                     if(player->getPoints() >= 200)
                     {

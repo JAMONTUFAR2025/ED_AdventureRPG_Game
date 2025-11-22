@@ -2,7 +2,8 @@
 #define DIALOGBOX_H
 
 #include <SFML/Graphics.hpp>
-#include <string>
+#include "../Gameplay/GlobalSettings.h"
+#include <iostream>
 
 using namespace std;
 using namespace sf;

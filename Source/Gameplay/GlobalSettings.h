@@ -3,6 +3,7 @@
 
 #include "../Character/BaseCharacter.h"
 #include <string>
+
 using namespace std;
 
 /* Configuracion global del juego */

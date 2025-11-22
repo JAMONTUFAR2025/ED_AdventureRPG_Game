@@ -1,8 +1,10 @@
 #ifndef GAMEOVERSTATE_H
 #define GAMEOVERSTATE_H
 
-#include "../Util/StateMachine/IState.h"
 #include <SFML/Graphics.hpp>
+#include "../Util/StateMachine/IState.h"
+#include "../GameController.h"
+#include "../GameStates/MainMenuState.h"
 #include "../UI/GameOverUI.h"
 #include <iostream>
 

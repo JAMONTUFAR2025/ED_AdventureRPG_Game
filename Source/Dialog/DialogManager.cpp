@@ -18,7 +18,7 @@ DialogManager::DialogManager() : currentDialog(nullptr), currentLine(0), current
 DialogManager::~DialogManager()
 {
     // Borrar el dialogo actual si existe
-    if (currentDialog)
+    if(currentDialog)
     {
         delete currentDialog;
         currentDialog = nullptr;

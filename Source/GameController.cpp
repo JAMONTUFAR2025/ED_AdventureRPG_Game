@@ -81,7 +81,7 @@ RenderWindow& GameController::getWindow()
 /* Crea una instancia del jugador */
 void GameController::createPlayer()
 {
-    if (!player)
+    if(!player)
     {
         player = new Player();
     }
@@ -90,7 +90,7 @@ void GameController::createPlayer()
 /* Destruye la instancia del jugador */
 void GameController::destroyPlayer()
 {
-    if (player)
+    if(player)
     {
         delete player;
         player = nullptr;

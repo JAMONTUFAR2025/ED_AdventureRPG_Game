@@ -1,6 +1,4 @@
 #include "GameOverState.h"
-#include "../GameController.h"
-#include "../GameStates/MainMenuState.h"
 
 /**
  * Constructor del Game Over
@@ -26,10 +24,10 @@ void GameOverState::update(GameController* owner)
 void GameOverState::handleEvent(GameController* owner, Event event)
 {
     // Verificamos si se pulso una tecla
-    if (const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
+    if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
     {
         // Seleccion de opcion
-        if (keyPressed->code == Keyboard::Key::E)
+        if(keyPressed->code == Keyboard::Key::E)
         {
             owner->destroyPlayer(); // Destruye el jugador actual
             owner->getStateMachine().changeState(new MainMenuState());

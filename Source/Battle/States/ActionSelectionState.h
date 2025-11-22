@@ -2,26 +2,40 @@
 #define BATTLE_ACTIONSELECTIONSTATE_H
 
 #include "../../Util/StateMachine/IState.h"
-#include "../BattleSystem.h"
 #include <SFML/Graphics.hpp>
+#include "../BattleSystem.h"
+#include "../UI/ActionSelectionUI.h"
+#include "../UI/ActionSelectionUI.h"
+#include "RunTurnState.h"
 #include <vector>
+#include <iostream>
 
+using namespace std;
+using namespace sf;
+
+/* Namespace Battle, para mejor organizacion */
 namespace Battle
 {
+    /* Clase que representa el estado de seleccion de accion */
     class ActionSelectionState : public IState<BattleSystem>
     {
     private:
+        /* Opcion seleccionada */
         int selectedOption;
+        /* Puntero al sistema de batalla */
         BattleSystem* battleSystemOwner;
+        /* Interfaz de seleccion de accion */
         ActionSelectionUI actionSelectionUI;
 
     public:
+        /* Constructor */
         ActionSelectionState();
 
+        /* Metodos de estado */
         void enter(BattleSystem* owner) override;
-        void handleEvent(BattleSystem* owner, sf::Event event) override;
+        void handleEvent(BattleSystem* owner, Event event) override;
         void update(BattleSystem* owner) override;
-        void draw(sf::RenderWindow& window) override;
+        void draw(RenderWindow& window) override;
         void exit() override;
     };
 } // namespace Battle

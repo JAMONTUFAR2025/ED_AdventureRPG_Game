@@ -1,11 +1,17 @@
 #ifndef BATTLESYSTEM_H
 #define BATTLESYSTEM_H
 
-#include "../Util/StateMachine/StateMachine.h"
-#include "../Character/Player.h"
 #include <SFML/Graphics.hpp>
+#include "../Util/StateMachine/StateMachine.h"
+#include "../GameController.h"
+#include "../Character/Player.h"
 #include "UI/BattleUI.h"
 #include "../Dialog/DialogManager.h"
+#include "States/ActionSelectionState.h"
+#include "States/RunTurnState.h"
+
+using namespace std;
+using namespace sf;
 
 // Declaracion forward para evitar dependencias circulares
 class GameController;
@@ -28,6 +34,8 @@ namespace Battle
     {
     private:
         /* Banderines */
+        /* La batalla ha iniciado */
+        bool battleStarted;
         /* La batalla ha terminado */
         bool battleIsOver;
         /* El jugador esta en guardia */
@@ -60,9 +68,9 @@ namespace Battle
 
         /* Metodos para controlar la batalla */
         void startBattle();
-        void handleEvent(sf::Event event);
+        void handleEvent(Event event);
         void update();
-        void draw(sf::RenderWindow& window, bool isDialogActive);
+        void draw(RenderWindow& window, bool isDialogActive);
 
         /* Getters y Setters */
         Player* getPlayer();
@@ -74,6 +82,9 @@ namespace Battle
         void setChosenAction(ActionType action);
         
         StateMachine<BattleSystem>& getStateMachine();
+
+        bool getBattleStarted();
+        void setBattleStarted(bool started);
 
         bool isBattleOver();
         void endBattle();

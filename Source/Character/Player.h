@@ -4,6 +4,8 @@
 #include "Character.h"
 #include "CharacterDB.h"
 
+using namespace std;
+
 /**
  * Clase que representa al jugador
  * Maneja la experiencia, puntos y el personaje del jugador

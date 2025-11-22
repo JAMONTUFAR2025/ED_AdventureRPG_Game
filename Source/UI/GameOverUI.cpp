@@ -23,13 +23,13 @@ GameOverUI::~GameOverUI()
 void GameOverUI::setup(bool isGameLost)
 {
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!font.openFromFile(GlobalSettings::FONT_PATH))
+    if(!font.openFromFile(GlobalSettings::FONT_PATH))
     {
-        cerr<<"Error al cargar " << GlobalSettings::FONT_PATH << endl;
+        cout<<"Error al cargar " << GlobalSettings::FONT_PATH << endl;
         // Intentamos cargar una fuente por defecto del sistema, si falla salimos de la funcion
-        if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
+        if(!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {
-            cerr<<"Error al cargar font C:/Windows/Fonts/arial.ttf"<<endl;
+            cout<<"Error al cargar font C:/Windows/Fonts/arial.ttf"<<endl;
             return;
         }
     }
@@ -41,7 +41,7 @@ void GameOverUI::setup(bool isGameLost)
 
     /* Configuramos la opcion */
     // Eliminamos el texto anterior si existe
-    if (optionText) delete optionText;
+    if(optionText) delete optionText;
     // Creamos un nuevo texto para la opcion en puntero
     optionText = new Text(font, "Salir.", GlobalSettings::FONT_SIZE);
     // Color blanco por defecto
@@ -51,7 +51,7 @@ void GameOverUI::setup(bool isGameLost)
 
     /* Configuramos el control */
     // Eliminamos el texto anterior si existe
-    if (controlsText) delete controlsText;
+    if(controlsText) delete controlsText;
     // Creamos el texto para el control en puntero
     controlsText = new Text(font, "E - Seleccionar opcion.", GlobalSettings::FONT_SIZE);
     // Color blanco por defecto
@@ -72,13 +72,13 @@ void GameOverUI::draw(RenderWindow& window, int currentSelectedOption)
     titleBox.draw(window);
 
     // Dibuja la unica opcion
-    if (optionText)
+    if(optionText)
     {
         // Guardamos la cadena original para restaurarla despues
         string originalString = optionText->getString();
         
         // Resalta la opcion seleccionada en amarillo
-        if (currentSelectedOption == 0)
+        if(currentSelectedOption == 0)
         {
             optionText->setString("> " + originalString);
             optionText->setFillColor(Color::Yellow);
@@ -98,7 +98,7 @@ void GameOverUI::draw(RenderWindow& window, int currentSelectedOption)
     }
 
     // Dibuja el control
-    if (controlsText)
+    if(controlsText)
     {
         window.draw(*controlsText);
     }

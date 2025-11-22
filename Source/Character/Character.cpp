@@ -36,7 +36,7 @@ int Character::takeDamage(Character& source, int targetDefense, int power, bool 
     float calculatedDamage = baseDamage * randomModifier;
     
     // Si es golpe critico
-    if (isCritical) 
+    if(isCritical) 
     {
         // Multiplicador de 1.5 (50% mas de danio)
         calculatedDamage *= 1.5f; 
@@ -44,13 +44,13 @@ int Character::takeDamage(Character& source, int targetDefense, int power, bool 
     
     int finalDamage = static_cast<int>(calculatedDamage);
     // El danio al menos es 1
-    if (finalDamage < 1) {
+    if(finalDamage < 1) {
         finalDamage = 1;
     }
 
     // Aplicar danio
     currentHealth -= finalDamage;
-    if (currentHealth < 0)
+    if(currentHealth < 0)
     {
         currentHealth = 0;
     }
@@ -62,7 +62,7 @@ int Character::takeDamage(Character& source, int targetDefense, int power, bool 
 void Character::heal(int amount)
 {
     currentHealth += amount;
-    if (currentHealth > maxHealth)
+    if(currentHealth > maxHealth)
     {
         currentHealth = maxHealth;
     }

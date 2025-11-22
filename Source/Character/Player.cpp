@@ -21,7 +21,7 @@ void Player::gainExperience(int amount)
     // Calcula la experiencia necesaria para subir de nivel
     int expToLevelUp = playerCharacter.getLevel() * 10;
     // Verifica si se puede subir de nivel
-    if (currentExp >= expToLevelUp)
+    if(currentExp >= expToLevelUp)
     {
         // Resta la experiencia necesaria y sube de nivel
         currentExp -= expToLevelUp;
@@ -52,7 +52,7 @@ void Player::gainUltimatePoints(int amount)
     // Incrementa los puntos de definitiva
     ultimatePoints += amount;
     // Limita los puntos de definitiva a un maximo de 10
-    if (ultimatePoints > 10)
+    if(ultimatePoints > 10)
     {
         ultimatePoints = 10;
     }
@@ -62,7 +62,7 @@ void Player::gainUltimatePoints(int amount)
 bool Player::useUltimate(int cost)
 {
     // Verifica si hay suficientes puntos de definitiva para usar la habilidad
-    if (ultimatePoints >= cost)
+    if(ultimatePoints >= cost)
     {
         // Resta los puntos de definitiva y retorna true
         ultimatePoints -= cost;

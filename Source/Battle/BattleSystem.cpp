@@ -1,7 +1,4 @@
 #include "BattleSystem.h"
-#include "../GameController.h"
-#include "States/ActionSelectionState.h"
-#include "States/RunTurnState.h"
 
 /* Namespace Battle, para mejor organizacion */
 namespace Battle
@@ -28,15 +25,15 @@ namespace Battle
     }
 
     /* Metodo que maneja los eventos de la batalla */
-    void BattleSystem::handleEvent(sf::Event event)
+    void BattleSystem::handleEvent(Event event)
     {
         // Si se presiono una tecla
-        if (const sf::Event::KeyPressed* keyPressed = event.getIf<sf::Event::KeyPressed>())
+        if(const Event::KeyPressed* keyPressed = event.getIf<Event::KeyPressed>())
         {
             // Avanzar dialogo si se presiona E
-            if (keyPressed->code == sf::Keyboard::Key::E)
+            if(keyPressed->code == Keyboard::Key::E)
             {
-                if (dialogManager.isActive())
+                if(dialogManager.isActive())
                 {
                     dialogManager.nextLine();
                     return;
@@ -77,7 +74,7 @@ namespace Battle
     }
 
     /* Metodo que dibuja la batalla */
-    void BattleSystem::draw(sf::RenderWindow& window, bool isDialogActive)
+    void BattleSystem::draw(RenderWindow& window, bool isDialogActive)
     {
         // Dibujar la maquina de estados, el gestor de dialogos y la UI de la batalla
         stateMachine.draw(window);
@@ -95,6 +92,9 @@ namespace Battle
     void BattleSystem::setChosenAction(ActionType action) { chosenAction = action; }
 
     StateMachine<BattleSystem>& BattleSystem::getStateMachine() { return stateMachine; }
+
+    bool BattleSystem::getBattleStarted() { return battleStarted; }
+    void BattleSystem::setBattleStarted(bool started) { battleStarted = started; }
 
     bool BattleSystem::isBattleOver() { return battleIsOver; }
     void BattleSystem::endBattle() { battleIsOver = true; }

@@ -63,13 +63,13 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     // Asigna el jugador a la variable miembro
     this->playerChar = player;
     // Intenta cargar la fuente desde el archivo, si falla, intenta cargar una fuente por defecto del sistema
-    if (!font.openFromFile(GlobalSettings::FONT_PATH))
+    if(!font.openFromFile(GlobalSettings::FONT_PATH))
     {
-        cerr<<"Error al cargar " << GlobalSettings::FONT_PATH << endl;
+        cout<<"Error al cargar " << GlobalSettings::FONT_PATH << endl;
         // Intentamos cargar una fuente por defecto del sistema, si falla salimos de la funcion
-        if (!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
+        if(!font.openFromFile("C:/Windows/Fonts/arial.ttf"))
         {
-            cerr<<"Error al cargar font C:/Windows/Fonts/arial.ttf"<<endl;
+            cout<<"Error al cargar font C:/Windows/Fonts/arial.ttf"<<endl;
             return;
         }
     }
@@ -84,12 +84,12 @@ void GameMenuUI::setup(GameController* owner, Player* player)
 
     // Verificamos si los elementos ya existen y los eliminamos para evitar fugas de memoria
     // TEXTO NOMBRE JUGADOR
-    if (playerNameText) delete playerNameText;
+    if(playerNameText) delete playerNameText;
     playerNameText = new Text(font, playerChar->getCharacter().getBaseCharacter().getName(), GlobalSettings::FONT_SIZE);
     playerNameText->setFillColor(Color::White);
     playerNameText->setPosition({hudX, 140});
     // TEXTO NIVEL JUGADOR
-    if (playerLevelText) delete playerLevelText;
+    if(playerLevelText) delete playerLevelText;
     playerLevelText = new Text(font, "Nv " + to_string(playerChar->getCharacter().getLevel()), GlobalSettings::FONT_SIZE);
     playerLevelText->setFillColor(Color::White);
     playerLevelText->setPosition({hudX + 150, 140});
@@ -103,7 +103,7 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     playerHealthBarBack.setOutlineThickness(2);
     playerHealthBarBack.setPosition({hudX, 185});
     // TEXTO DE VIDA
-    if (playerHealthText) delete playerHealthText;
+    if(playerHealthText) delete playerHealthText;
     playerHealthText = new Text(font, "", GlobalSettings::FONT_SIZE);
     playerHealthText->setFillColor(Color::White);
     playerHealthText->setPosition({hudX + 5, 220});
@@ -121,18 +121,18 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     playerPpBarFront->setPosition({hudX, 205});
 
     // TEXTO PUNTOS DEFINITIVA
-    if (playerPpText) delete playerPpText;
+    if(playerPpText) delete playerPpText;
     playerPpText = new Text(font, "PD: 0/10", GlobalSettings::FONT_SIZE);
     playerPpText->setFillColor(Color::Cyan);
     playerPpText->setPosition({hudX + 115, 220});
 
     // TEXTO EXP PARA SIGUIENTE NIVEL
-    if (expNextLevel) delete expNextLevel;
+    if(expNextLevel) delete expNextLevel;
     expNextLevel = new Text(font, "", GlobalSettings::FONT_SIZE);
     expNextLevel->setFillColor(Color::White);
     expNextLevel->setPosition({hudX, 250});
     // TEXTO PUNTOS DEL JUGADOR
-    if (playerPointsText) delete playerPointsText;
+    if(playerPointsText) delete playerPointsText;
     playerPointsText = new Text(font, "", GlobalSettings::FONT_SIZE);
     playerPointsText->setFillColor(Color::White);
     playerPointsText->setPosition({hudX, 280});
@@ -146,7 +146,7 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     };
 
     // Creamos los textos para cada opcion
-    for (int i = 0; i < options.size(); i++)
+    for(int i = 0; i < options.size(); i++)
     {
         // Creamos un nuevo texto para la opcion en puntero
         Text* option = new Text(font, options[i], GlobalSettings::FONT_SIZE);
@@ -170,7 +170,7 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     float spacing = 330.0f;
 
     // Creamos los textos para cada control
-    for (int i = 0; i < controls.size(); i++)
+    for(int i = 0; i < controls.size(); i++)
     {
         // Creamos un nuevo texto para el control en puntero
         Text* control = new Text(font, controls[i], GlobalSettings::FONT_SIZE);
@@ -183,7 +183,7 @@ void GameMenuUI::setup(GameController* owner, Player* player)
     }
 
     // Texto de control de dialogo
-    if (dialogControlText) delete dialogControlText;
+    if(dialogControlText) delete dialogControlText;
 
     // Texto de control de dialogo
     dialogControlText = new Text(font, "E - Siguiente dialogo", GlobalSettings::FONT_SIZE);
@@ -200,16 +200,16 @@ void GameMenuUI::setup(GameController* owner, Player* player)
 void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogActive)
 {
     // Si hay un dialogo activo
-    if (isDialogActive)
+    if(isDialogActive)
     {
         // Dibuja el texto de control para avanzar el dialogo
-        if (dialogControlText) window.draw(*dialogControlText);
+        if(dialogControlText) window.draw(*dialogControlText);
     }
     // Si no hay dialogo activo
     else
     {
         // Dibuja los controles para seleccionar una opcion
-        for (Text* control : controlsTexts)
+        for(Text* control : controlsTexts)
         {
             window.draw(*control);
         }
@@ -222,13 +222,13 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogAct
     titleBox.draw(window);
 
     // Dibuja las opciones
-    for (int i = 0; i < optionTexts.size(); i++)
+    for(int i = 0; i < optionTexts.size(); i++)
     {
         // Guardamos la cadena original
         String originalString = optionTexts[i]->getString();
 
         // Resalta la opcion seleccionada en amarillo
-        if (i == selectedOption)
+        if(i == selectedOption)
         {
             optionTexts[i]->setString("> " + originalString);
             optionTexts[i]->setFillColor(Color::Yellow);
@@ -247,7 +247,7 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogAct
     }
 
     // Dibuja el HUD del jugador
-    if (playerChar)
+    if(playerChar)
     {
         updatePlayerHUD();
         window.draw(*playerNameText);
@@ -266,7 +266,7 @@ void GameMenuUI::draw(RenderWindow& window, int selectedOption, bool isDialogAct
 /* Actualiza la descripcion en el Box segun la opcion seleccionada */
 void GameMenuUI::updateDescriptionBox(int selectedOption)
 {
-    if (selectedOption >= 0 && selectedOption < optionDescriptions.size())
+    if(selectedOption >= 0 && selectedOption < optionDescriptions.size())
     {
         descriptionBox.setText(optionDescriptions[selectedOption]);
     }
@@ -276,7 +276,7 @@ void GameMenuUI::updateDescriptionBox(int selectedOption)
 void GameMenuUI::updatePlayerHUD()
 {
     // Si no hay jugador, salir
-    if (!playerChar) return;
+    if(!playerChar) return;
 
     // Actualizar barra de vida
     float playerHealthRatio = static_cast<float>(playerChar->getCharacter().getCurrentHealth()) / playerChar->getCharacter().getMaxHealth();

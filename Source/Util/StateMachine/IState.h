@@ -2,6 +2,8 @@
 #define ISTATE_H
 
 #include <SFML/Graphics.hpp>
+
+using namespace std;
 using namespace sf;
 
 /**

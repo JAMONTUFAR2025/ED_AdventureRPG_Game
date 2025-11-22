@@ -12,7 +12,7 @@ BaseCharacter::BaseCharacter() : name(""), maxHealth(100), attack(10), defense(5
  * Constructor con parametros
  * Inicializa los atributos del personaje base con los valores dados
  */
-BaseCharacter::BaseCharacter(std::string name, int maxHealth, int attack, int defense, int expYield, int pointsYield)
+BaseCharacter::BaseCharacter(string name, int maxHealth, int attack, int defense, int expYield, int pointsYield)
     : name(name), maxHealth(maxHealth), attack(attack), defense(defense), expYield(expYield), pointsYield(pointsYield)
 {
 }

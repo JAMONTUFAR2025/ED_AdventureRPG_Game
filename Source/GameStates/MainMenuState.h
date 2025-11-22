@@ -1,11 +1,15 @@
 #ifndef MAINMENUSTATE_H
 #define MAINMENUSTATE_H
 
-#include "../Util/StateMachine/IState.h"
 #include <SFML/Graphics.hpp>
-#include "../UI/MainMenuUI.h"
+#include "../Util/StateMachine/IState.h"
+#include "../GameController.h"
 #include "../Dialog/DialogManager.h"
 #include "../Dialog/Dialog.h"
+#include "../UI/MainMenuUI.h"
+#include "GameMenuState.h"
+#include <iostream>
+#include <queue>
 
 using namespace sf;
 using namespace std;
