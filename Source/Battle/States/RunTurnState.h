@@ -10,6 +10,9 @@
 #include <queue>
 #include <cstdlib>
 
+// Declaracion forward para evitar dependencias circulares
+class BattleSystem;
+
 using namespace std;
 using namespace sf;
 
